@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_grafico_compartilhado/models/indicador.dart';
+import 'package:app_grafico_compartilhado/src/models/indicador.dart';
 
 class IndicadorScreen extends StatefulWidget {
   const IndicadorScreen({super.key});
