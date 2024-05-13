@@ -85,6 +85,7 @@ class GraficoScreenState extends State<GraficoScreen> {
       width: 50,
       child: FloatingActionButton(
         onPressed: () {},
+        tooltip: "Gerar gráfico",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.bar_chart_sharp, color: Colors.white),

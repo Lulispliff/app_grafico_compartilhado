@@ -90,6 +90,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       width: 50,
       child: FloatingActionButton(
         onPressed: () {},
+        tooltip: "Adicionar cotação",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),

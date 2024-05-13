@@ -94,6 +94,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
       width: 50,
       child: FloatingActionButton(
         onPressed: () {},
+        tooltip: "Adicionar indicador",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),
