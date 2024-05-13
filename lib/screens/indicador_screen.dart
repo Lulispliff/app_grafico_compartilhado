@@ -31,7 +31,8 @@ class IndicadorScreenState extends State<IndicadorScreen> {
                       ),
                     )
                   : listaIndicadores()),
-          addIndicadorButton(context)
+          addIndicadorButton(context),
+          navigatorButtons(context)
         ],
       ),
     );
@@ -60,6 +61,40 @@ class IndicadorScreenState extends State<IndicadorScreen> {
                 onPressed: () {}),
           ),
         )
+      ],
+    );
+  }
+
+  Widget navigatorButtons(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10, left: 10),
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+            ),
+            child: const Text(
+              "Gráfico",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10, left: 10),
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+            ),
+            child: const Text(
+              "Cotações",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ],
     );
   }
