@@ -1,3 +1,5 @@
+import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_grafico_compartilhado/src/models/indicador.dart';
 
@@ -10,7 +12,7 @@ class IndicadorScreen extends StatefulWidget {
 
 class IndicadorScreenState extends State<IndicadorScreen> {
   List<Indicador> indicadores = [];
-  //
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,82 +22,87 @@ class IndicadorScreenState extends State<IndicadorScreen> {
         title: const Text("Cadastro de indicadores"),
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 30),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: indicadores.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Sua lista de indicadores está vazia",
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    )
-                  : listaIndicadores()),
-          addIndicadorButton(context),
-          navigatorButtons(context)
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: _buildIndicadoresList(),
+            ),
+            const SizedBox(height: 16),
+            _buildNavigatorButtons(),
+          ],
+        ),
       ),
+      floatingActionButton: _buildAddIndicadorButton(),
     );
   }
 
-  Widget listaIndicadores() {
-    return ListView.builder(itemBuilder: (context, index) {
-      return null;
-    });
+  Widget _buildIndicadoresList() {
+    return indicadores.isEmpty
+        ? const Center(
+            child: Text(
+              "Sua lista de indicadores está vazia",
+              style: TextStyle(fontSize: 22),
+            ),
+          )
+        : ListView.builder(
+            itemCount: indicadores.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(indicadores[index].nome),
+                // Adicione mais informações do indicador, se necessário
+              );
+            },
+          );
   }
 
-  Widget addIndicadorButton(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10, right: 10),
-          child: SizedBox(
-            width: 50,
-            height: 50,
-            child: FloatingActionButton(
-                // ignore: sort_child_properties_last
-                child: const Icon(Icons.add, color: Colors.white),
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                onPressed: () {}),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget navigatorButtons(BuildContext context) {
+  Widget _buildNavigatorButtons() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 10),
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
-            ),
-            child: const Text(
-              "Gráfico",
-              style: TextStyle(color: Colors.white),
-            ),
+        ElevatedButton(
+          onPressed: goToGrafico,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+          ),
+          child: const Text(
+            "Gráfico",
+            style: TextStyle(color: Colors.white),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 10),
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
-            ),
-            child: const Text(
-              "Cotações",
-              style: TextStyle(color: Colors.white),
-            ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToCotacao,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+          ),
+          child: const Text(
+            "Cotações",
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ],
     );
+  }
+
+  Widget _buildAddIndicadorButton() {
+    return FloatingActionButton(
+      onPressed: () {},
+      backgroundColor: Colors.blue,
+      shape: const CircleBorder(),
+      child: const Icon(Icons.add, color: Colors.white),
+    );
+  }
+
+  void goToGrafico() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GraficoScreen()));
+  }
+
+  void goToCotacao() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
   }
 }
