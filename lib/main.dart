@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_grafico_compartilhado/screens/indicador_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/indicador_screen.dart';
 
 void main() {
   runApp(const MyApp());
