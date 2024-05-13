@@ -1,7 +1,9 @@
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app_grafico_compartilhado/src/models/indicador.dart';
+import 'package:provider/provider.dart';
 
 class IndicadorScreen extends StatefulWidget {
   const IndicadorScreen({super.key});
@@ -11,7 +13,7 @@ class IndicadorScreen extends StatefulWidget {
 }
 
 class IndicadorScreenState extends State<IndicadorScreen> {
-  List<Indicador> indicadores = [];
+  final textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,9 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   }
 
   Widget _buildIndicadoresList() {
-    return indicadores.isEmpty
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+    return currentMoeda.isEmpty
         ? const Center(
             child: Text(
               "Sua lista de indicadores está vazia",
@@ -49,12 +53,14 @@ class IndicadorScreenState extends State<IndicadorScreen> {
             ),
           )
         : ListView.builder(
-            itemCount: indicadores.length,
+            itemCount: currentMoeda.length,
             itemBuilder: (context, index) {
+              final moeda = currentMoeda[index];
+
               return ListTile(
                 title: Text(
-                  "Indicador: ${indicadores[index].nome}",
-                  style: const TextStyle(fontSize: 18),
+                  "Indicador: ${moeda.nome} - ID: ${moeda.id}",
+                  style: const TextStyle(fontSize: 20),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -74,12 +80,57 @@ class IndicadorScreenState extends State<IndicadorScreen> {
           );
   }
 
+  void addMoedaDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Adicionar Indicador",
+              style: TextStyle(color: Colors.blue, fontSize: 30)),
+          content: TextField(
+              controller: textController,
+              cursorColor: Colors.grey,
+              decoration: const InputDecoration(
+                  labelText: "Nome do indicador",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)))),
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
+              child:
+                  const Text('Cancelar', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
+              child:
+                  const Text('Salvar', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                context.read<MoedaDatabase>().addMoeda(textController.text);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildAddIndicadorButton() {
     return SizedBox(
       height: 50,
       width: 50,
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          addMoedaDialog();
+        },
         tooltip: "Adicionar indicador",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
@@ -125,5 +176,9 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   void goToCotacao() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+  }
+
+  void readMoeda() {
+    context.watch<MoedaDatabase>().fetchMoedas();
   }
 }

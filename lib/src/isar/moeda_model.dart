@@ -5,6 +5,6 @@ part 'moeda_model.g.dart';
 class Moeda {
   Id id = Isar.autoIncrement;
   late String nome;
-  late final DateTime dataHora;
-  late final double valor;
+  DateTime dataHora = DateTime.now();
+  double? valor;
 }
