@@ -1,7 +1,9 @@
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app_grafico_compartilhado/src/models/indicador.dart';
+import 'package:provider/provider.dart';
 
 class IndicadorScreen extends StatefulWidget {
   const IndicadorScreen({super.key});
@@ -11,7 +13,7 @@ class IndicadorScreen extends StatefulWidget {
 }
 
 class IndicadorScreenState extends State<IndicadorScreen> {
-  List<Indicador> indicadores = [];
+  final textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,9 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   }
 
   Widget _buildIndicadoresList() {
-    return indicadores.isEmpty
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+    return currentMoeda.isEmpty
         ? const Center(
             child: Text(
               "Sua lista de indicadores está vazia",
@@ -48,11 +52,11 @@ class IndicadorScreenState extends State<IndicadorScreen> {
             ),
           )
         : ListView.builder(
-            itemCount: indicadores.length,
+            itemCount: currentMoeda.length,
             itemBuilder: (context, index) {
+              final moeda = currentMoeda[index];
               return ListTile(
-                title: Text(indicadores[index].nome),
-                // Adicione mais informações do indicador, se necessário
+                title: Text(moeda.nome),
               );
             },
           );
@@ -89,7 +93,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
 
   Widget _buildAddIndicadorButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: createMoeda,
       backgroundColor: Colors.blue,
       shape: const CircleBorder(),
       child: const Icon(Icons.add, color: Colors.white),
@@ -104,5 +108,40 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   void goToCotacao() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+  }
+
+  void createMoeda() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Adicionar Indicador"),
+          content: TextField(
+            controller: textController,
+            decoration:
+                const InputDecoration(hintText: "Digite o nome do indicador"),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Salvar'),
+              onPressed: () {
+                context.read<MoedaDatabase>().addMoeda(textController.text);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void readMoeda() {
+    context.watch<MoedaDatabase>().fetchMoedas();
   }
 }

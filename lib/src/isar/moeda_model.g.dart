@@ -78,7 +78,7 @@ Moeda _moedaDeserialize(
   object.dataHora = reader.readDateTime(offsets[0]);
   object.id = id;
   object.nome = reader.readString(offsets[1]);
-  object.valor = reader.readDouble(offsets[2]);
+  object.valor = reader.readDoubleOrNull(offsets[2]);
   return object;
 }
 
@@ -94,7 +94,7 @@ P _moedaDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -421,8 +421,24 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'valor',
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'valor',
+      ));
+    });
+  }
+
   QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorEqualTo(
-    double value, {
+    double? value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -435,7 +451,7 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
   }
 
   QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorGreaterThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -450,7 +466,7 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
   }
 
   QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorLessThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -465,8 +481,8 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
   }
 
   QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorBetween(
-    double lower,
-    double upper, {
+    double? lower,
+    double? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     double epsilon = Query.epsilon,
@@ -616,7 +632,7 @@ extension MoedaQueryProperty on QueryBuilder<Moeda, Moeda, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Moeda, double, QQueryOperations> valorProperty() {
+  QueryBuilder<Moeda, double?, QQueryOperations> valorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'valor');
     });
