@@ -17,6 +17,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.blue,
         centerTitle: true,
         title: const Text("Cadastro de indicadores"),
@@ -88,11 +89,15 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   }
 
   Widget _buildAddIndicadorButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      backgroundColor: Colors.blue,
-      shape: const CircleBorder(),
-      child: const Icon(Icons.add, color: Colors.white),
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 
