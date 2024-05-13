@@ -1,6 +1,6 @@
 import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/indicador_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:flutter/material.dart';
 
 class GraficoScreen extends StatefulWidget {
@@ -77,7 +77,7 @@ class GraficoScreenState extends State<GraficoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
-          onPressed: goToIndicador,
+          onPressed: goToMoeda,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue)),
           child: const Text("Cotação", style: TextStyle(color: Colors.white)),
@@ -87,7 +87,7 @@ class GraficoScreenState extends State<GraficoScreen> {
           onPressed: goToCotacao,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text("Indicador", style: TextStyle(color: Colors.white)),
+          child: const Text("Moeda", style: TextStyle(color: Colors.white)),
         )
       ],
     );
@@ -98,8 +98,8 @@ class GraficoScreenState extends State<GraficoScreen> {
         MaterialPageRoute(builder: (context) => const CotacaoScreen()));
   }
 
-  void goToIndicador() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const IndicadorScreen()));
+  void goToMoeda() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
   }
 }

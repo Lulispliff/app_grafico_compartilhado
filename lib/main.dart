@@ -1,6 +1,6 @@
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:flutter/material.dart';
-import 'package:app_grafico_compartilhado/src/screens/indicador_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IndicadorScreen(),
+      home: MoedaScreen(),
     );
   }
 }
