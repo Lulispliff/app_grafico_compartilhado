@@ -16,6 +16,12 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   final textController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    readMoeda();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,11 +72,11 @@ class IndicadorScreenState extends State<IndicadorScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => updateMoeda,
                       icon: const Icon(Icons.create_sharp),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => deleteMoeda,
                       icon: const Icon(Icons.delete),
                     )
                   ],
@@ -115,6 +121,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
               onPressed: () {
                 context.read<MoedaDatabase>().addMoeda(textController.text);
                 Navigator.pop(context);
+                textController.clear();
               },
             ),
           ],
@@ -179,6 +186,34 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   }
 
   void readMoeda() {
-    context.watch<MoedaDatabase>().fetchMoedas();
+    context.read<MoedaDatabase>().fetchMoedas();
+  }
+
+  void updateMoeda(Moeda moeda) {
+    textController.text = moeda.nome;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Update moeda'),
+        content: TextField(
+          controller: textController,
+        ),
+        actions: [
+          MaterialButton(
+              onPressed: () {
+                context
+                    .read<MoedaDatabase>()
+                    .updateMoeda(moeda.id, textController.text);
+                textController.clear();
+                Navigator.pop(context);
+              },
+              child: const Text('Update'))
+        ],
+      ),
+    );
+  }
+
+  void deleteMoeda(int nome) {
+    context.read<MoedaDatabase>().deleteMoeda(nome);
   }
 }
