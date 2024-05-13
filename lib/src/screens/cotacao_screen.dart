@@ -1,6 +1,6 @@
 import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/indicador_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:flutter/material.dart';
 
 class CotacaoScreen extends StatefulWidget {
@@ -97,7 +97,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ),
         const SizedBox(height: 8),
         ElevatedButton(
-          onPressed: goToIndicador,
+          onPressed: goToMoeda,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),
           ),
@@ -115,8 +115,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         MaterialPageRoute(builder: (context) => const GraficoScreen()));
   }
 
-  void goToIndicador() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const IndicadorScreen()));
+  void goToMoeda() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
   }
 }
