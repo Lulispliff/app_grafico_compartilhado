@@ -58,6 +58,20 @@ class GraficoScreenState extends State<GraficoScreen> {
           );
   }
 
+  Widget _buildGerarGraficoButton() {
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: FloatingActionButton(
+        onPressed: () {},
+        tooltip: "Gerar gráfico",
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
+      ),
+    );
+  }
+
   Widget _buildNavigatorButtons() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,20 +90,6 @@ class GraficoScreenState extends State<GraficoScreen> {
           child: const Text("Indicador", style: TextStyle(color: Colors.white)),
         )
       ],
-    );
-  }
-
-  Widget _buildGerarGraficoButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Gerar gráfico",
-        backgroundColor: Colors.blue,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
-      ),
     );
   }
 

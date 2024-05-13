@@ -52,11 +52,40 @@ class IndicadorScreenState extends State<IndicadorScreen> {
             itemCount: indicadores.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(indicadores[index].nome),
-                // Adicione mais informações do indicador, se necessário
+                title: Text(
+                  "Indicador: ${indicadores[index].nome}",
+                  style: const TextStyle(fontSize: 18),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.create_sharp),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.delete),
+                    )
+                  ],
+                ),
               );
             },
           );
+  }
+
+  Widget _buildAddIndicadorButton() {
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: FloatingActionButton(
+        onPressed: () {},
+        tooltip: "Adicionar indicador",
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
   }
 
   Widget _buildNavigatorButtons() {
@@ -85,20 +114,6 @@ class IndicadorScreenState extends State<IndicadorScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildAddIndicadorButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Adicionar indicador",
-        backgroundColor: Colors.blue,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
     );
   }
 

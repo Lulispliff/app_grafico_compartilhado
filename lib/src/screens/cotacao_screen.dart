@@ -50,10 +50,36 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             itemCount: cotacoes.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(cotacoes[index].indicador.nome),
+                title: Text(
+                  "Indicador: ${cotacoes[index].indicador.nome}",
+                  style: const TextStyle(fontSize: 18),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.delete),
+                    )
+                  ],
+                ),
               );
             },
           );
+  }
+
+  Widget _buildAddCotacaoButton() {
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: FloatingActionButton(
+        onPressed: () {},
+        tooltip: "Adicionar cotação",
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
   }
 
   Widget _buildNavigatorButtons() {
@@ -81,20 +107,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           ),
         )
       ],
-    );
-  }
-
-  Widget _buildAddCotacaoButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Adicionar cotação",
-        backgroundColor: Colors.blue,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
     );
   }
 
