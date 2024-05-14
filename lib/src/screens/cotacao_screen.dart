@@ -91,9 +91,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: AppColors.color3,
             title: const Text("Adicionar cotação",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.blue)),
+                style: TextStyle(
+                    color: AppColors.color2,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,12 +159,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             ),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.blue)),
+                            MaterialStateProperty.all(AppColors.color2)),
                     child: const Text("Cancelar",
                         style: TextStyle(color: Colors.white)),
                     onPressed: () {
@@ -171,7 +175,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.blue)),
+                            MaterialStateProperty.all(AppColors.color2)),
                     child: const Text("Salvar",
                         style: TextStyle(color: Colors.white)),
                     onPressed: () {

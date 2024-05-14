@@ -1,4 +1,3 @@
-
 import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
@@ -48,8 +47,8 @@ class GraficoScreenState extends State<GraficoScreen> {
     return cotacoes.isEmpty
         ? const Center(
             child: Text(
-              "Você não tem cotações registradas para criar um gráfico",
-              style: TextStyle(fontSize: 22),
+              "Você não tem cotações registradas para criar um gráfico!",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           )
         : ListView.builder(

@@ -59,8 +59,8 @@ class MoedaScreenState extends State<MoedaScreen> {
     return currentMoeda.isEmpty
         ? const Center(
             child: Text(
-              "Sua lista de moedas está vazia",
-              style: TextStyle(fontSize: 22),
+              "Sua lista de moedas está vazia.",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           )
         : ListView.builder(
@@ -68,27 +68,43 @@ class MoedaScreenState extends State<MoedaScreen> {
             itemBuilder: (context, index) {
               final moeda = currentMoeda[index];
 
-              return ListTile(
-                title: Text(
-                  "Moeda: ${capitalize(moeda.nome)} - ID: ${moeda.id}",
-                  style: const TextStyle(fontSize: 20),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        editMoedaDialog(moeda);
-                      },
-                      icon: const Icon(Icons.create_sharp),
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.color2, // Cor da borda
+                      width: 1.5,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        deleteMoedaDialog(moeda.id);
-                      },
-                      icon: const Icon(Icons.delete),
-                    )
-                  ],
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Moeda: ${capitalize(moeda.nome)} - ID: ${moeda.id}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          editMoedaDialog(moeda);
+                        },
+                        icon: const Icon(
+                          Icons.create_sharp,
+                          color: AppColors.color1,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          deleteMoedaDialog(moeda.id);
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.color1,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
@@ -157,8 +173,12 @@ class MoedaScreenState extends State<MoedaScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: AppColors.color3,
           title: const Text("Adicionar Moeda",
-              style: TextStyle(color: Colors.blue, fontSize: 30)),
+              style: TextStyle(
+                  color: AppColors.color2,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold)),
           content: TextField(
               controller: textController,
               cursorColor: Colors.grey,
@@ -171,11 +191,12 @@ class MoedaScreenState extends State<MoedaScreen> {
                       borderSide: BorderSide(color: Colors.grey)))),
           actions: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.color2)),
                   child: const Text('Cancelar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -185,7 +206,8 @@ class MoedaScreenState extends State<MoedaScreen> {
                 const SizedBox(width: 10),
                 TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.color2)),
                   child: const Text('Salvar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -213,8 +235,12 @@ class MoedaScreenState extends State<MoedaScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: AppColors.color3,
         title: const Text("Editar moeda",
-            style: TextStyle(color: Colors.blue, fontSize: 30)),
+            style: TextStyle(
+                color: AppColors.color2,
+                fontSize: 30,
+                fontWeight: FontWeight.bold)),
         content: TextField(
             controller: textController,
             cursorColor: Colors.grey,
@@ -227,20 +253,24 @@ class MoedaScreenState extends State<MoedaScreen> {
                     borderSide: BorderSide(color: Colors.grey)))),
         actions: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: const Text("Cancelar",
-                      style: TextStyle(color: Colors.white))),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ))),
               const SizedBox(width: 10),
               TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     context
                         .read<MoedaDatabase>()
@@ -267,16 +297,20 @@ class MoedaScreenState extends State<MoedaScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: AppColors.color3,
             title: const Text("Deseja mesmo excluir essa moeda ?",
-                style: TextStyle(color: Colors.blue, fontSize: 28)),
+                style: TextStyle(
+                    color: AppColors.color2,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold)),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.blue)),
+                              MaterialStateProperty.all(AppColors.color2)),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -286,7 +320,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.blue)),
+                              MaterialStateProperty.all(AppColors.color2)),
                       onPressed: () {
                         deleteMoeda(id);
                         Navigator.of(context).pop();
