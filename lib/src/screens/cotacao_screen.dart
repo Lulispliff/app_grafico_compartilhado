@@ -176,19 +176,19 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 backgroundColor: MaterialStateProperty.all(Colors.blue),
               ),
               onPressed: () async {
-                if (selectedMoeda != null) {
-                  String valorText = valorController.text.trim();
-                  double valor = double.tryParse(valorText) ?? 0.0;
+                String valorText = valorController.text.trim();
+                double valor = double.tryParse(valorText) ?? 0.0;
 
-                  String dataText = dataController.text.trim();
-                  DateTime? data = DateFormat('dd/MM/yyyy').parse(dataText);
+                String dataText = dataController.text.trim();
+                DateTime? data = DateFormat('dd/MM/yyyy').parse(dataText);
 
-                  await cotacaoDataBase.addCotacao(
-                    selectedMoeda!.nome,
-                    data,
-                    valor,
-                  );
-                }
+                await cotacaoDataBase.addCotacao(
+                  selectedMoeda!.nome,
+                  data,
+                  valor,
+                );
+
+                Navigator.of(context).pop();
               },
               child: const Text(
                 "Salvar",
