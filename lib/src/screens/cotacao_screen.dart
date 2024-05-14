@@ -5,6 +5,7 @@ import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class CotacaoScreen extends StatefulWidget {
   const CotacaoScreen({super.key});
@@ -44,17 +45,22 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildCotacoesList() {
-    return cotacoes.isEmpty
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentCotacao = moedaDatabase.currentCotacao;
+
+    return currentCotacao.isEmpty
         ? const Center(
             child: Text("Sua lista de cotações está vazia",
                 style: TextStyle(fontSize: 22)),
           )
         : ListView.builder(
-            itemCount: cotacoes.length,
+            itemCount: currentCotacao.length,
             itemBuilder: (context, index) {
+              final cotacao = currentCotacao[index];
+
               return ListTile(
                 title: Text(
-                  "Indicador: ${cotacoes[index].indicador.nome}",
+                  "Moeda: ${cotacao.nome} - Valor: ${cotacao.valor} - Data de registro: ${cotacao.dataHora}",
                   style: const TextStyle(fontSize: 18),
                 ),
                 trailing: Row(
@@ -72,51 +78,108 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   void addCotacaoDialog() {
-    final moedaDatabase = context.watch<MoedaDatabase>();
+    final moedaDatabase = context.read<MoedaDatabase>();
     List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+
+    Moeda? selectedMoeda;
+    DateTime? dataHora;
+    double? valor;
+
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Selecione uma moeda'),
+            title: const Text("Adicionar cotação",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blue)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Selecione uma opção:'),
-                DropdownButton<Moeda>(
+                DropdownButtonFormField<Moeda>(
+                  focusColor: Colors.transparent,
+                  decoration: const InputDecoration(
+                      labelText: "Selecione uma moeda",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                  onChanged: (Moeda? moeda) {
+                    selectedMoeda = moeda;
+                  },
                   items: currentMoeda.map((Moeda moeda) {
                     return DropdownMenuItem<Moeda>(
                       value: moeda,
                       child: Text(moeda.nome),
                     );
                   }).toList(),
-                  onChanged: (Moeda? selectedMoeda) {},
-                  hint: const Text('Selecione uma moeda'),
                 ),
                 const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'asdada',
-                    border: OutlineInputBorder(),
+                TextField(
+                  cursorColor: Colors.grey,
+                  decoration: const InputDecoration(
+                    prefixText: "R\$ ",
+                    prefixStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                    labelText: "Valor da moeda",
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
                   ),
+                  onChanged: (value) {
+                    valor = double.tryParse(value);
+                  },
                 ),
                 const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'dsadsa',
-                    border: OutlineInputBorder(),
-                  ),
+                TextField(
+                  cursorColor: Colors.grey,
+                  decoration: const InputDecoration(
+                      hintText: "dia/mes/ano",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      labelText: "Data de registro",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                  onChanged: (value) {
+                    final dateFormat = DateFormat('dd/MM/yyyy');
+                    dataHora = dateFormat.parse(value);
+                  },
                 ),
               ],
             ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Fechar'),
-              ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blue)),
+                    child: const Text("Cancelar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blue)),
+                    child: const Text("Salvar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      moedaDatabase.addCotacao(
+                          selectedMoeda!.nome, dataHora!, valor!);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
             ],
           );
         });

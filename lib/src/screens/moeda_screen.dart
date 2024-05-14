@@ -52,6 +52,7 @@ class MoedaScreenState extends State<MoedaScreen> {
   Widget _buildMoedasList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
     List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+
     return currentMoeda.isEmpty
         ? const Center(
             child: Text(

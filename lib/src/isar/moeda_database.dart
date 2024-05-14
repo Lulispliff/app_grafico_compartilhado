@@ -19,7 +19,7 @@ class MoedaDatabase extends ChangeNotifier {
   //Lista de Moeda
   final List<Moeda> currentMoeda = [];
 
-  //Create
+  //Create meoda
   Future<void> addMoeda(String nome) async {
     //Cria um novo objeto moeda
     final newMoeda = Moeda()..nome = nome;
@@ -29,7 +29,7 @@ class MoedaDatabase extends ChangeNotifier {
     await fetchMoedas();
   }
 
-  //Read
+  //Read moeda
   Future<void> fetchMoedas() async {
     List<Moeda> fetchedMoedas = await isar.moedas.where().findAll();
     currentMoeda.clear();
@@ -37,7 +37,7 @@ class MoedaDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
-  //Update
+  //Update moeda
   Future<void> updateMoeda(int id, String newMoeda) async {
     final existingMoeda = await isar.moedas.get(id);
     if (existingMoeda != null) {
@@ -47,9 +47,37 @@ class MoedaDatabase extends ChangeNotifier {
     }
   }
 
-  //Delete
+  //Delete moeda
   Future<void> deleteMoeda(int id) async {
     await isar.writeTxn(() => isar.moedas.delete(id));
     await fetchMoedas();
+  }
+
+  //Lista de cotações
+  final List<Moeda> currentCotacao = [];
+
+  //Create cotacao
+  Future<void> addCotacao(String nome, DateTime dataHora, double valor) async {
+    final newCotacao = Moeda()
+      ..nome = nome
+      ..dataHora = dataHora
+      ..valor = valor;
+
+    await isar.writeTxn(() => isar.moedas.put(newCotacao));
+    await fetchCotacoes();
+  }
+
+  //Read cotacao
+  Future<void> fetchCotacoes() async {
+    List<Moeda> fetchCotacoes = await isar.moedas.where().findAll();
+    currentCotacao.clear();
+    currentCotacao.addAll(fetchCotacoes);
+    notifyListeners();
+  }
+
+  //Delete cotacao
+  Future<void> deleteCotacao(int id) async {
+    await isar.writeTxn(() => isar.moedas.delete(id));
+    await fetchCotacoes();
   }
 }
