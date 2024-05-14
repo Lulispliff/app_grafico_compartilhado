@@ -3,7 +3,6 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 class IndicadorScreen extends StatefulWidget {
