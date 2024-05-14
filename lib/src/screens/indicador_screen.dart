@@ -5,14 +5,14 @@ import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MoedaScreen extends StatefulWidget {
-  const MoedaScreen({super.key});
+class IndicadorScreen extends StatefulWidget {
+  const IndicadorScreen({super.key});
 
   @override
-  MoedaScreenState createState() => MoedaScreenState();
+  IndicadorScreenState createState() => IndicadorScreenState();
 }
 
-class MoedaScreenState extends State<MoedaScreen> {
+class IndicadorScreenState extends State<IndicadorScreen> {
   final textController = TextEditingController();
 
   @override
@@ -28,7 +28,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.blue,
         centerTitle: true,
-        title: const Text("Cadastro de moedas"),
+        title: const Text("Cadastro de indicadores"),
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 30),
       ),
       body: Padding(
@@ -37,24 +37,24 @@ class MoedaScreenState extends State<MoedaScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: _buildMoedasList(),
+              child: _buildIndicadoresList(),
             ),
             const SizedBox(height: 16),
             _buildNavigatorButtons(),
           ],
         ),
       ),
-      floatingActionButton: _buildAddMoedaDialog(),
+      floatingActionButton: _buildAddIndicadorButton(),
     );
   }
 
-  Widget _buildMoedasList() {
+  Widget _buildIndicadoresList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
     List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
     return currentMoeda.isEmpty
         ? const Center(
             child: Text(
-              "Sua lista de moedas está vazia",
+              "Sua lista de indicadores está vazia",
               style: TextStyle(fontSize: 22),
             ),
           )
@@ -65,14 +65,14 @@ class MoedaScreenState extends State<MoedaScreen> {
 
               return ListTile(
                 title: Text(
-                  "Moeda: ${moeda.nome} - ID: ${moeda.id}",
+                  "Indicador: ${moeda.nome} - ID: ${moeda.id}",
                   style: const TextStyle(fontSize: 20),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () => updateMoeda,////////alterado por enquanto
+                      onPressed: () => updateMoeda,
                       icon: const Icon(Icons.create_sharp),
                     ),
                     IconButton(
@@ -91,13 +91,13 @@ class MoedaScreenState extends State<MoedaScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Adicionar Moeda",
+          title: const Text("Adicionar Indicador",
               style: TextStyle(color: Colors.blue, fontSize: 30)),
           content: TextField(
               controller: textController,
               cursorColor: Colors.grey,
               decoration: const InputDecoration(
-                  labelText: "Nome da moeda",
+                  labelText: "Nome do indicador",
                   labelStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)),
@@ -130,47 +130,7 @@ class MoedaScreenState extends State<MoedaScreen> {
     );
   }
 
-  void editMoedaDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Editar moeda",
-                style: TextStyle(color: Colors.blue, fontSize: 30)),
-            content: TextField(
-              controller: textController,
-              cursorColor: Colors.grey,
-              decoration: const InputDecoration(
-                  labelText: "Novo nome",
-                  labelStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey))),
-            ),
-            actions: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Cancelar",
-                      style: TextStyle(color: Colors.white))),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Salvar",
-                      style: TextStyle(color: Colors.white))),
-            ],
-          );
-        });
-  }
-
-  Widget _buildAddMoedaDialog() {
+  Widget _buildAddIndicadorButton() {
     return SizedBox(
       height: 50,
       width: 50,
@@ -178,7 +138,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         onPressed: () {
           addMoedaDialog();
         },
-        tooltip: "Adicionar moeda",
+        tooltip: "Adicionar indicador",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),
