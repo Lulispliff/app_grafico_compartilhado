@@ -143,22 +143,22 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
-          onPressed: goToGrafico,
+          onPressed: goToMoeda,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue)),
           child: const Text(
-            "Gráfico",
+            "Moeda",
             style: TextStyle(color: Colors.white),
           ),
         ),
         const SizedBox(height: 8),
         ElevatedButton(
-          onPressed: goToMoeda,
+          onPressed: goToGrafico,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),
           ),
           child: const Text(
-            "Indicador",
+            "Gráfico",
             style: TextStyle(color: Colors.white),
           ),
         )

@@ -2,6 +2,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +66,7 @@ class MoedaScreenState extends State<MoedaScreen> {
 
               return ListTile(
                 title: Text(
-                  "Moeda: ${moeda.nome} - ID: ${moeda.id}",
+                  "Moeda: ${capitalize(moeda.nome)} - ID: ${moeda.id}",
                   style: const TextStyle(fontSize: 20),
                 ),
                 trailing: Row(
@@ -108,26 +109,32 @@ class MoedaScreenState extends State<MoedaScreen> {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)))),
           actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
-              child:
-                  const Text('Cancelar', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
-              child:
-                  const Text('Salvar', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                context.read<MoedaDatabase>().addMoeda(textController.text);
-                Navigator.pop(context);
-                textController.clear();
-              },
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  child: const Text('Cancelar',
+                      style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  child: const Text('Salvar',
+                      style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    context.read<MoedaDatabase>().addMoeda(textController.text);
+                    Navigator.pop(context);
+                    textController.clear();
+                  },
+                ),
+              ],
+            )
           ],
         );
       },
@@ -135,7 +142,7 @@ class MoedaScreenState extends State<MoedaScreen> {
   }
 
   void editMoedaDialog(Moeda moeda) {
-    textController.text = moeda.nome;
+    textController.text = capitalize(moeda.nome);
 
     showDialog(
       context: context,
@@ -153,26 +160,32 @@ class MoedaScreenState extends State<MoedaScreen> {
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)))),
         actions: [
-          ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancelar",
-                  style: TextStyle(color: Colors.white))),
-          ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue)),
-              onPressed: () {
-                context
-                    .read<MoedaDatabase>()
-                    .updateMoeda(moeda.id, textController.text);
-                textController.clear();
-                Navigator.pop(context);
-              },
-              child:
-                  const Text("Salvar", style: TextStyle(color: Colors.white)))
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancelar",
+                      style: TextStyle(color: Colors.white))),
+              const SizedBox(width: 10),
+              TextButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () {
+                    context
+                        .read<MoedaDatabase>()
+                        .updateMoeda(moeda.id, textController.text);
+                    textController.clear();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Salvar",
+                      style: TextStyle(color: Colors.white)))
+            ],
+          )
         ],
       ),
     );
@@ -186,23 +199,31 @@ class MoedaScreenState extends State<MoedaScreen> {
             title: const Text("Deseja mesmo excluir essa moeda ?",
                 style: TextStyle(color: Colors.blue, fontSize: 28)),
             actions: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancelar",
-                      style: TextStyle(color: Colors.white))),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  onPressed: () {
-                    deleteMoeda(id);
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Confirmar",
-                      style: TextStyle(color: Colors.white)))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancelar",
+                          style: TextStyle(color: Colors.white))),
+                  const SizedBox(width: 10),
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue)),
+                      onPressed: () {
+                        deleteMoeda(id);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Confirmar",
+                          style: TextStyle(color: Colors.white)))
+                ],
+              )
             ],
           );
         });
@@ -245,7 +266,7 @@ class MoedaScreenState extends State<MoedaScreen> {
             backgroundColor: MaterialStateProperty.all(Colors.blue),
           ),
           child: const Text(
-            "Cotações",
+            "Cotação",
             style: TextStyle(color: Colors.white),
           ),
         ),

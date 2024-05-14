@@ -80,14 +80,14 @@ class GraficoScreenState extends State<GraficoScreen> {
           onPressed: goToMoeda,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text("Cotação", style: TextStyle(color: Colors.white)),
+          child: const Text("Moeda", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 8),
         ElevatedButton(
           onPressed: goToCotacao,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text("Moeda", style: TextStyle(color: Colors.white)),
+          child: const Text("Cotação", style: TextStyle(color: Colors.white)),
         )
       ],
     );
