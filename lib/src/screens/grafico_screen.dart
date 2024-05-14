@@ -1,6 +1,7 @@
 import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 
 class GraficoScreen extends StatefulWidget {
@@ -16,12 +17,14 @@ class GraficoScreenState extends State<GraficoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.color3,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.color1,
         centerTitle: true,
         title: const Text("Gráfico de cotações"),
-        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 30),
+        titleTextStyle: const TextStyle(
+            color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -65,7 +68,7 @@ class GraficoScreenState extends State<GraficoScreen> {
       child: FloatingActionButton(
         onPressed: () {},
         tooltip: "Gerar gráfico",
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.color2,
         shape: const CircleBorder(),
         child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
       ),
@@ -77,18 +80,37 @@ class GraficoScreenState extends State<GraficoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
-          onPressed: goToMoeda,
+          onPressed: goToGrafico,
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text("Moeda", style: TextStyle(color: Colors.white)),
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Gráfico",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         const SizedBox(height: 8),
         ElevatedButton(
           onPressed: goToCotacao,
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text("Cotação", style: TextStyle(color: Colors.white)),
-        )
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Cotação",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToMoeda,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Moedas",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
   }
@@ -101,5 +123,10 @@ class GraficoScreenState extends State<GraficoScreen> {
   void goToMoeda() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
+  }
+
+  void goToGrafico() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GraficoScreen()));
   }
 }

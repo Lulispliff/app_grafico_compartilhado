@@ -3,6 +3,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -20,12 +21,14 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.color3,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.color1,
         centerTitle: true,
         title: const Text("Cadastro de cotações"),
-        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 30),
+        titleTextStyle: const TextStyle(
+            color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -194,7 +197,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           addCotacaoDialog();
         },
         tooltip: "Adicionar cotação",
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.color2,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -206,35 +209,53 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
-          onPressed: goToMoeda,
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          child: const Text(
-            "Moeda",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
           onPressed: goToGrafico,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blue),
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Gráfico",
             style: TextStyle(color: Colors.white),
           ),
-        )
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToCotacao,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Cotação",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToMoedas,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Moedas",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
   }
 
+  // BOTOES DE NAVEGAÇAO
   void goToGrafico() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const GraficoScreen()));
   }
 
-  void goToMoeda() {
+  void goToCotacao() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+  }
+
+  void goToMoedas() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
   }
