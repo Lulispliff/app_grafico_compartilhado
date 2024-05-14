@@ -66,7 +66,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: editMoedaDialog,
                       icon: const Icon(Icons.create_sharp),
                     ),
                     IconButton(
@@ -121,6 +121,46 @@ class MoedaScreenState extends State<MoedaScreen> {
         );
       },
     );
+  }
+
+  void editMoedaDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Editar moeda",
+                style: TextStyle(color: Colors.blue, fontSize: 30)),
+            content: TextField(
+              controller: textController,
+              cursorColor: Colors.grey,
+              decoration: const InputDecoration(
+                  labelText: "Novo nome",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey))),
+            ),
+            actions: [
+              ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancelar",
+                      style: TextStyle(color: Colors.white))),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Salvar",
+                      style: TextStyle(color: Colors.white))),
+            ],
+          );
+        });
   }
 
   Widget _buildAddMoedaDialog() {
