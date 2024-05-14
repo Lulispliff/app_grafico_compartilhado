@@ -52,32 +52,4 @@ class MoedaDatabase extends ChangeNotifier {
     await isar.writeTxn(() => isar.moedas.delete(id));
     await fetchMoedas();
   }
-
-  //Lista de cotações
-  final List<Moeda> currentCotacao = [];
-
-  //Create cotacao
-  Future<void> addCotacao(String nome, DateTime dataHora, double valor) async {
-    final newCotacao = Moeda()
-      ..nome = nome
-      ..dataHora = dataHora
-      ..valor = valor;
-
-    await isar.writeTxn(() => isar.moedas.put(newCotacao));
-    await fetchCotacoes();
-  }
-
-  //Read cotacao
-  Future<void> fetchCotacoes() async {
-    List<Moeda> fetchCotacoes = await isar.moedas.where().findAll();
-    currentCotacao.clear();
-    currentCotacao.addAll(fetchCotacoes);
-    notifyListeners();
-  }
-
-  //Delete cotacao
-  Future<void> deleteCotacao(int id) async {
-    await isar.writeTxn(() => isar.moedas.delete(id));
-    await fetchCotacoes();
-  }
 }

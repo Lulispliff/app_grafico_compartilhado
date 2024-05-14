@@ -1,10 +1,19 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 //CRUD
 class CotacaoDatabase extends ChangeNotifier {
   static late Isar isar;
+
+  static Future<void> initialize() async {
+    final dir = await getApplicationDocumentsDirectory();
+    isar = await Isar.open(
+      [CotacoessSchema],
+      directory: dir.path,
+    );
+  }
 
   //Lista de cotações
   final List<Cotacoess> currentCotacao = [];

@@ -47,7 +47,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildCotacoesList() {
-    final cotacaoDataBase = Provider.of<CotacaoDatabase>(context);
+    final cotacaoDataBase = context.watch<CotacaoDatabase>();
     List<Cotacoess> currentCotacao = cotacaoDataBase.currentCotacao;
 
     return currentCotacao.isEmpty
@@ -80,111 +80,125 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   void addCotacaoDialog() {
-    final moedaDatabase = context.read<MoedaDatabase>();
-    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+    final moedaDataBase = context.read<MoedaDatabase>();
+    final cotacaoDataBase = context.read<CotacaoDatabase>();
 
     Moeda? selectedMoeda;
-    DateTime? dataHora;
-    double? valor;
+    TextEditingController valorController = TextEditingController();
+    TextEditingController dataController = TextEditingController();
 
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Adicionar cotação",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.blue)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DropdownButtonFormField<Moeda>(
-                  focusColor: Colors.transparent,
-                  decoration: const InputDecoration(
-                      labelText: "Selecione uma moeda",
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            "Cadastro de cotações",
+            style: TextStyle(fontSize: 30),
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<Moeda>(
+                    items: moedaDataBase.currentMoeda
+                        .map((moeda) => DropdownMenuItem<Moeda>(
+                              value: moeda,
+                              child: Text(moeda.nome),
+                            ))
+                        .toList(),
+                    onChanged: (Moeda? value) {
+                      setState(() {
+                        selectedMoeda = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: "Selecione a moeda",
                       labelStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                  onChanged: (Moeda? moeda) {
-                    selectedMoeda = moeda;
-                  },
-                  items: currentMoeda.map((Moeda moeda) {
-                    return DropdownMenuItem<Moeda>(
-                      value: moeda,
-                      child: Text(moeda.nome),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                    prefixText: "R\$ ",
-                    prefixStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                    labelText: "Valor da moeda",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
                   ),
-                  onChanged: (value) {
-                    valor = double.tryParse(value);
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                      hintText: "dia/mes/ano",
-                      hintStyle: TextStyle(color: Colors.grey),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: valorController,
+                    cursorColor: Colors.grey,
+                    decoration: const InputDecoration(
+                      labelText: "Valor da cotação",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: dataController,
+                    cursorColor: Colors.grey,
+                    decoration: const InputDecoration(
                       labelText: "Data de registro",
                       labelStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                  onChanged: (value) {
-                    final dateFormat = DateFormat('dd/MM/yyyy');
-                    dataHora = dateFormat.parse(value);
-                  },
-                ),
-              ],
-            ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blue)),
-                    child: const Text("Cancelar",
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blue)),
-                    child: const Text("Salvar",
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      moedaDatabase.addCotacao(
-                          selectedMoeda!.nome, dataHora!, valor!);
-                      Navigator.of(context).pop();
-                    },
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
                   ),
                 ],
-              )
-            ],
-          );
-        });
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Cancelar",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 10),
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
+              onPressed: () async {
+                if (selectedMoeda != null) {
+                  String valorText = valorController.text.trim();
+                  double valor = double.tryParse(valorText) ?? 0.0;
+
+                  String dataText = dataController.text.trim();
+                  DateTime? data = DateFormat('dd/MM/yyyy').parse(dataText);
+
+                  await cotacaoDataBase.addCotacao(
+                    selectedMoeda!.nome,
+                    data,
+                    valor,
+                  );
+                }
+              },
+              child: const Text(
+                "Salvar",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildAddCotacaoButton() {
