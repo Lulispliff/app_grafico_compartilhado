@@ -72,11 +72,12 @@ class MoedaScreenState extends State<MoedaScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () => updateMoeda,////////alterado por enquanto
+                      onPressed: () =>
+                          updateMoeda, ////////alterado por enquanto
                       icon: const Icon(Icons.create_sharp),
                     ),
                     IconButton(
-                      onPressed: () => deleteMoeda,
+                      onPressed: () => deleteMoeda(moeda.id),
                       icon: const Icon(Icons.delete),
                     )
                   ],
@@ -253,7 +254,7 @@ class MoedaScreenState extends State<MoedaScreen> {
     );
   }
 
-  void deleteMoeda(int nome) {
-    context.read<MoedaDatabase>().deleteMoeda(nome);
+  void deleteMoeda(int id) {
+    context.read<MoedaDatabase>().deleteMoeda(id);
   }
 }
