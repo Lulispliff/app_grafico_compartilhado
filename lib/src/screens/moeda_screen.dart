@@ -72,7 +72,9 @@ class MoedaScreenState extends State<MoedaScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () => updateMoeda,////////alterado por enquanto
+                      onPressed: () {
+                        updateMoeda(moeda);
+                      },
                       icon: const Icon(Icons.create_sharp),
                     ),
                     IconButton(
