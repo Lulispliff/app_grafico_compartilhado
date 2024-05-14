@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:flutter/material.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
@@ -9,7 +10,10 @@ void main() async {
 
   runApp(ChangeNotifierProvider(
     create: (context) => MoedaDatabase(),
-    child: const MyApp(),
+    child: ChangeNotifierProvider<CotacaoDatabase>(
+      create: (context) => CotacaoDatabase(),
+      child: const MyApp(),
+    ),
   ));
 }
 

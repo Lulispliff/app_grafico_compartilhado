@@ -1,6 +1,7 @@
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
@@ -16,8 +17,6 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +47,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildCotacoesList() {
-    final moedaDatabase = context.watch<MoedaDatabase>();
-    List<Moeda> currentCotacao = moedaDatabase.currentCotacao;
+    final cotacaoDataBase = Provider.of<CotacaoDatabase>(context);
+    List<Cotacoess> currentCotacao = cotacaoDataBase.currentCotacao;
 
     return currentCotacao.isEmpty
         ? const Center(
