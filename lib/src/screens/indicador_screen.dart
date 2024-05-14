@@ -45,7 +45,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
           ],
         ),
       ),
-      floatingActionButton: _buildAddIndicadorButton(),
+      floatingActionButton: _buildAddMoedaButton(),
     );
   }
 
@@ -55,7 +55,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
     return currentMoeda.isEmpty
         ? const Center(
             child: Text(
-              "Sua lista de indicadores está vazia",
+              "Sua lista de moedas está vazia",
               style: TextStyle(fontSize: 22),
             ),
           )
@@ -66,7 +66,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
 
               return ListTile(
                 title: Text(
-                  "Indicador: ${moeda.nome} - ID: ${moeda.id}",
+                  "Moeda: ${moeda.nome} - ID: ${moeda.id}",
                   style: const TextStyle(fontSize: 20),
                 ),
                 trailing: Row(
@@ -92,13 +92,13 @@ class IndicadorScreenState extends State<IndicadorScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Adicionar Indicador",
+          title: const Text("Adicionar moeda",
               style: TextStyle(color: Colors.blue, fontSize: 30)),
           content: TextField(
               controller: textController,
               cursorColor: Colors.grey,
               decoration: const InputDecoration(
-                  labelText: "Nome do indicador",
+                  labelText: "Nome da moeda",
                   labelStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)),
@@ -131,7 +131,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
     );
   }
 
-  Widget _buildAddIndicadorButton() {
+  Widget _buildAddMoedaButton() {
     return SizedBox(
       height: 50,
       width: 50,
@@ -139,7 +139,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
         onPressed: () {
           addMoedaDialog();
         },
-        tooltip: "Adicionar indicador",
+        tooltip: "Adicionar moeda",
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white),

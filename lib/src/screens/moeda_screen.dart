@@ -245,7 +245,7 @@ class MoedaScreenState extends State<MoedaScreen> {
             backgroundColor: MaterialStateProperty.all(Colors.blue),
           ),
           child: const Text(
-            "Cotações",
+            "Cotação",
             style: TextStyle(color: Colors.white),
           ),
         ),
