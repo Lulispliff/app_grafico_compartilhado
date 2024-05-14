@@ -3,6 +3,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 
 class IndicadorScreen extends StatefulWidget {
@@ -213,7 +214,7 @@ class IndicadorScreenState extends State<IndicadorScreen> {
     );
   }
 
-  void deleteMoeda(int nome) {
-    context.read<MoedaDatabase>().deleteMoeda(nome);
+  void deleteMoeda(int id) {
+    context.read<MoedaDatabase>().deleteMoeda(id);
   }
 }
