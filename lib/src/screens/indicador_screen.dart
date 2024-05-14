@@ -2,6 +2,8 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -86,7 +88,64 @@ class IndicadorScreenState extends State<IndicadorScreen> {
           );
   }
 
+  Widget _buildAddIndicadorButton() {
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: FloatingActionButton(
+        onPressed: () {
+          addMoedaDialog();
+        },
+        tooltip: "Adicionar indicador",
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildNavigatorButtons() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ElevatedButton(
+          onPressed: goToGrafico,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Gráfico",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToCotacao,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Cotação",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: goToMoedas,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+          ),
+          child: const Text(
+            "Cotação",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
   void addMoedaDialog() {
+    // CREATE
     showDialog(
       context: context,
       builder: (context) {
@@ -130,66 +189,13 @@ class IndicadorScreenState extends State<IndicadorScreen> {
     );
   }
 
-  Widget _buildAddIndicadorButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {
-          addMoedaDialog();
-        },
-        tooltip: "Adicionar indicador",
-        backgroundColor: Colors.blue,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-    );
-  }
-
-  Widget _buildNavigatorButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ElevatedButton(
-          onPressed: goToGrafico,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blue),
-          ),
-          child: const Text(
-            "Gráfico",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToCotacao,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blue),
-          ),
-          child: const Text(
-            "Cotações",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void goToGrafico() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
-  }
-
-  void goToCotacao() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
-  }
-
   void readMoeda() {
+    //READ
     context.read<MoedaDatabase>().fetchMoedas();
   }
 
   void updateMoeda(Moeda moeda) {
+    // UPDATE
     textController.text = moeda.nome;
     showDialog(
       context: context,
@@ -214,6 +220,24 @@ class IndicadorScreenState extends State<IndicadorScreen> {
   }
 
   void deleteMoeda(int id) {
+    // DELETE
     context.read<MoedaDatabase>().deleteMoeda(id);
+  }
+
+  //BOTOES DE NAVEGAÇAO
+
+  void goToGrafico() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GraficoScreen()));
+  }
+
+  void goToCotacao() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+  }
+
+  void goToMoedas() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
   }
 }
