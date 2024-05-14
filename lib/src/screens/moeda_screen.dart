@@ -2,6 +2,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +66,7 @@ class MoedaScreenState extends State<MoedaScreen> {
 
               return ListTile(
                 title: Text(
-                  "Moeda: ${moeda.nome} - ID: ${moeda.id}",
+                  "Moeda: ${capitalize(moeda.nome)} - ID: ${moeda.id}",
                   style: const TextStyle(fontSize: 20),
                 ),
                 trailing: Row(
