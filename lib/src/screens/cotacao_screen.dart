@@ -88,6 +88,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     TextEditingController dataController = TextEditingController();
 
     showDialog(
+<<<<<<< HEAD
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -114,6 +115,26 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     },
                     decoration: const InputDecoration(
                       labelText: "Selecione a moeda",
+=======
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color3,
+            title: const Text("Adicionar cotação",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: AppColors.color2,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropdownButtonFormField<Moeda>(
+                  focusColor: Colors.transparent,
+                  decoration: const InputDecoration(
+                      labelText: "Selecione uma moeda",
+>>>>>>> 1d0f881fd98a88706332d9bd785236d19bf859b3
                       labelStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
@@ -149,9 +170,46 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: OutlineInputBorder(
+<<<<<<< HEAD
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                     ),
+=======
+                          borderSide: BorderSide(color: Colors.grey))),
+                  onChanged: (value) {
+                    final dateFormat = DateFormat('dd/MM/yyyy');
+                    dataHora = dateFormat.parse(value);
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.color2)),
+                    child: const Text("Cancelar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.color2)),
+                    child: const Text("Salvar",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      moedaDatabase.addCotacao(
+                          selectedMoeda!.nome, dataHora!, valor!);
+                      Navigator.of(context).pop();
+                    },
+>>>>>>> 1d0f881fd98a88706332d9bd785236d19bf859b3
                   ),
                 ],
               );
