@@ -144,24 +144,29 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   Widget _buildGerarGraficoButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {
-          _showGrafico(context);
-        },
-        tooltip: "Gerar gráfico",
-        backgroundColor: AppColors.color2,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 110,
+          width: 50,
+          child: FloatingActionButton(
+            onPressed: () {
+              _showGrafico(context);
+            },
+            tooltip: "Gerar gráfico",
+            backgroundColor: AppColors.color2,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildNavigatorButtons() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: goToGrafico,
