@@ -157,7 +157,7 @@ class GraficoScreenState extends State<GraficoScreen> {
             tooltip: "Gerar gráfico",
             backgroundColor: AppColors.color2,
             shape: const CircleBorder(),
-            child: const Icon(Icons.bar_chart_sharp, color: Colors.white),
+            child: const Icon(Icons.bar_chart_sharp, color: AppColors.color3),
           ),
         ),
       ],

@@ -293,7 +293,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             tooltip: "Adicionar cotação",
             backgroundColor: AppColors.color2,
             shape: const CircleBorder(),
-            child: const Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: AppColors.color3),
           ),
         ),
       ],
