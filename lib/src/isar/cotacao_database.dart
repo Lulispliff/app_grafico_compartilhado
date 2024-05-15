@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/isar_service.dart';
@@ -15,11 +16,13 @@ class CotacaoDatabase extends ChangeNotifier {
   }
 
   // Método para adicionar uma nova cotação
-  Future<void> addCotacao(String nome, DateTime dataHora, double valor) async {
+  Future<void> addCotacao(
+      String nome, DateTime dataHora, double valor, Moeda moeda) async {
     final newCotacao = Cotacoess()
       ..nome = nome
       ..dataHora = dataHora
-      ..valor = valor;
+      ..valor = valor
+      ..moeda = moeda;
 
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));

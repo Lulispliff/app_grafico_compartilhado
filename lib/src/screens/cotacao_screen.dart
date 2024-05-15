@@ -58,8 +58,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
     return currentCotacao.isEmpty
         ? const Center(
-            child: Text("Sua lista de cotações está vazia",
-                style: TextStyle(fontSize: 22)),
+            child: Text("Sua lista de cotações está vazia.",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           )
         : ListView.builder(
             itemCount: currentCotacao.length,
@@ -206,14 +206,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 String dataText = dataController.text.trim();
                 DateTime? data = dateFormat().parse(dataText);
 
-                await cotacaoDataBase.addCotacao(
-                  selectedMoeda!.nome,
-                  data,
-                  valor,
-                );
+                if (selectedMoeda != null) {
+                  await cotacaoDataBase.addCotacao(
+                      selectedMoeda!.nome, data, valor, selectedMoeda!);
 
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pop();
+                  Navigator.of(context)
+                      .pop(); // Fechar o diálogo após adicionar
+                }
               },
               child: const Text(
                 "Salvar",
