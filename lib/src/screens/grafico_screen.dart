@@ -74,7 +74,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                    "Moeda: ${capitalize(cotacao.nome)} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
                     style: const TextStyle(fontSize: 18),
                   ),
                   trailing: Checkbox(

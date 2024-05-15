@@ -19,19 +19,21 @@ class CotacoesChart extends StatelessWidget {
         centerTitle: true,
         title: const Text("Gráfico de cotações"),
         titleTextStyle: const TextStyle(
-            color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
+          color: AppColors.color2,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: LineChart(
-                _buildLineChartData(valores),
-              ),
+        padding: const EdgeInsets.fromLTRB(50, 10, 50, 100),
+        child: Center(
+          child: SizedBox(
+            height: 1000, // Altura do gráfico
+            width: 2000, // Largura do gráfico
+            child: LineChart(
+              _buildLineChartData(valores),
             ),
-          ],
+          ),
         ),
       ),
     );

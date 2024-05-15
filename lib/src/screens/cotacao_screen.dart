@@ -74,7 +74,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                    "Moeda: ${capitalize(cotacao.nome)} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
                     style: const TextStyle(fontSize: 18),
                   ),
                   trailing: Row(
@@ -135,7 +135,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   items: moedaDataBase.currentMoeda
                       .map((moeda) => DropdownMenuItem<Moeda>(
                             value: moeda,
-                            child: Text(moeda.nome),
+                            child: Text(capitalize(moeda.nome)),
                           ))
                       .toList(),
                   onChanged: (Moeda? value) {
