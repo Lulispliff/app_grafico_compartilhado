@@ -210,8 +210,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, valor, selectedMoeda!);
 
-                  Navigator.of(context)
-                      .pop(); // Fechar o diálogo após adicionar
+                  Navigator.of(context).pop();
                 }
               },
               child: const Text(
@@ -301,7 +300,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   Widget _buildNavigatorButtons() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
         ElevatedButton(
           onPressed: goToGrafico,
