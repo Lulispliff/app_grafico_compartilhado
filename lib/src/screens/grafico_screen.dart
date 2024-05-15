@@ -1,7 +1,9 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/chart_widget.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,19 @@ class GraficoScreen extends StatefulWidget {
 
 class GraficoScreenState extends State<GraficoScreen> {
   Map<int, bool> selectedCotacoes = {};
+  List<Cotacoess> cotacoes = [];
+
+  Map<Moeda, List<Cotacoess>> grupoCotacoesMoeda(List<Cotacoess> cotacoes) {
+    Map<Moeda, List<Cotacoess>> grupoMoeda = {};
+
+    for (var cotacao in cotacoes) {
+      if (!grupoMoeda.containsKey(cotacao.moeda)) {
+        grupoMoeda[cotacao.moeda] = [];
+      }
+      grupoMoeda[cotacao.moeda]!.add(cotacao);
+    }
+    return grupoMoeda;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +106,50 @@ class GraficoScreenState extends State<GraficoScreen> {
           );
   }
 
+  void _showGrafico(BuildContext context) {
+    final selectedCotacoes =
+        cotacoes.where((Cotacoess) => Cotacoess.isSelected).toList();
+
+    if (selectedCotacoes.isEmpty) {
+      return;
+    }
+
+    Map<Moeda, List<Cotacoess>> groupedCotacoes =
+        grupoCotacoesMoeda(selectedCotacoes);
+    final selectedMoedas =
+        selectedCotacoes.map((Cotacoess) => Cotacoess.moeda).toSet().toList();
+
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text("Gráfico - ${selectedMoedas[0].nome}"),
+            content: SizedBox(
+              width: 1600,
+              height: 800,
+              child: GraficoCotacoes(
+                  cotacoes: cotacoes, groupedCotacaoes: groupedCotacoes),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
+              )
+            ],
+          );
+        });
+  }
+
   Widget _buildGerarGraficoButton() {
     return SizedBox(
       height: 50,
       width: 50,
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _showGrafico(context);
+        },
         tooltip: "Gerar gráfico",
         backgroundColor: AppColors.color2,
         shape: const CircleBorder(),

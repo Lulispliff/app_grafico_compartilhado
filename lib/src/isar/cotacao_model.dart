@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:isar/isar.dart';
 part 'cotacao_model.g.dart';
 
