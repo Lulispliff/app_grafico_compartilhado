@@ -70,7 +70,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        deleteCotacaoDialog(cotacao.id);
+                      },
                       icon: const Icon(Icons.delete),
                     )
                   ],
@@ -183,7 +185,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 double valor = double.tryParse(valorText) ?? 0.0;
 
                 String dataText = dataController.text.trim();
-                DateTime? data = DateFormat('dd/MM/yyyy').parse(dataText);
+                DateTime? data = dateFormat().parse(dataText);
 
                 await cotacaoDataBase.addCotacao(
                   selectedMoeda!.nome,
@@ -202,6 +204,43 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         );
       },
     );
+  }
+
+  //DELETE
+  void deleteCotacao(int id) {
+    context.read<CotacaoDatabase>().deleteCotacao(id);
+  }
+
+  void deleteCotacaoDialog(int id) {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: const Text(
+                "Você tem certeza que deseja excluir essa cotação ?",
+                style: TextStyle(fontSize: 30)),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Cancelar"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      deleteCotacao(id);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Confirmar"),
+                  )
+                ],
+              )
+            ],
+          );
+        });
   }
 
   Widget _buildAddCotacaoButton() {
