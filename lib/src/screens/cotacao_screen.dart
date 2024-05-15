@@ -210,8 +210,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, valor, selectedMoeda!);
 
-                  Navigator.of(context)
-                      .pop(); // Fechar o diálogo após adicionar
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
                 }
               },
               child: const Text(
