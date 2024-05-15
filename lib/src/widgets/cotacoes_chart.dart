@@ -25,7 +25,7 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 60, 50, 100),
+        padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
         child: Center(
           child: SizedBox(
             height: 1000, // Altura do gráfico
@@ -92,10 +92,6 @@ class CotacoesChart extends StatelessWidget {
       maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: List.generate(
-            valores.length,
-            (index) => FlSpot(index.toDouble(), valores[index]),
-          ),
           isCurved: true,
           color: Colors.blue, // Cor da linha do gráfico
           barWidth: 5,
@@ -103,6 +99,10 @@ class CotacoesChart extends StatelessWidget {
           belowBarData: BarAreaData(
             show: true,
             color: Colors.blue.withOpacity(0.3), // Cor da área abaixo da linha
+          ),
+          spots: List.generate(
+            valores.length,
+            (index) => FlSpot(index.toDouble(), valores[index]),
           ),
         ),
       ],
