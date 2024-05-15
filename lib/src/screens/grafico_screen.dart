@@ -1,6 +1,7 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
+import 'package:app_grafico_compartilhado/src/screens/graficocotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
@@ -97,7 +98,32 @@ class GraficoScreenState extends State<GraficoScreen> {
           height: 110,
           width: 50,
           child: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              final cotacaoDataBase = context.read<CotacaoDatabase>();
+              List<Cotacoess> selectedCotacoes =
+                  cotacaoDataBase.currentCotacao.where((cotacao) {
+                return cotacao.isSelected;
+              }).toList();
+
+              if (selectedCotacoes.isNotEmpty) {
+                // Gerar gráfico com os dados das cotações selecionadas
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GraficoCotacoesScreen(
+                      cotacoesSelecionadas: selectedCotacoes,
+                    ),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                        'Selecione pelo menos uma cotação para gerar o gráfico.'),
+                  ),
+                );
+              }
+            },
             tooltip: "Gerar gráfico",
             backgroundColor: AppColors.color2,
             shape: const CircleBorder(),
