@@ -5,6 +5,7 @@ import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MoedaScreen extends StatefulWidget {
@@ -112,24 +113,29 @@ class MoedaScreenState extends State<MoedaScreen> {
   }
 
   Widget _buildAddMoedaDialog() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {
-          addMoedaDialog();
-        },
-        tooltip: "Adicionar moeda",
-        backgroundColor: AppColors.color2,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 110,
+          width: 50,
+          child: FloatingActionButton(
+            onPressed: () {
+              addMoedaDialog();
+            },
+            tooltip: "Adicionar moeda",
+            backgroundColor: AppColors.color2,
+            shape: const CircleBorder(),
+            child: const Icon(FontAwesomeIcons.coins, color: AppColors.color3),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildNavigatorButtons() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: goToGrafico,

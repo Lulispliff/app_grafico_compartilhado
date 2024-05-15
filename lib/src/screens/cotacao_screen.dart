@@ -279,24 +279,29 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildAddCotacaoButton() {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: FloatingActionButton(
-        onPressed: () {
-          addCotacaoDialog();
-        },
-        tooltip: "Adicionar cotação",
-        backgroundColor: AppColors.color2,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 110,
+          width: 50,
+          child: FloatingActionButton(
+            onPressed: () {
+              addCotacaoDialog();
+            },
+            tooltip: "Adicionar cotação",
+            backgroundColor: AppColors.color2,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add, color: AppColors.color3),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildNavigatorButtons() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: goToGrafico,
