@@ -66,7 +66,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     bottom: BorderSide(color: AppColors.color2, width: 1.5),
                   ),
                 ),
-<<<<<<< HEAD
                 child: ListTile(
                   title: Text(
                     "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
@@ -83,21 +82,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       )
                     ],
                   ),
-=======
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        deleteCotacaoDialog(cotacao.id);
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: AppColors.color1,
-                      ),
-                    )
-                  ],
->>>>>>> 7a2c685adb8281d170ab18d012dc179f770dbfa5
                 ),
               );
             },
@@ -220,11 +204,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 );
 
                 // ignore: use_build_context_synchronously
-<<<<<<< HEAD
+
                 Navigator.of(context).pop();
-=======
-                Navigator.pop(context);
->>>>>>> 7a2c685adb8281d170ab18d012dc179f770dbfa5
               },
               child: const Text(
                 "Salvar",
