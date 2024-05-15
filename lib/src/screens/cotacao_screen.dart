@@ -66,6 +66,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     bottom: BorderSide(color: AppColors.color2, width: 1.5),
                   ),
                 ),
+<<<<<<< HEAD
                 child: ListTile(
                   title: Text(
                     "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
@@ -82,6 +83,21 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       )
                     ],
                   ),
+=======
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        deleteCotacaoDialog(cotacao.id);
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: AppColors.color1,
+                      ),
+                    )
+                  ],
+>>>>>>> 7a2c685adb8281d170ab18d012dc179f770dbfa5
                 ),
               );
             },
@@ -100,9 +116,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: AppColors.color3,
           title: const Text(
             "Cadastro de cotações",
-            style: TextStyle(fontSize: 30),
+            style: TextStyle(
+                fontSize: 30,
+                color: AppColors.color2,
+                fontWeight: FontWeight.bold),
           ),
           content: StatefulBuilder(builder: (context, setState) {
             return Column(
@@ -171,7 +191,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: MaterialStateProperty.all(AppColors.color2),
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -184,7 +204,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             const SizedBox(width: 10),
             TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: MaterialStateProperty.all(AppColors.color2),
               ),
               onPressed: () async {
                 String valorText = valorController.text.trim();
@@ -200,7 +220,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 );
 
                 // ignore: use_build_context_synchronously
+<<<<<<< HEAD
                 Navigator.of(context).pop();
+=======
+                Navigator.pop(context);
+>>>>>>> 7a2c685adb8281d170ab18d012dc179f770dbfa5
               },
               child: const Text(
                 "Salvar",
@@ -223,25 +247,41 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         context: context,
         builder: (builder) {
           return AlertDialog(
+            backgroundColor: AppColors.color3,
             title: const Text(
                 "Você tem certeza que deseja excluir essa cotação ?",
-                style: TextStyle(fontSize: 30)),
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.color2)),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.color2)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text("Cancelar"),
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.color2)),
                     onPressed: () {
                       deleteCotacao(id);
                       Navigator.of(context).pop();
                     },
-                    child: const Text("Confirmar"),
+                    child: const Text(
+                      "Confirmar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   )
                 ],
               )
