@@ -210,7 +210,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, valor, selectedMoeda!);
 
-                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 }
               },
@@ -301,7 +300,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   Widget _buildNavigatorButtons() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
         ElevatedButton(
           onPressed: goToGrafico,
