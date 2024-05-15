@@ -1,15 +1,17 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/graficocotacao.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GraficoScreen extends StatefulWidget {
-  const GraficoScreen({super.key});
+  const GraficoScreen({
+    super.key,
+  });
 
   @override
   GraficoScreenState createState() => GraficoScreenState();
@@ -106,22 +108,9 @@ class GraficoScreenState extends State<GraficoScreen> {
               }).toList();
 
               if (selectedCotacoes.isNotEmpty) {
-                // Gerar gráfico com os dados das cotações selecionadas
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GraficoCotacoesScreen(
-                      cotacoesSelecionadas: selectedCotacoes,
-                    ),
-                  ),
-                );
+                _showCotacoesChart(selectedCotacoes);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                        'Selecione pelo menos uma cotação para gerar o gráfico.'),
-                  ),
-                );
+                _erroGraficoDialog();
               }
             },
             tooltip: "Gerar gráfico",
@@ -172,6 +161,47 @@ class GraficoScreenState extends State<GraficoScreen> {
         ),
       ],
     );
+  }
+
+  void _showCotacoesChart(List<Cotacoess> cotacoesSelecionadas) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                CotacoesChart(cotacoes: cotacoesSelecionadas)));
+  }
+
+  void _erroGraficoDialog() {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: const Text("Selecione alguma cotação para gerar o gráfico",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.color2)),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.color2)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
   }
 
   void goToCotacao() {
