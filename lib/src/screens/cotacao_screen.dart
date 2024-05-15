@@ -18,6 +18,12 @@ class CotacaoScreen extends StatefulWidget {
 
 class CotacaoScreenState extends State<CotacaoScreen> {
   @override
+  void initState() {
+    super.initState();
+    readCotacao();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.color3,
@@ -78,7 +84,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         onPressed: () {
                           deleteCotacaoDialog(cotacao.id);
                         },
-                        icon: const Icon(Icons.delete),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.color1,
+                        ),
                       )
                     ],
                   ),
@@ -228,8 +237,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         builder: (builder) {
           return AlertDialog(
             backgroundColor: AppColors.color3,
-            title: const Text(
-                "Você tem certeza que deseja excluir essa cotação ?",
+            title: const Text("Deseja mesmo excluir essa cotação ?",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -250,6 +258,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                  const SizedBox(width: 10),
                   TextButton(
                     style: ButtonStyle(
                         backgroundColor:
@@ -324,6 +333,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ),
       ],
     );
+  }
+
+  //READ
+  void readCotacao() {
+    context.read<CotacaoDatabase>().fetchCotacoes();
   }
 
   // BOTOES DE NAVEGAÇAO

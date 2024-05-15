@@ -175,6 +175,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         return AlertDialog(
           backgroundColor: AppColors.color3,
           title: const Text("Adicionar Moeda",
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color: AppColors.color2,
                   fontSize: 30,
@@ -237,6 +238,7 @@ class MoedaScreenState extends State<MoedaScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.color3,
         title: const Text("Editar moeda",
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: AppColors.color2,
                 fontSize: 30,
