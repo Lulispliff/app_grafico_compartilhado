@@ -5,6 +5,7 @@ import 'package:isar/isar.dart'; // Importe o IsarService
 
 // CRUD
 class CotacaoDatabase extends ChangeNotifier {
+  //
   // Lista de cotações
   final List<Cotacoess> currentCotacao = [];
 

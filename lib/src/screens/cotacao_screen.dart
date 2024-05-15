@@ -8,7 +8,6 @@ import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class CotacaoScreen extends StatefulWidget {
   const CotacaoScreen({super.key});
@@ -61,21 +60,28 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             itemBuilder: (context, index) {
               final cotacao = currentCotacao[index];
 
-              return ListTile(
-                title: Text(
-                  "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
-                  style: const TextStyle(fontSize: 18),
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.color2, width: 1.5),
+                  ),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        deleteCotacaoDialog(cotacao.id);
-                      },
-                      icon: const Icon(Icons.delete),
-                    )
-                  ],
+                child: ListTile(
+                  title: Text(
+                    "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          deleteCotacaoDialog(cotacao.id);
+                        },
+                        icon: const Icon(Icons.delete),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
@@ -193,6 +199,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   valor,
                 );
 
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop();
               },
               child: const Text(

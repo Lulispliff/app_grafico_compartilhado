@@ -5,6 +5,7 @@ import 'package:isar/isar.dart'; // Importe o IsarService
 
 // CRUD
 class MoedaDatabase extends ChangeNotifier {
+  //
   // Lista de Moeda
   final List<Moeda> currentMoeda = [];
 

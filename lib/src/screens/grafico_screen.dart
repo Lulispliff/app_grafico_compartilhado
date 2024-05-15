@@ -1,8 +1,11 @@
-import 'package:app_grafico_compartilhado/src/models/cotacao.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GraficoScreen extends StatefulWidget {
   const GraficoScreen({super.key});
@@ -12,7 +15,7 @@ class GraficoScreen extends StatefulWidget {
 }
 
 class GraficoScreenState extends State<GraficoScreen> {
-  List<Cotacao> cotacoes = [];
+  Map<int, bool> selectedCotacoes = {};
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,10 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   Widget _buildCotacoesList() {
-    return cotacoes.isEmpty
+    final cotacaoDataBase = context.watch<CotacaoDatabase>();
+    List<Cotacoess> currentCotacao = cotacaoDataBase.currentCotacao;
+
+    return currentCotacao.isEmpty
         ? const Center(
             child: Text(
               "Você não tem cotações registradas para criar um gráfico!",
@@ -52,10 +58,34 @@ class GraficoScreenState extends State<GraficoScreen> {
             ),
           )
         : ListView.builder(
-            itemCount: cotacoes.length,
+            itemCount: currentCotacao.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(cotacoes[index].indicador.nome),
+              final cotacao = currentCotacao[index];
+
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.color2,
+                      width: 1.5,
+                    ),
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Moeda: ${cotacao.nome} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  trailing: Checkbox(
+                    activeColor: AppColors.color2,
+                    value: selectedCotacoes[index] ?? false,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCotacoes[index] = value ?? false;
+                      });
+                    },
+                  ),
+                ),
               );
             },
           );
