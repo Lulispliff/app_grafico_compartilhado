@@ -25,7 +25,7 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 30, 50, 100),
+        padding: const EdgeInsets.fromLTRB(50, 60, 50, 100),
         child: Center(
           child: SizedBox(
             height: 1000, // Altura do gráfico
@@ -40,6 +40,10 @@ class CotacoesChart extends StatelessWidget {
   }
 
   LineChartData _buildLineChartData(List<double> valores) {
+    double maxY = valores.isNotEmpty
+        ? valores.reduce((max, value) => max > value ? max : value)
+        : 0;
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -65,9 +69,11 @@ class CotacoesChart extends StatelessWidget {
         border: Border.all(color: Colors.grey.withOpacity(0.5)), // Cor da borda
       ),
       titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
+          bottomTitles: const AxisTitles(
             sideTitles: SideTitles(
-                showTitles: true, interval: 1.4, getTitlesWidget: bottomTitles),
+              showTitles: false,
+              interval: 1.4,
+            ),
           ),
           leftTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -82,8 +88,8 @@ class CotacoesChart extends StatelessWidget {
               const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
       maxX: 30,
-      minY: 0,
-      maxY: valores.reduce((max, value) => max > value ? max : value) + 10,
+      minY: valores.length.toDouble() - 1,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
           spots: List.generate(
@@ -103,20 +109,8 @@ class CotacoesChart extends StatelessWidget {
     );
   }
 
-  Widget bottomTitles(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
-
-    int dia = value.toInt() + 1;
-    if (dia >= 1 && dia <= 30) {
-      String text = dia == 1 ? "Dia $dia" : "$dia";
-      return Text(text, style: style);
-    } else {
-      return const SizedBox();
-    }
-  }
-
   Widget leftTitles(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+    const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
     return Text("R\$ ${value.toStringAsFixed(2).replaceAll(".", ",")}",
         style: style);
   }
