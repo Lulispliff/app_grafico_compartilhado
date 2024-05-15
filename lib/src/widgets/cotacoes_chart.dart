@@ -25,7 +25,7 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 10, 50, 100),
+        padding: const EdgeInsets.fromLTRB(50, 30, 50, 100),
         child: Center(
           child: SizedBox(
             height: 1000, // Altura do gráfico
@@ -64,8 +64,24 @@ class CotacoesChart extends StatelessWidget {
         show: true,
         border: Border.all(color: Colors.grey.withOpacity(0.5)), // Cor da borda
       ),
+      titlesData: FlTitlesData(
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+                showTitles: true, interval: 1.4, getTitlesWidget: bottomTitles),
+          ),
+          leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+            showTitles: true,
+            interval: 1,
+            getTitlesWidget: leftTitles,
+            reservedSize: 40,
+          )),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
-      maxX: valores.length.toDouble() - 1,
+      maxX: 30,
       minY: 0,
       maxY: valores.reduce((max, value) => max > value ? max : value) + 10,
       lineBarsData: [
@@ -85,5 +101,23 @@ class CotacoesChart extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget bottomTitles(double value, TitleMeta meta) {
+    const style = TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
+
+    int dia = value.toInt() + 1;
+    if (dia >= 1 && dia <= 30) {
+      String text = dia == 1 ? "Dia $dia" : "$dia";
+      return Text(text, style: style);
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget leftTitles(double value, TitleMeta meta) {
+    const style = TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+    return Text("R\$ ${value.toStringAsFixed(2).replaceAll(".", ",")}",
+        style: style);
   }
 }
