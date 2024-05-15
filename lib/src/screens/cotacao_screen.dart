@@ -204,6 +204,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 );
 
                 // ignore: use_build_context_synchronously
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6d8e770ae6523917e423bac6dfb6512bc89da120
                 Navigator.of(context).pop();
               },
               child: const Text(
