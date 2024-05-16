@@ -41,7 +41,7 @@ class CotacoesChart extends StatelessWidget {
 
   LineChartData _buildLineChartData(List<double> valores) {
     double maxY = valores.isNotEmpty
-        ? valores.reduce((max, value) => max > value ? max : value)
+        ? valores.reduce((max, value) => max > value ? max : value) + 3
         : 0;
 
     return LineChartData(
@@ -88,7 +88,7 @@ class CotacoesChart extends StatelessWidget {
               const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
       maxX: 30,
-      minY: valores.length.toDouble() - 1,
+      minY: 0,
       maxY: maxY,
       lineBarsData: [
         LineChartBarData(

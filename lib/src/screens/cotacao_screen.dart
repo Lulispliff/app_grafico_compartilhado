@@ -41,7 +41,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: _buildCotacoesList(),
+              child: _buildPrimaryList(),
             ),
             const SizedBox(height: 16),
             _buildNavigatorButtons(),
@@ -52,44 +52,68 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     );
   }
 
-  Widget _buildCotacoesList() {
-    final cotacaoDataBase = context.watch<CotacaoDatabase>();
-    List<Cotacoess> currentCotacao = cotacaoDataBase.currentCotacao;
+  Widget _buildPrimaryList() {
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
 
-    return currentCotacao.isEmpty
+    return currentMoeda.isEmpty
         ? const Center(
             child: Text("Sua lista de cotações está vazia.",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           )
         : ListView.builder(
+            itemCount: currentMoeda.length,
+            itemBuilder: (context, index) {
+              final moeda = currentMoeda[index];
+
+              return Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: AppColors.color2, width: 1.5),
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    title: Text(
+                      "Moeda: ${capitalize(moeda.nome)}",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    trailing: const Icon(Icons.arrow_drop_down),
+                    children: [_buildSecondaryList(moeda)],
+                  ));
+            },
+          );
+  }
+
+  Widget _buildSecondaryList(Moeda moeda) {
+    final cotacaoDatabase = context.watch<CotacaoDatabase>();
+    List<Cotacoess> currentCotacao = cotacaoDatabase.currentCotacao;
+
+    return currentCotacao.isEmpty
+        ? const Center(
+            child: Text(
+              "Essa moeda ainda não possui cotação registrada",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          )
+        : ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: currentCotacao.length,
             itemBuilder: (context, index) {
               final cotacao = currentCotacao[index];
 
-              return Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: AppColors.color2, width: 1.5),
-                  ),
+              return ListTile(
+                title: Text(
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                  style: const TextStyle(fontSize: 17),
                 ),
-                child: ListTile(
-                  title: Text(
-                    "Moeda: ${capitalize(cotacao.nome)} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColors.color1,
-                        ),
-                      )
-                    ],
+                trailing: IconButton(
+                  onPressed: () {
+                    deleteCotacaoDialog(cotacao.id);
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: AppColors.color1,
                   ),
                 ),
               );
@@ -117,6 +141,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 color: AppColors.color2,
                 fontWeight: FontWeight.bold),
           ),
+          // ver se da para remover StatefulBuilder
           content: StatefulBuilder(builder: (context, setState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -209,7 +234,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 if (selectedMoeda != null) {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, valor, selectedMoeda!);
-
                   Navigator.of(context).pop();
                 }
               },

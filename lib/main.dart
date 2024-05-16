@@ -13,9 +13,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => MoedaDatabase()),
-        ChangeNotifierProvider(
-            create: (context) =>
-                CotacaoDatabase()), // Forneça o CotacaoDatabase
+        ChangeNotifierProvider(create: (context) => CotacaoDatabase()),
       ],
       child: const MyApp(),
     ),
