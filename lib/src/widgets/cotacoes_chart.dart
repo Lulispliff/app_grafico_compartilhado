@@ -93,12 +93,13 @@ class CotacoesChart extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           isCurved: true,
-          color: Colors.blue, // Cor da linha do gráfico
+          color: AppColors.color2, // Cor da linha do gráfico
           barWidth: 5,
           isStrokeCapRound: true,
           belowBarData: BarAreaData(
             show: true,
-            color: Colors.blue.withOpacity(0.3), // Cor da área abaixo da linha
+            color: AppColors.color2
+                .withOpacity(0.3), // Cor da área abaixo da linha
           ),
           spots: List.generate(
             valores.length,
