@@ -1,11 +1,14 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class GraficoScreen extends StatefulWidget {
@@ -36,7 +39,7 @@ class GraficoScreenState extends State<GraficoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: _buildCotacoesList(),
+              child: _buildPrimaryList(),
             ),
             const SizedBox(height: 16),
             _buildNavigatorButtons(),
@@ -47,45 +50,61 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
-  Widget _buildCotacoesList() {
-    final cotacaoDataBase = context.watch<CotacaoDatabase>();
-    List<Cotacoess> currentCotacao = cotacaoDataBase.currentCotacao;
+  Widget _buildPrimaryList() {
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
 
-    return currentCotacao.isEmpty
+    return currentMoeda.isEmpty
         ? const Center(
             child: Text(
-              "Você não tem cotações registradas para criar um gráfico.",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
+                "Você não tem cotações registradas para gerar o gráfico.",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           )
         : ListView.builder(
-            itemCount: currentCotacao.length,
+            itemCount: currentMoeda.length,
             itemBuilder: (context, index) {
-              final cotacao = currentCotacao[index];
+              final moeda = currentMoeda[index];
 
               return Container(
                 decoration: const BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(
-                      color: AppColors.color2,
-                      width: 1.5,
-                    ),
+                    bottom: BorderSide(color: AppColors.color2, width: 1.5),
                   ),
                 ),
-                child: ListTile(
+                child: ExpansionTile(
                   title: Text(
-                    "Moeda: ${capitalize(cotacao.nome)} - Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
-                    style: const TextStyle(fontSize: 18),
+                    "Moeda: ${capitalize(moeda.nome)}",
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  trailing: Checkbox(
-                    activeColor: AppColors.color2,
-                    value: currentCotacao[index].isSelected,
-                    onChanged: (value) {
-                      setState(() {
-                        currentCotacao[index].isSelected = value ?? false;
-                      });
-                    },
-                  ),
+                  trailing: const Icon(Icons.arrow_drop_down),
+                  children: [_buildSecondaryList(moeda)],
+                ),
+              );
+            },
+          );
+  }
+
+  Widget _buildSecondaryList(Moeda moeda) {
+    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
+
+    return cotacoesDaMoeda.isEmpty
+        ? const Center(
+            child: Text(
+              "Essa moeda ainda não possui uma cotação registrada",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          )
+        : ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: cotacoesDaMoeda.length,
+            itemBuilder: (context, index) {
+              final cotacao = cotacoesDaMoeda[index];
+
+              return ListTile(
+                title: Text(
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                  style: const TextStyle(fontSize: 17),
                 ),
               );
             },

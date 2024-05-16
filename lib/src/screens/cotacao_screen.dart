@@ -90,7 +90,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     return cotacoesDaMoeda.isEmpty
         ? const Center(
             child: Text(
-              "Essa moeda ainda não possui cotação registrada",
+              "Essa moeda ainda não possui uma cotação registrada",
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -236,7 +236,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 if (selectedMoeda != null) {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, valor, selectedMoeda!);
+
                   Navigator.of(context).pop();
+
+                  setState(() {});
                 }
               },
               child: const Text(
