@@ -92,7 +92,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ? const Center(
             child: Text(
               "Essa moeda ainda não possui cotação registrada",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )
         : ListView.builder(
