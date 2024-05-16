@@ -85,10 +85,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    final cotacaoDatabase = context.watch<CotacaoDatabase>();
-    List<Cotacoess> currentCotacao = cotacaoDatabase.currentCotacao;
+    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
 
-    return currentCotacao.isEmpty
+    return cotacoesDaMoeda.isEmpty
         ? const Center(
             child: Text(
               "Essa moeda ainda não possui cotação registrada",
@@ -101,9 +100,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         : ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: currentCotacao.length,
+            itemCount: cotacoesDaMoeda.length,
             itemBuilder: (context, index) {
-              final cotacao = currentCotacao[index];
+              final cotacao = cotacoesDaMoeda[index];
 
               return ListTile(
                 title: Text(

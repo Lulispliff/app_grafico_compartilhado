@@ -24,6 +24,7 @@ class CotacaoDatabase extends ChangeNotifier {
       ..valor = valor
       ..moeda = moeda;
 
+    moeda.cotacoes.add(newCotacao);
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));
     await fetchCotacoes();
