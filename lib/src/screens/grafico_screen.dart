@@ -8,7 +8,6 @@ import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class GraficoScreen extends StatefulWidget {
@@ -126,11 +125,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 return cotacao.isSelected;
               }).toList();
 
-              if (selectedCotacoes.isNotEmpty) {
-                _showCotacoesChart(selectedCotacoes);
-              } else {
-                _erroGraficoDialog();
-              }
+              _selectInfosChartScreen();
             },
             tooltip: "Gerar gráfico",
             backgroundColor: AppColors.color2,
@@ -180,6 +175,129 @@ class GraficoScreenState extends State<GraficoScreen> {
         ),
       ],
     );
+  }
+
+  Widget _buildTimeChartButtons(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("1 H", style: TextStyle(color: Colors.white)),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("1 D", style: TextStyle(color: Colors.white)),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("1 S", style: TextStyle(color: Colors.white)),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("1 M", style: TextStyle(color: Colors.white)),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("6 M", style: TextStyle(color: Colors.white)),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
+        child: const Text("1 A", style: TextStyle(color: Colors.white)),
+      )
+    ]);
+  }
+
+  void _selectInfosChartScreen() {
+    final moedaDataBase = context.read<MoedaDatabase>();
+    Moeda? selectedMoeda;
+
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            backgroundColor: AppColors.color3,
+            title: const Text(
+              "Selecione uma moeda registrada",
+              style: TextStyle(
+                  fontSize: 30,
+                  color: AppColors.color2,
+                  fontWeight: FontWeight.bold),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<Moeda>(
+                  decoration: const InputDecoration(
+                    focusColor: Colors.transparent,
+                    labelText: "Moedas registradas",
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                  ),
+                  items: moedaDataBase.currentMoeda
+                      .map((moeda) => DropdownMenuItem<Moeda>(
+                            value: moeda,
+                            child: Text(capitalize(moeda.nome)),
+                          ))
+                      .toList(),
+                  onChanged: (Moeda? value) {
+                    setState(() {
+                      selectedMoeda = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+                const Text("Selecione um periodo de tempo",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: AppColors.color2,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                _buildTimeChartButtons(context)
+              ],
+            ),
+            actions: [
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.color2)),
+                child: const Text("Cancelar",
+                    style: TextStyle(color: Colors.white)),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.color2)),
+                child: const Text("OK", style: TextStyle(color: Colors.white)),
+              )
+            ],
+          );
+        });
   }
 
   void _showCotacoesChart(List<Cotacoess> cotacoesSelecionadas) {

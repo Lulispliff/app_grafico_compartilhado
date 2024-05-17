@@ -106,7 +106,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)}",
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 trailing: IconButton(
@@ -144,7 +144,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 color: AppColors.color2,
                 fontWeight: FontWeight.bold),
           ),
-          // ver se da para remover StatefulBuilder
           content: StatefulBuilder(builder: (context, setState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -195,7 +194,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   controller: dataController,
                   cursorColor: Colors.grey,
                   decoration: const InputDecoration(
-                    hintText: "dia /mês / ano",
+                    hintText: "dia/mês/ano",
                     hintStyle: TextStyle(color: Colors.grey),
                     labelText: "Data de registro",
                     labelStyle: TextStyle(color: Colors.grey),
@@ -209,9 +208,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  controller: horaController,
                   cursorColor: Colors.grey,
                   decoration: const InputDecoration(
-                      hintText: "horas : minutos",
+                      hintText: "horas:minutos",
                       hintStyle: TextStyle(color: Colors.grey),
                       labelText: "Horario de registro",
                       labelStyle: TextStyle(color: Colors.grey),
@@ -249,12 +249,18 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 DateTime? data = dateFormat().parse(dataText);
 
                 String horaText = horaController.text.trim();
-                DateTime? hora = horaFormat().parse(horaText);
+                DateTime? hora;
+                try {
+                  hora = horaFormat().parse(horaText);
+                } catch (e) {
+                  hora = null;
+                }
 
-                if (selectedMoeda != null) {
+                if (selectedMoeda != null && hora != null) {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
 
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
 
                   setState(() {});
