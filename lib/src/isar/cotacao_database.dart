@@ -16,8 +16,8 @@ class CotacaoDatabase extends ChangeNotifier {
   }
 
   // Método para adicionar nova cotação
-  Future<void> addCotacao(
-      String nome, DateTime data, DateTime hora, double valor, Moeda moeda) async {
+  Future<void> addCotacao(String nome, DateTime data, DateTime hora,
+      double valor, Moeda moeda) async {
     final newCotacao = Cotacoess()
       ..nome = nome
       ..data = data

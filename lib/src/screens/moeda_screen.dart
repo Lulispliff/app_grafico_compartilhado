@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
@@ -22,6 +23,7 @@ class MoedaScreenState extends State<MoedaScreen> {
   void initState() {
     super.initState();
     readMoeda();
+    readCotacao();
   }
 
   @override
@@ -234,6 +236,10 @@ class MoedaScreenState extends State<MoedaScreen> {
   //READ
   void readMoeda() {
     context.read<MoedaDatabase>().fetchMoedas();
+  }
+
+  void readCotacao() {
+    context.read<CotacaoDatabase>().fetchCotacoes();
   }
 
   //UPDATE

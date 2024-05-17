@@ -21,6 +21,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
+    readMoeda();
   }
 
   @override
@@ -257,13 +258,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 }
 
                 if (selectedMoeda != null && hora != null) {
-                  await cotacaoDataBase.addCotacao(
+                  cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
 
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
-
-                  setState(() {});
                 }
               },
               child: const Text(
@@ -395,6 +394,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   //READ
   void readCotacao() {
     context.read<CotacaoDatabase>().fetchCotacoes();
+  }
+
+  void readMoeda() {
+    context.read<MoedaDatabase>().fetchMoedas();
   }
 
   // BOTOES DE NAVEGAÇAO
