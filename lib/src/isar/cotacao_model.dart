@@ -6,7 +6,8 @@ part 'cotacao_model.g.dart';
 class Cotacoess {
   Id id = Isar.autoIncrement;
   late String nome;
-  late DateTime dataHora;
+  late DateTime data;
+  late DateTime hora;
   late double valor;
   late bool isSelected = false;
   @ignore

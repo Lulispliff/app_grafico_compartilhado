@@ -103,7 +103,7 @@ class GraficoScreenState extends State<GraficoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)}",
                   style: const TextStyle(fontSize: 17),
                 ),
               );

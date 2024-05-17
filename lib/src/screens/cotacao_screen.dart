@@ -106,7 +106,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.dataHora)}",
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 trailing: IconButton(
@@ -130,6 +130,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     Moeda? selectedMoeda;
     TextEditingController valorController = TextEditingController();
     TextEditingController dataController = TextEditingController();
+    TextEditingController horaController = TextEditingController();
 
     showDialog(
       context: context,
@@ -233,9 +234,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 String dataText = dataController.text.trim();
                 DateTime? data = dateFormat().parse(dataText);
 
+                String horaText = horaController.text.trim();
+                DateTime? hora = horaFormat().parse(horaText);
+
                 if (selectedMoeda != null) {
                   await cotacaoDataBase.addCotacao(
-                      selectedMoeda!.nome, data, valor, selectedMoeda!);
+                      selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
 
                   Navigator.of(context).pop();
 
