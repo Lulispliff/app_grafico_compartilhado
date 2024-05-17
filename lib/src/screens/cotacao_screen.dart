@@ -86,7 +86,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
+    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes; // subir
 
     return cotacoesDaMoeda.isEmpty
         ? const Center(
@@ -247,7 +247,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 double valor = double.tryParse(valorText) ?? 0.0;
 
                 String dataText = dataController.text.trim();
-                DateTime? data = dateFormat().parse(dataText);
+                DateTime? data;
+                try {
+                  data = dateFormat().parse(dataText);
+                } catch (e) {
+                  data = null;
+                }
 
                 String horaText = horaController.text.trim();
                 DateTime? hora;
@@ -256,13 +261,21 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 } catch (e) {
                   hora = null;
                 }
-
-                if (selectedMoeda != null && hora != null) {
-                  cotacaoDataBase.addCotacao(
+//showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+                if (selectedMoeda != null && data != null && hora != null) {
+                  await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
+                
 
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          "Por favor, preencha todos os campos corretamente."),
+                    ),
+                  );
                 }
               },
               child: const Text(
