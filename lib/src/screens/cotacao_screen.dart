@@ -150,6 +150,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               children: [
                 DropdownButtonFormField<Moeda>(
                   decoration: const InputDecoration(
+                    focusColor: Colors.transparent,
                     labelText: "Selecione a moeda",
                     labelStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
@@ -193,7 +194,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   controller: dataController,
                   cursorColor: Colors.grey,
                   decoration: const InputDecoration(
-                    hintText: "dia/mês/ano",
+                    hintText: "dia /mês / ano",
                     hintStyle: TextStyle(color: Colors.grey),
                     labelText: "Data de registro",
                     labelStyle: TextStyle(color: Colors.grey),
@@ -205,6 +206,19 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  cursorColor: Colors.grey,
+                  decoration: const InputDecoration(
+                      hintText: "horas : minutos",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      labelText: "Horario de registro",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                )
               ],
             );
           }),
