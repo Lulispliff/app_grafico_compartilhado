@@ -11,3 +11,6 @@ NumberFormat valorFormat() {
 DateFormat dateFormat() {
   return DateFormat('dd/MM/yyy');
 }
+DateFormat horaFormat() {
+  return DateFormat("HH:mm");
+}

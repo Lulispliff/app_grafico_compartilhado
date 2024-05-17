@@ -17,23 +17,28 @@ const CotacoessSchema = CollectionSchema(
   name: r'Cotacoess',
   id: -6690763751811889055,
   properties: {
-    r'dataHora': PropertySchema(
+    r'data': PropertySchema(
       id: 0,
-      name: r'dataHora',
+      name: r'data',
+      type: IsarType.dateTime,
+    ),
+    r'hora': PropertySchema(
+      id: 1,
+      name: r'hora',
       type: IsarType.dateTime,
     ),
     r'isSelected': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'isSelected',
       type: IsarType.bool,
     ),
     r'nome': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'nome',
       type: IsarType.string,
     ),
     r'valor': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'valor',
       type: IsarType.double,
     )
@@ -68,10 +73,11 @@ void _cotacoessSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.dataHora);
-  writer.writeBool(offsets[1], object.isSelected);
-  writer.writeString(offsets[2], object.nome);
-  writer.writeDouble(offsets[3], object.valor);
+  writer.writeDateTime(offsets[0], object.data);
+  writer.writeDateTime(offsets[1], object.hora);
+  writer.writeBool(offsets[2], object.isSelected);
+  writer.writeString(offsets[3], object.nome);
+  writer.writeDouble(offsets[4], object.valor);
 }
 
 Cotacoess _cotacoessDeserialize(
@@ -81,11 +87,12 @@ Cotacoess _cotacoessDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Cotacoess();
-  object.dataHora = reader.readDateTime(offsets[0]);
+  object.data = reader.readDateTime(offsets[0]);
+  object.hora = reader.readDateTime(offsets[1]);
   object.id = id;
-  object.isSelected = reader.readBool(offsets[1]);
-  object.nome = reader.readString(offsets[2]);
-  object.valor = reader.readDouble(offsets[3]);
+  object.isSelected = reader.readBool(offsets[2]);
+  object.nome = reader.readString(offsets[3]);
+  object.valor = reader.readDouble(offsets[4]);
   return object;
 }
 
@@ -99,10 +106,12 @@ P _cotacoessDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -200,43 +209,43 @@ extension CotacoessQueryWhere
 
 extension CotacoessQueryFilter
     on QueryBuilder<Cotacoess, Cotacoess, QFilterCondition> {
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataHoraEqualTo(
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataHora',
+        property: r'data',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataHoraGreaterThan(
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataGreaterThan(
     DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'dataHora',
+        property: r'data',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataHoraLessThan(
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataLessThan(
     DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'dataHora',
+        property: r'data',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataHoraBetween(
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> dataBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -244,7 +253,60 @@ extension CotacoessQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'dataHora',
+        property: r'data',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> horaEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hora',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> horaGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hora',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> horaLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hora',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> horaBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hora',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -516,15 +578,27 @@ extension CotacoessQueryLinks
     on QueryBuilder<Cotacoess, Cotacoess, QFilterCondition> {}
 
 extension CotacoessQuerySortBy on QueryBuilder<Cotacoess, Cotacoess, QSortBy> {
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByDataHora() {
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByData() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.asc);
+      return query.addSortBy(r'data', Sort.asc);
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByDataHoraDesc() {
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByDataDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.desc);
+      return query.addSortBy(r'data', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByHora() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hora', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByHoraDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hora', Sort.desc);
     });
   }
 
@@ -567,15 +641,27 @@ extension CotacoessQuerySortBy on QueryBuilder<Cotacoess, Cotacoess, QSortBy> {
 
 extension CotacoessQuerySortThenBy
     on QueryBuilder<Cotacoess, Cotacoess, QSortThenBy> {
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByDataHora() {
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByData() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.asc);
+      return query.addSortBy(r'data', Sort.asc);
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByDataHoraDesc() {
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByDataDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.desc);
+      return query.addSortBy(r'data', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByHora() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hora', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByHoraDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hora', Sort.desc);
     });
   }
 
@@ -630,9 +716,15 @@ extension CotacoessQuerySortThenBy
 
 extension CotacoessQueryWhereDistinct
     on QueryBuilder<Cotacoess, Cotacoess, QDistinct> {
-  QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByDataHora() {
+  QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByData() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'dataHora');
+      return query.addDistinctBy(r'data');
+    });
+  }
+
+  QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByHora() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hora');
     });
   }
 
@@ -664,9 +756,15 @@ extension CotacoessQueryProperty
     });
   }
 
-  QueryBuilder<Cotacoess, DateTime, QQueryOperations> dataHoraProperty() {
+  QueryBuilder<Cotacoess, DateTime, QQueryOperations> dataProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'dataHora');
+      return query.addPropertyName(r'data');
+    });
+  }
+
+  QueryBuilder<Cotacoess, DateTime, QQueryOperations> horaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hora');
     });
   }
 
