@@ -8,7 +8,6 @@ import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CotacaoScreen extends StatefulWidget {
@@ -23,6 +22,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
+    readMoeda();
   }
 
   @override
@@ -87,7 +87,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
+    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes; // subir
 
     return cotacoesDaMoeda.isEmpty
         ? const Center(
@@ -108,7 +108,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                  "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 trailing: IconButton(
@@ -134,9 +134,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     TextEditingController dataController = TextEditingController();
     TextEditingController horaController = TextEditingController();
 
-    final dateFormat = DateFormat('dd/MM/yyyy');
-    final timeFormat = DateFormat('HH:mm');
-
     showDialog(
       context: context,
       builder: (context) {
@@ -149,13 +146,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 color: AppColors.color2,
                 fontWeight: FontWeight.bold),
           ),
-          // ver se da para remover StatefulBuilder
           content: StatefulBuilder(builder: (context, setState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<Moeda>(
                   decoration: const InputDecoration(
+                    focusColor: Colors.transparent,
                     labelText: "Selecione a moeda",
                     labelStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
@@ -178,29 +175,30 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Input(
-                  controller: valorController,
-                  cursorColor: Colors.grey,
+                const Input(
                   label: "Valor da moeda",
                   labelTextColor: Colors.grey,
-                  preffixIcon: const Icon(Icons.attach_money_outlined),
+                  preffixIcon: Icon(Icons.attach_money_outlined),
+                  cursorColor: Colors.grey,
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  controller: dataController,
-                  cursorColor: Colors.grey,
+                  hint: StringUtils.formatDateSimple(DateTime.now()),
                   label: "Data de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.calendar_month),
+                  cursorColor: Colors.grey,
+                  controller: dataController,
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  controller: horaController,
-                  cursorColor: Colors.grey,
-                  label: "Horário de registro",
+                  hint: StringUtils.formatHoraeMinuto(DateTime.now()),
+                  label: "Horario de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.alarm_outlined),
-                )
+                  cursorColor: Colors.grey,
+                  borderColor: Colors.grey,
+                ),
               ],
             );
           }),
@@ -227,18 +225,34 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 double valor = double.tryParse(valorText) ?? 0.0;
 
                 String dataText = dataController.text.trim();
-                DateTime? data = dateFormat.parse(dataText);
+                DateTime? data;
+                try {
+                  data = dateFormat().parse(dataText);
+                } catch (e) {
+                  data = null;
+                }
 
                 String horaText = horaController.text.trim();
-                DateTime? hora = timeFormat.parse(horaText);
-
-                if (selectedMoeda != null) {
+                DateTime? hora;
+                try {
+                  hora = horaFormat().parse(horaText);
+                } catch (e) {
+                  hora = null;
+                }
+                //showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+                if (selectedMoeda != null && data != null && hora != null) {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
 
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
-
-                  setState(() {});
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          "Por favor, preencha todos os campos corretamente."),
+                    ),
+                  );
                 }
               },
               child: const Text(
@@ -370,6 +384,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   //READ
   void readCotacao() {
     context.read<CotacaoDatabase>().fetchCotacoes();
+  }
+
+  void readMoeda() {
+    context.read<MoedaDatabase>().fetchMoedas();
   }
 
   // BOTOES DE NAVEGAÇAO
