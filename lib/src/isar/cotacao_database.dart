@@ -12,10 +12,10 @@ class CotacaoDatabase extends ChangeNotifier {
 
   // Método estático para inicializar o Isar
   static Future<void> initialize() async {
-    await IsarService.initialize();
+    await IsarService.initialize(); // Inicialize o IsarService uma vez
   }
 
-  // Método para adicionar nova cotação
+  // Método para adicionar uma nova cotação
   Future<void> addCotacao(String nome, DateTime data, DateTime hora,
       double valor, Moeda moeda) async {
     final newCotacao = Cotacoess()
@@ -27,7 +27,7 @@ class CotacaoDatabase extends ChangeNotifier {
 
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));
-
+    moeda.cotacoes.add(newCotacao);
     await fetchCotacoes();
   }
 

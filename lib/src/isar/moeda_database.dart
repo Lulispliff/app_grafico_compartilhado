@@ -11,7 +11,7 @@ class MoedaDatabase extends ChangeNotifier {
 
   // Método estático para inicializar o Isar
   static Future<void> initialize() async {
-    await IsarService.initialize();
+    await IsarService.initialize(); // Inicialize o IsarService uma vez
   }
 
   // Método para adicionar uma nova moeda
