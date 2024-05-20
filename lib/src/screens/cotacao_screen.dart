@@ -23,7 +23,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
-    readMoeda();
   }
 
   @override
@@ -88,7 +87,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes; // subir
+    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
 
     return cotacoesDaMoeda.isEmpty
         ? const Center(
@@ -176,15 +175,15 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                const Input(
+                Input(
                   label: "Valor da moeda",
                   labelTextColor: Colors.grey,
-                  preffixIcon: Icon(Icons.attach_money_outlined),
+                  preffixIcon: const Icon(Icons.attach_money_outlined),
                   cursorColor: Colors.grey,
+                  controller: valorController,
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  hint: StringUtils.formatDateSimple(DateTime.now()),
                   label: "Data de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.calendar_month),
@@ -193,12 +192,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  hint: StringUtils.formatHoraeMinuto(DateTime.now()),
                   label: "Horario de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.alarm_outlined),
                   cursorColor: Colors.grey,
                   borderColor: Colors.grey,
+                  controller: horaController,
                 ),
               ],
             );
