@@ -4,6 +4,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${DateTimeUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 trailing: IconButton(
@@ -174,53 +175,27 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  controller: valorController,
+                const Input(
+                  label: "Valor da moeda",
+                  labelTextColor: Colors.grey,
+                  preffixText: "R\$ ",
                   cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                    prefixText: "R\$ ",
-                    prefixStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                    labelText: "Valor da cotação",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  controller: dataController,
+                Input(
+                  hint: DateTimeUtils.formatDateSimple(DateTime.now()),
+                  label: "Data de registro",
+                  labelTextColor: Colors.grey,
                   cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                    hintText: "dia/mês/ano",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    labelText: "Data de registro",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  controller: horaController,
+                Input(
+                  hint: DateTimeUtils.formatHoraeMinuto(DateTime.now()),
+                  label: "Horario de registro",
+                  labelTextColor: Colors.grey,
                   cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                      hintText: "horas:minutos",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      labelText: "Horario de registro",
-                      labelStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
-                )
+                  borderColor: Colors.grey,
+                ),
               ],
             );
           }),

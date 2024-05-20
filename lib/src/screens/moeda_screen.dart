@@ -3,6 +3,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -187,16 +188,11 @@ class MoedaScreenState extends State<MoedaScreen> {
                   color: AppColors.color2,
                   fontSize: 30,
                   fontWeight: FontWeight.bold)),
-          content: TextField(
+          content: Input(
               controller: textController,
               cursorColor: Colors.grey,
-              decoration: const InputDecoration(
-                  labelText: "Nome da moeda",
-                  labelStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)))),
+              label: "Nome da moeda",
+              labelTextColor: Colors.grey),
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -254,16 +250,11 @@ class MoedaScreenState extends State<MoedaScreen> {
                 color: AppColors.color2,
                 fontSize: 30,
                 fontWeight: FontWeight.bold)),
-        content: TextField(
+        content: Input(
             controller: textController,
             cursorColor: Colors.grey,
-            decoration: const InputDecoration(
-                labelText: "Novo nome",
-                labelStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)))),
+            label: "Novo nome",
+            labelTextColor: Colors.grey),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -323,7 +314,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(AppColors.color2)),
+                              WidgetStateProperty.all(AppColors.color2)),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -333,7 +324,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(AppColors.color2)),
+                              WidgetStateProperty.all(AppColors.color2)),
                       onPressed: () {
                         deleteMoeda(id);
                         Navigator.of(context).pop();
