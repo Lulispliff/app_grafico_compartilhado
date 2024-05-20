@@ -193,7 +193,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 const SizedBox(height: 10),
                 Input(
                   hint: StringUtils.formatHoraeMinuto(DateTime.now()),
-                  label: "Horario de registro",
+                  label: "Horário de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.alarm_outlined),
                   cursorColor: Colors.grey,
