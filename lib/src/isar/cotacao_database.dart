@@ -12,7 +12,7 @@ class CotacaoDatabase extends ChangeNotifier {
 
   // Método estático para inicializar o Isar
   static Future<void> initialize() async {
-    await IsarService.initialize(); // Inicialize o IsarService uma vez
+    await IsarService.initialize();
   }
 
   // Método para adicionar nova cotação
@@ -40,7 +40,7 @@ class CotacaoDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Método para buscar cotações por intervalo de texto
+  // Método para buscar cotações por intervalo de tempo
   Future<List<Cotacoess>> fetchCotacoesByInterval(
       String nomeMoeda, Duration intervalo) async {
     DateTime now = DateTime.now();

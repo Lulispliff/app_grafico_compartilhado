@@ -18,11 +18,13 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
+  //
   Moeda? selectedMoeda;
   TextEditingController valorController = TextEditingController();
   TextEditingController dataController = TextEditingController();
-  TextEditingController horaController = TextEditingController();
+  TextEditingController horarioController = TextEditingController();
   CotacaoDatabase? cotacaoDatabase;
+  //
   @override
   void initState() {
     super.initState();
@@ -174,12 +176,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                const Input(
-                  label: "Valor da moeda",
-                  labelTextColor: Colors.grey,
-                  preffixIcon: Icon(Icons.attach_money_outlined),
-                  cursorColor: Colors.grey,
-                ),
+                Input(
+                    label: "Valor da moeda",
+                    labelTextColor: Colors.grey,
+                    preffixIcon: const Icon(Icons.attach_money_outlined),
+                    cursorColor: Colors.grey,
+                    controller: valorController),
                 const SizedBox(height: 10),
                 Input(
                   label: "Data de registro",
@@ -189,12 +191,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   controller: dataController,
                 ),
                 const SizedBox(height: 10),
-                const Input(
+                Input(
                   label: "Horario de registro",
                   labelTextColor: Colors.grey,
-                  preffixIcon: Icon(Icons.alarm_outlined),
+                  preffixIcon: const Icon(Icons.alarm_outlined),
                   cursorColor: Colors.grey,
                   borderColor: Colors.grey,
+                  controller: horarioController,
                 ),
               ],
             );
@@ -229,7 +232,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   data = null;
                 }
 
-                String horaText = horaController.text.trim();
+                String horaText = horarioController.text.trim();
                 DateTime? hora;
                 try {
                   hora = horaFormat().parse(horaText);
