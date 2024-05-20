@@ -18,11 +18,16 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
+  Moeda? selectedMoeda;
+  TextEditingController valorController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
+  TextEditingController horaController = TextEditingController();
+  CotacaoDatabase? cotacaoDatabase;
   @override
   void initState() {
     super.initState();
     readCotacao();
-    readMoeda();
+    cotacaoDatabase = context.read<CotacaoDatabase>();
   }
 
   @override
@@ -87,7 +92,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes; // subir
+    List<Cotacoess> cotacoesDaMoeda = cotacaoDatabase!.currentCotacao;
 
     return cotacoesDaMoeda.isEmpty
         ? const Center(
@@ -127,12 +132,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   void addCotacaoDialog() {
     final moedaDataBase = context.read<MoedaDatabase>();
-    final cotacaoDataBase = context.read<CotacaoDatabase>();
-
-    Moeda? selectedMoeda;
-    TextEditingController valorController = TextEditingController();
-    TextEditingController dataController = TextEditingController();
-    TextEditingController horaController = TextEditingController();
 
     showDialog(
       context: context,
@@ -183,7 +182,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  hint: StringUtils.formatDateSimple(DateTime.now()),
                   label: "Data de registro",
                   labelTextColor: Colors.grey,
                   preffixIcon: const Icon(Icons.calendar_month),
@@ -191,11 +189,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   controller: dataController,
                 ),
                 const SizedBox(height: 10),
-                Input(
-                  hint: StringUtils.formatHoraeMinuto(DateTime.now()),
-                  label: "Horário de registro",
+                const Input(
+                  label: "Horario de registro",
                   labelTextColor: Colors.grey,
-                  preffixIcon: const Icon(Icons.alarm_outlined),
+                  preffixIcon: Icon(Icons.alarm_outlined),
                   cursorColor: Colors.grey,
                   borderColor: Colors.grey,
                 ),
@@ -239,9 +236,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 } catch (e) {
                   hora = null;
                 }
-                //showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+
                 if (selectedMoeda != null && data != null && hora != null) {
-                  await cotacaoDataBase.addCotacao(
+                  context.read<CotacaoDatabase>().addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
 
                   // ignore: use_build_context_synchronously
