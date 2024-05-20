@@ -76,7 +76,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   child: ExpansionTile(
                     title: Text(
-                      "Moeda: ${moeda.nome}",
+                      "Moeda: ${StringUtils.capitalize(moeda.nome)}",
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
@@ -108,7 +108,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${DateTimeUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
+                  "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 trailing: IconButton(
@@ -165,7 +165,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   items: moedaDataBase.currentMoeda
                       .map((moeda) => DropdownMenuItem<Moeda>(
                             value: moeda,
-                            child: Text(moeda.nome),
+                            child: Text(StringUtils.capitalize(moeda.nome)),
                           ))
                       .toList(),
                   onChanged: (Moeda? value) {
@@ -178,21 +178,24 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 const Input(
                   label: "Valor da moeda",
                   labelTextColor: Colors.grey,
-                  preffixText: "R\$ ",
+                  preffixIcon: Icon(Icons.attach_money_outlined),
                   cursorColor: Colors.grey,
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  hint: DateTimeUtils.formatDateSimple(DateTime.now()),
+                  hint: StringUtils.formatDateSimple(DateTime.now()),
                   label: "Data de registro",
                   labelTextColor: Colors.grey,
+                  preffixIcon: const Icon(Icons.calendar_month),
                   cursorColor: Colors.grey,
+                  controller: dataController,
                 ),
                 const SizedBox(height: 10),
                 Input(
-                  hint: DateTimeUtils.formatHoraeMinuto(DateTime.now()),
+                  hint: StringUtils.formatHoraeMinuto(DateTime.now()),
                   label: "Horario de registro",
                   labelTextColor: Colors.grey,
+                  preffixIcon: const Icon(Icons.alarm_outlined),
                   cursorColor: Colors.grey,
                   borderColor: Colors.grey,
                 ),

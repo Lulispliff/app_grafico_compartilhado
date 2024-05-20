@@ -75,7 +75,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 child: ExpansionTile(
                   title: Text(
-                    "Moeda: ${moeda.nome}",
+                    "Moeda: ${StringUtils.capitalize(moeda.nome)}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: const Icon(Icons.arrow_drop_down),
@@ -105,7 +105,7 @@ class GraficoScreenState extends State<GraficoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
+                  "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
               );
@@ -242,7 +242,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                   items: moedaDataBase.currentMoeda
                       .map((moeda) => DropdownMenuItem<Moeda>(
                             value: moeda,
-                            child: Text(moeda.nome),
+                            child: Text(StringUtils.capitalize(moeda.nome)),
                           ))
                       .toList(),
                   onChanged: (Moeda? value) {

@@ -5,6 +5,7 @@ import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -75,14 +76,14 @@ class MoedaScreenState extends State<MoedaScreen> {
                 decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: AppColors.color2, // Cor da borda
+                      color: AppColors.color2,
                       width: 1.5,
                     ),
                   ),
                 ),
                 child: ListTile(
                   title: Text(
-                    "Moeda: ${moeda.nome} - ID: ${moeda.id}",
+                    "Moeda: ${StringUtils.capitalize(moeda.nome)} - ID: ${moeda.id}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: Row(
@@ -239,7 +240,7 @@ class MoedaScreenState extends State<MoedaScreen> {
 
   //UPDATE
   void editMoedaDialog(Moeda moeda) {
-    textController.text = moeda.nome;
+    textController.text = StringUtils.capitalize(moeda.nome);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
