@@ -75,7 +75,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   child: ExpansionTile(
                     title: Text(
-                      "Moeda: ${capitalize(moeda.nome)}",
+                      "Moeda: ${moeda.nome}",
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
@@ -164,7 +164,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   items: moedaDataBase.currentMoeda
                       .map((moeda) => DropdownMenuItem<Moeda>(
                             value: moeda,
-                            child: Text(capitalize(moeda.nome)),
+                            child: Text(moeda.nome),
                           ))
                       .toList(),
                   onChanged: (Moeda? value) {
@@ -227,7 +227,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(AppColors.color2),
+                backgroundColor: WidgetStateProperty.all(AppColors.color2),
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -240,7 +240,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             const SizedBox(width: 10),
             TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(AppColors.color2),
+                backgroundColor: WidgetStateProperty.all(AppColors.color2),
               ),
               onPressed: () async {
                 String valorText = valorController.text.trim();
@@ -261,11 +261,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 } catch (e) {
                   hora = null;
                 }
-//showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+                //showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
                 if (selectedMoeda != null && data != null && hora != null) {
                   await cotacaoDataBase.addCotacao(
                       selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
-                
 
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
@@ -312,7 +311,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(AppColors.color2)),
+                            WidgetStateProperty.all(AppColors.color2)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -325,7 +324,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(AppColors.color2)),
+                            WidgetStateProperty.all(AppColors.color2)),
                     onPressed: () {
                       deleteCotacao(id);
                       Navigator.of(context).pop();
@@ -371,7 +370,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ElevatedButton(
           onPressed: goToGrafico,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Gráfico",
@@ -382,7 +381,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ElevatedButton(
           onPressed: goToCotacao,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Cotação",
@@ -393,7 +392,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         ElevatedButton(
           onPressed: goToMoedas,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Moedas",

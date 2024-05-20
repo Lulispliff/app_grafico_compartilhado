@@ -4,7 +4,6 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
-import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -82,7 +81,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    "Moeda: ${capitalize(moeda.nome)} - ID: ${moeda.id}",
+                    "Moeda: ${moeda.nome} - ID: ${moeda.id}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: Row(
@@ -142,7 +141,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         ElevatedButton(
           onPressed: goToGrafico,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Gráfico",
@@ -153,7 +152,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         ElevatedButton(
           onPressed: goToCotacao,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Cotação",
@@ -164,7 +163,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         ElevatedButton(
           onPressed: goToMoedas,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Moedas",
@@ -205,7 +204,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.color2)),
+                          WidgetStateProperty.all(AppColors.color2)),
                   child: const Text('Cancelar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -216,7 +215,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.color2)),
+                          WidgetStateProperty.all(AppColors.color2)),
                   child: const Text('Salvar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -244,7 +243,7 @@ class MoedaScreenState extends State<MoedaScreen> {
 
   //UPDATE
   void editMoedaDialog(Moeda moeda) {
-    textController.text = capitalize(moeda.nome);
+    textController.text = moeda.nome;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -272,7 +271,7 @@ class MoedaScreenState extends State<MoedaScreen> {
               TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.color2)),
+                          WidgetStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -284,7 +283,7 @@ class MoedaScreenState extends State<MoedaScreen> {
               TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.color2)),
+                          WidgetStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     context
                         .read<MoedaDatabase>()

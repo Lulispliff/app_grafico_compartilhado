@@ -40,6 +40,19 @@ class CotacaoDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Método para buscar cotações por intervalo de texto
+  Future<List<Cotacoess>> fetchCotacoesByInterval(
+      String nomeMoeda, Duration intervalo) async {
+    DateTime now = DateTime.now();
+    DateTime startDate = now.subtract(intervalo);
+    return await IsarService.isar.cotacoess
+        .filter()
+        .nomeEqualTo(nomeMoeda)
+        .and()
+        .dataBetween(startDate, now)
+        .findAll();
+  }
+
   // Método para deletar uma cotação pelo ID
   Future<void> deleteCotacao(int id) async {
     await IsarService.isar

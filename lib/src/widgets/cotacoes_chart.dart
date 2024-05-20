@@ -1,12 +1,15 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CotacoesChart extends StatelessWidget {
   final List<Cotacoess> cotacoes;
+  final Moeda selectedMoeda;
 
-  const CotacoesChart({super.key, required this.cotacoes});
+  const CotacoesChart(
+      {super.key, required this.cotacoes, required this.selectedMoeda});
 
   @override
   Widget build(BuildContext context) {

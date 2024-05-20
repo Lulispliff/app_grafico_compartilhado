@@ -20,6 +20,9 @@ class GraficoScreen extends StatefulWidget {
 }
 
 class GraficoScreenState extends State<GraficoScreen> {
+  Moeda? selectedMoeda;
+  Duration selectedInterval = const Duration(days: 1); // Default interval
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +75,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 child: ExpansionTile(
                   title: Text(
-                    "Moeda: ${capitalize(moeda.nome)}",
+                    "Moeda: ${moeda.nome}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: const Icon(Icons.arrow_drop_down),
@@ -102,7 +105,7 @@ class GraficoScreenState extends State<GraficoScreen> {
 
               return ListTile(
                 title: Text(
-                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)}",
+                  "Valor: ${valorFormat().format(cotacao.valor)} - Data de registro: ${dateFormat().format(cotacao.data)} - Horario de registro: ${horaFormat().format(cotacao.hora)}",
                   style: const TextStyle(fontSize: 17),
                 ),
               );
@@ -115,24 +118,16 @@ class GraficoScreenState extends State<GraficoScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: 110,
+          height: 100,
           width: 50,
           child: FloatingActionButton(
-            onPressed: () {
-              final cotacaoDataBase = context.read<CotacaoDatabase>();
-              List<Cotacoess> selectedCotacoes =
-                  cotacaoDataBase.currentCotacao.where((cotacao) {
-                return cotacao.isSelected;
-              }).toList();
-
-              _selectInfosChartScreen();
-            },
+            onPressed: _selectInfosChartScreen,
             tooltip: "Gerar gráfico",
             backgroundColor: AppColors.color2,
             shape: const CircleBorder(),
             child: const Icon(Icons.bar_chart_sharp, color: AppColors.color3),
           ),
-        ),
+        )
       ],
     );
   }
@@ -144,7 +139,7 @@ class GraficoScreenState extends State<GraficoScreen> {
         ElevatedButton(
           onPressed: goToGrafico,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Gráfico",
@@ -155,7 +150,7 @@ class GraficoScreenState extends State<GraficoScreen> {
         ElevatedButton(
           onPressed: goToCotacao,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Cotação",
@@ -166,7 +161,7 @@ class GraficoScreenState extends State<GraficoScreen> {
         ElevatedButton(
           onPressed: goToMoeda,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2),
+            backgroundColor: WidgetStateProperty.all(AppColors.color2),
           ),
           child: const Text(
             "Moedas",
@@ -179,53 +174,45 @@ class GraficoScreenState extends State<GraficoScreen> {
 
   Widget _buildTimeChartButtons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("1 H", style: TextStyle(color: Colors.white)),
-      ),
+      _buildTimeButton("1 H", const Duration(hours: 1)),
       const SizedBox(width: 10),
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("1 D", style: TextStyle(color: Colors.white)),
-      ),
+      _buildTimeButton("1 D", const Duration(days: 1)),
       const SizedBox(width: 10),
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("1 S", style: TextStyle(color: Colors.white)),
-      ),
+      _buildTimeButton("1 S", const Duration(days: 7)),
       const SizedBox(width: 10),
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("1 M", style: TextStyle(color: Colors.white)),
-      ),
+      _buildTimeButton("1 M", const Duration(days: 30)),
       const SizedBox(width: 10),
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("6 M", style: TextStyle(color: Colors.white)),
-      ),
+      _buildTimeButton("6 M", const Duration(days: 180)),
       const SizedBox(width: 10),
-      TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.color2)),
-        child: const Text("1 A", style: TextStyle(color: Colors.white)),
-      )
+      _buildTimeButton("1 A", const Duration(days: 365)),
     ]);
+  }
+
+  Widget _buildTimeButton(String label, Duration duration) {
+    return TextButton(
+      onPressed: () {
+        if (selectedInterval != duration) {
+          setState(() {
+            selectedInterval = duration;
+          });
+        }
+      },
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) {
+            if (selectedInterval == duration) {
+              return AppColors.color1; // Cor quando selecionado
+            }
+            return AppColors.color2; // Cor padrão
+          },
+        ),
+      ),
+      child: Text(label, style: const TextStyle(color: Colors.white)),
+    );
   }
 
   void _selectInfosChartScreen() {
     final moedaDataBase = context.read<MoedaDatabase>();
-    Moeda? selectedMoeda;
 
     showDialog(
         context: context,
@@ -255,7 +242,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                   items: moedaDataBase.currentMoeda
                       .map((moeda) => DropdownMenuItem<Moeda>(
                             value: moeda,
-                            child: Text(capitalize(moeda.nome)),
+                            child: Text(moeda.nome),
                           ))
                       .toList(),
                   onChanged: (Moeda? value) {
@@ -275,70 +262,102 @@ class GraficoScreenState extends State<GraficoScreen> {
               ],
             ),
             actions: [
-              const SizedBox(height: 10),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (selectedMoeda == null) {
+                    _erroGraficoDialog(
+                        "Selecione uma moeda para gerar o gráfico.");
+                    return;
+                  }
+                  final cotacaoDataBase = context.read<CotacaoDatabase>();
+                  List<Cotacoess> cotacoes =
+                      await cotacaoDataBase.fetchCotacoesByInterval(
+                          selectedMoeda!.nome, selectedInterval);
+
                   Navigator.of(context).pop();
+
+                  if (cotacoes.isEmpty) {
+                    _erroGraficoDialog(
+                        "Nenhuma cotação encontrada para o intervalo selecionado.");
+                  } else {
+                    _showCotacoesChart(cotacoes);
+                  }
                 },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.color2)),
-                child: const Text("Cancelar",
-                    style: TextStyle(color: Colors.white)),
+                child: const Text(
+                  "Gerar Gráfico",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.color2,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.color2)),
-                child: const Text("OK", style: TextStyle(color: Colors.white)),
-              )
+                child: const Text(
+                  "Voltar",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.color2,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           );
         });
   }
 
-  void _showCotacoesChart(List<Cotacoess> cotacoesSelecionadas) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                CotacoesChart(cotacoes: cotacoesSelecionadas)));
+  void _showCotacoesChart(List<Cotacoess> cotacoes) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CotacoesChart(
+          cotacoes: cotacoes,
+          selectedMoeda: selectedMoeda!,
+        ),
+      ),
+    );
   }
 
-  void _erroGraficoDialog() {
+  void _erroGraficoDialog(String mensagem) {
     showDialog(
         context: context,
         builder: (builder) {
           return AlertDialog(
-            title: const Text("Selecione alguma cotação para gerar o gráfico",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.color2)),
+            backgroundColor: AppColors.color3,
+            title: const Text(
+              "Erro ao gerar gráfico",
+              style: TextStyle(
+                  fontSize: 30,
+                  color: AppColors.color2,
+                  fontWeight: FontWeight.bold),
+            ),
+            content: Text(mensagem,
+                style: const TextStyle(
+                    fontSize: 20,
+                    color: AppColors.color2,
+                    fontWeight: FontWeight.bold)),
             actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.color2)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      "OK",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  "Voltar",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.color2,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           );
         });
+  }
+
+  void goToGrafico() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GraficoScreen()));
   }
 
   void goToCotacao() {
@@ -349,10 +368,5 @@ class GraficoScreenState extends State<GraficoScreen> {
   void goToMoeda() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
-  }
-
-  void goToGrafico() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
   }
 }
