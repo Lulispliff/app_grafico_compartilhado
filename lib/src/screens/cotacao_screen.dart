@@ -19,10 +19,14 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
+  late List<Moeda> currentMoeda;
+
+  late List<Cotacoess> cotacoesDaMoeda;
   @override
   void initState() {
     super.initState();
     readCotacao();
+   
   }
 
   @override
@@ -56,8 +60,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   Widget _buildPrimaryList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
-    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
-
+    currentMoeda = moedaDatabase.currentMoeda;
     return currentMoeda.isEmpty
         ? const Center(
             child: Text("Sua lista de cotações está vazia.",
@@ -87,9 +90,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    List<Cotacoess> cotacoesDaMoeda = moeda.cotacoes;
-
-    return cotacoesDaMoeda.isEmpty
+    final cotacoes = moeda.cotacoes;
+    return cotacoes.isEmpty
         ? const Center(
             child: Text(
               "Essa moeda ainda não possui uma cotação registrada",
@@ -102,9 +104,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         : ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: cotacoesDaMoeda.length,
+            itemCount: cotacoes.length,
             itemBuilder: (context, index) {
-              final cotacao = cotacoesDaMoeda[index];
+              final cotacao = cotacoes[index];
 
               return ListTile(
                 title: Text(

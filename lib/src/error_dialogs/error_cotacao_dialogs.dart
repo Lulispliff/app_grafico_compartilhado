@@ -17,7 +17,7 @@ class CotacaoErroDialog {
                   fontWeight: FontWeight.bold),
             ),
             content: const Text(
-              "Preencha todos os campos para poder adicionar uma cotação.",
+              "Por favor, preencha todos os campos corretamente.",
               style: TextStyle(
                 fontSize: 20,
                 color: AppColors.color2,
