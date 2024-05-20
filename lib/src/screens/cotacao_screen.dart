@@ -132,7 +132,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   void addCotacaoDialog() {
     final moedaDataBase = context.read<MoedaDatabase>();
-    final cotacaoDataBase = context.read<CotacaoDatabase>();
 
     showDialog(
       context: context,
