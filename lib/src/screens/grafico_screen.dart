@@ -7,6 +7,7 @@ import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
+import 'package:app_grafico_compartilhado/src/error_dialogs/error_chart_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -265,8 +266,7 @@ class GraficoScreenState extends State<GraficoScreen> {
               TextButton(
                 onPressed: () async {
                   if (selectedMoeda == null) {
-                    _erroGraficoDialog(
-                        "Selecione uma moeda para gerar o gráfico.");
+                    ChartErroDialog.selecioneUmaMoedaErro(context);
                     return;
                   }
                   final cotacaoDataBase = context.read<CotacaoDatabase>();
