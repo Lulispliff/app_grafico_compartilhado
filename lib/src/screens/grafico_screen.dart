@@ -274,11 +274,12 @@ class GraficoScreenState extends State<GraficoScreen> {
                       await cotacaoDataBase.fetchCotacoesByInterval(
                           selectedMoeda!.nome, selectedInterval);
 
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
 
                   if (cotacoes.isEmpty) {
-                    _erroGraficoDialog(
-                        "Nenhuma cotação encontrada para o intervalo selecionado.");
+                    // ignore: use_build_context_synchronously
+                    ChartErroDialog.cotacaoNaoEncontradaErro(context);
                   } else {
                     _showCotacoesChart(cotacoes);
                   }
@@ -317,42 +318,6 @@ class GraficoScreenState extends State<GraficoScreen> {
         ),
       ),
     );
-  }
-
-  void _erroGraficoDialog(String mensagem) {
-    showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            backgroundColor: AppColors.color3,
-            title: const Text(
-              "Erro ao gerar gráfico",
-              style: TextStyle(
-                  fontSize: 30,
-                  color: AppColors.color2,
-                  fontWeight: FontWeight.bold),
-            ),
-            content: Text(mensagem,
-                style: const TextStyle(
-                    fontSize: 20,
-                    color: AppColors.color2,
-                    fontWeight: FontWeight.bold)),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  "Voltar",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.color2,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          );
-        });
   }
 
   void goToGrafico() {

@@ -1,23 +1,24 @@
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 
-class ChartErroDialog {
-  static void selecioneUmaMoedaErro(BuildContext context) {
+class MoedaErroDialog {
+  static void addMoedaErro(BuildContext context) {
     showDialog(
         context: context,
         builder: (builder) {
           return AlertDialog(
             backgroundColor: AppColors.color3,
             title: const Text(
-              "Erro ao gerar gráfico",
+              "Erro ao adicionar moeda",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 30,
-                  color: AppColors.color2,
-                  fontWeight: FontWeight.bold),
+                fontSize: 30,
+                color: AppColors.color2,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             content: const Text(
-              "Você deve selecionar uma moeda para gerar o gráfico.",
+              "Você deve atribuir um nome para a moeda que está adicionando.",
               style: TextStyle(
                 fontSize: 20,
                 color: AppColors.color2,
@@ -38,27 +39,27 @@ class ChartErroDialog {
         });
   }
 
-  static void cotacaoNaoEncontradaErro(BuildContext context) {
+  static void editMoedaErro(BuildContext context) {
     showDialog(
         context: context,
         builder: (builder) {
           return AlertDialog(
             backgroundColor: AppColors.color3,
             title: const Text(
-              "Erro ao gerar gráfico",
+              "Erro ao editar moeda",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 30,
-                  color: AppColors.color2,
-                  fontWeight: FontWeight.bold),
-            ),
-            content: const Text(
-              "Nenhuma cotação foi encontrada no período de tempo selecionado.",
-              style: TextStyle(
-                fontSize: 20,
+                fontSize: 30,
                 color: AppColors.color2,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            content: const Text(
+              "Você deve inserior um novo nome para a moeda que está editando.",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: AppColors.color2,
+                  fontWeight: FontWeight.bold),
             ),
             actions: [
               TextButton(

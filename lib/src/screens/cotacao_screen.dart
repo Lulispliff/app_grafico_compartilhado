@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/error_dialogs/error_cotacao_dialogs.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
@@ -247,12 +248,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          "Por favor, preencha todos os campos corretamente."),
-                    ),
-                  );
+                  CotacaoErroDialog.addCotacaoErro(context);
                 }
               },
               child: const Text(

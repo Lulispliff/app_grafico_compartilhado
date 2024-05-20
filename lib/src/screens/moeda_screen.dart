@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/error_dialogs/error_moeda_dialogs.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
@@ -216,9 +217,15 @@ class MoedaScreenState extends State<MoedaScreen> {
                   child: const Text('Salvar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    context.read<MoedaDatabase>().addMoeda(textController.text);
-                    Navigator.pop(context);
-                    textController.clear();
+                    if (textController.text.trim().isEmpty) {
+                      MoedaErroDialog.addMoedaErro(context);
+                    } else {
+                      context
+                          .read<MoedaDatabase>()
+                          .addMoeda(textController.text);
+                      Navigator.pop(context);
+                      textController.clear();
+                    }
                   },
                 ),
               ],
@@ -277,11 +284,15 @@ class MoedaScreenState extends State<MoedaScreen> {
                       backgroundColor:
                           WidgetStateProperty.all(AppColors.color2)),
                   onPressed: () {
-                    context
-                        .read<MoedaDatabase>()
-                        .updateMoeda(moeda.id, textController.text);
-                    textController.clear();
-                    Navigator.pop(context);
+                    if (textController.text.trim().isEmpty) {
+                      MoedaErroDialog.editMoedaErro(context);
+                    } else {
+                      context
+                          .read<MoedaDatabase>()
+                          .updateMoeda(moeda.id, textController.text);
+                      textController.clear();
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text("Salvar",
                       style: TextStyle(color: Colors.white)))
