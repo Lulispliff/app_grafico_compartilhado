@@ -190,6 +190,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   preffixIcon: const Icon(Icons.calendar_month),
                   cursorColor: Colors.grey,
                   controller: dataController,
+                  formatters: [StringUtils.maskData],
                 ),
                 const SizedBox(height: 10),
                 Input(
@@ -199,6 +200,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   cursorColor: Colors.grey,
                   borderColor: Colors.grey,
                   controller: horaController,
+                  formatters: [StringUtils.maskHorario],
                 ),
               ],
             );
