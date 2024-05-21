@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
@@ -22,7 +24,7 @@ class GraficoScreen extends StatefulWidget {
 
 class GraficoScreenState extends State<GraficoScreen> {
   Moeda? selectedMoeda;
-  Duration selectedInterval = const Duration(days: 1); // Default interval
+  Duration selectedInterval = const Duration(days: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -182,40 +184,42 @@ class GraficoScreenState extends State<GraficoScreen> {
 
   Widget _buildTimeChartButtons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      _buildTimeButton("1 H", const Duration(hours: 1)),
+      _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
       const SizedBox(width: 10),
-      _buildTimeButton("1 D", const Duration(days: 1)),
+      _buildTimeButton("1 S", "1 Semana", const Duration(days: 7)),
       const SizedBox(width: 10),
-      _buildTimeButton("1 S", const Duration(days: 7)),
+      _buildTimeButton("1 M", "1 Mês", const Duration(days: 30)),
       const SizedBox(width: 10),
-      _buildTimeButton("1 M", const Duration(days: 30)),
+      _buildTimeButton("6 M", "6 Meses", const Duration(days: 180)),
       const SizedBox(width: 10),
-      _buildTimeButton("6 M", const Duration(days: 180)),
-      const SizedBox(width: 10),
-      _buildTimeButton("1 A", const Duration(days: 365)),
+      _buildTimeButton("1 A", "1 Ano", const Duration(days: 365)),
     ]);
   }
 
-  Widget _buildTimeButton(String label, Duration duration) {
-    return TextButton(
-      onPressed: () {
-        if (selectedInterval != duration) {
-          setState(() {
-            selectedInterval = duration;
-          });
-        }
-      },
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.resolveWith<Color>(
-          (Set<WidgetState> states) {
-            if (selectedInterval == duration) {
-              return AppColors.color1; // Cor quando selecionado
-            }
-            return AppColors.color2; // Cor padrão
-          },
+  Widget _buildTimeButton(
+      String label, String tooltipMessage, Duration duration) {
+    return Tooltip(
+      message: tooltipMessage,
+      child: TextButton(
+        onPressed: () {
+          if (selectedInterval != duration) {
+            setState(() {
+              selectedInterval = duration;
+            });
+          }
+        },
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (selectedInterval == duration) {
+                return AppColors.color1; // Cor quando selecionado
+              }
+              return AppColors.color2; // Cor padrão
+            },
+          ),
         ),
+        child: Text(label, style: const TextStyle(color: Colors.white)),
       ),
-      child: Text(label, style: const TextStyle(color: Colors.white)),
     );
   }
 
@@ -228,7 +232,7 @@ class GraficoScreenState extends State<GraficoScreen> {
           return AlertDialog(
             backgroundColor: AppColors.color3,
             title: const Text(
-              "Selecione uma moeda registrada",
+              "Informações do gráfico",
               style: TextStyle(
                   fontSize: 30,
                   color: AppColors.color2,
@@ -240,7 +244,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 DropdownButtonFormField<Moeda>(
                   decoration: const InputDecoration(
                     focusColor: Colors.transparent,
-                    labelText: "Moedas registradas",
+                    labelText: "Selecione uma moeda",
                     labelStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
@@ -259,46 +263,17 @@ class GraficoScreenState extends State<GraficoScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 10),
-                const Text("Selecione um periodo de tempo",
+                const SizedBox(height: 20),
+                const Text("Periodo de tempo",
                     style: TextStyle(
                         fontSize: 30,
                         color: AppColors.color2,
                         fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 _buildTimeChartButtons(context)
               ],
             ),
             actions: [
-              TextButton(
-                onPressed: () async {
-                  if (selectedMoeda == null) {
-                    ChartErroDialog.selecioneUmaMoedaErro(context);
-                    return;
-                  }
-                  final cotacaoDataBase = context.read<CotacaoDatabase>();
-                  List<Cotacoess> cotacoes =
-                      await cotacaoDataBase.fetchCotacoesByInterval(
-                          selectedMoeda!.nome, selectedInterval);
-
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
-
-                  if (cotacoes.isEmpty) {
-                    // ignore: use_build_context_synchronously
-                    ChartErroDialog.cotacaoNaoEncontradaErro(context);
-                  } else {
-                    _showCotacoesChart(cotacoes);
-                  }
-                },
-                child: const Text(
-                  "Gerar Gráfico",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.color2,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -311,9 +286,39 @@ class GraficoScreenState extends State<GraficoScreen> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  _generateChart();
+                },
+                child: const Text(
+                  "Gerar Gráfico",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.color2,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           );
         });
+  }
+
+  Future<void> _generateChart() async {
+    if (selectedMoeda == null) {
+      ChartErroDialog.selecioneUmaMoedaErro(context);
+    }
+
+    final cotacaoDatabase = context.read<CotacaoDatabase>();
+    List<Cotacoess> cotacoes = await cotacaoDatabase.fetchCotacoesByInterval(
+        selectedMoeda!.nome, selectedInterval);
+
+    Navigator.of(context).pop();
+
+    if (cotacoes.isEmpty) {
+      ChartErroDialog.cotacaoNaoEncontradaErro(context);
+    }
+
+    _showCotacoesChart(cotacoes);
   }
 
   void _showCotacoesChart(List<Cotacoess> cotacoes) {
