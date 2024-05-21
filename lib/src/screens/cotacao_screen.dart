@@ -100,7 +100,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         return cotacoes.isEmpty
             ? const Center(
                 child: Text(
-                  "Essa moeda ainda não possui uma cotação registrada",
+                  "Essa moeda ainda não possui nenhuma cotação registrada",
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
