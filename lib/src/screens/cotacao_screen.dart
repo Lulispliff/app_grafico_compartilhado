@@ -26,7 +26,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
-   
   }
 
   @override
@@ -321,7 +320,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: 110,
+          height: 50,
           width: 50,
           child: FloatingActionButton(
             onPressed: () {

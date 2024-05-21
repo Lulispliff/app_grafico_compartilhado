@@ -119,7 +119,7 @@ class GraficoScreenState extends State<GraficoScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: 100,
+          height: 50,
           width: 50,
           child: FloatingActionButton(
             onPressed: _selectInfosChartScreen,

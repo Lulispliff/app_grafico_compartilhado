@@ -121,7 +121,7 @@ class MoedaScreenState extends State<MoedaScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: 110,
+          height: 50,
           width: 50,
           child: FloatingActionButton(
             onPressed: () {
