@@ -55,7 +55,7 @@ class MoedaErroDialog {
               ),
             ),
             content: const Text(
-              "Você deve inserior um novo nome para a moeda que está editando.",
+              "Você deve inserir um novo nome para a moeda que está editando.",
               style: TextStyle(
                   fontSize: 20,
                   color: AppColors.color2,

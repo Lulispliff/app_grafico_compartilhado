@@ -53,6 +53,14 @@ class CotacaoDatabase extends ChangeNotifier {
         .findAll();
   }
 
+  // Método para buscar cotações por moeda
+  Future<List<Cotacoess>> fetchCotacoesByMoeda(String nomeMoeda) async {
+    return await IsarService.isar.cotacoess
+        .filter()
+        .nomeEqualTo(nomeMoeda)
+        .findAll();
+  }
+
   // Método para deletar uma cotação pelo ID
   Future<void> deleteCotacao(int id) async {
     await IsarService.isar
