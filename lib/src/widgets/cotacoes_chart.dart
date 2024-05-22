@@ -20,11 +20,15 @@ class CotacoesChart extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.color1,
         centerTitle: true,
-        title: const Text("Gráfico de cotações"),
+        title: Text("Gráfico do ${selectedMoeda.nome}"),
         titleTextStyle: const TextStyle(
           color: AppColors.color2,
           fontSize: 30,
           fontWeight: FontWeight.bold,
+        ),
+        iconTheme: const IconThemeData(
+          color: AppColors.color2,
+          size: 30,
         ),
       ),
       body: Padding(

@@ -185,13 +185,13 @@ class GraficoScreenState extends State<GraficoScreen> {
   Widget _buildTimeChartButtons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
-      const SizedBox(width: 10),
+      const SizedBox(width: 5),
       _buildTimeButton("1 S", "1 Semana", const Duration(days: 7)),
-      const SizedBox(width: 10),
+      const SizedBox(width: 5),
       _buildTimeButton("1 M", "1 Mês", const Duration(days: 30)),
-      const SizedBox(width: 10),
+      const SizedBox(width: 5),
       _buildTimeButton("6 M", "6 Meses", const Duration(days: 180)),
-      const SizedBox(width: 10),
+      const SizedBox(width: 5),
       _buildTimeButton("1 A", "1 Ano", const Duration(days: 365)),
     ]);
   }
@@ -225,82 +225,82 @@ class GraficoScreenState extends State<GraficoScreen> {
 
   void _selectInfosChartScreen() {
     final moedaDataBase = context.read<MoedaDatabase>();
-
     showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            backgroundColor: AppColors.color3,
-            title: const Text(
-              "Informações do gráfico",
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          backgroundColor: AppColors.color3,
+          title: const Center(
+            child: Text(
+              "Dados do gráfico",
               style: TextStyle(
                   fontSize: 30,
                   color: AppColors.color2,
                   fontWeight: FontWeight.bold),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                DropdownButtonFormField<Moeda>(
-                  decoration: const InputDecoration(
-                    focusColor: Colors.transparent,
-                    labelText: "Selecione uma moeda",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<Moeda>(
+                decoration: const InputDecoration(
+                  focusColor: Colors.transparent,
+                  labelText: "Selecione uma moeda",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
-                  items: moedaDataBase.currentMoeda
-                      .map((moeda) => DropdownMenuItem<Moeda>(
-                            value: moeda,
-                            child: Text(StringUtils.capitalize(moeda.nome)),
-                          ))
-                      .toList(),
-                  onChanged: (Moeda? value) {
-                    setState(() {
-                      selectedMoeda = value;
-                    });
-                  },
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
                 ),
-                const SizedBox(height: 20),
-                const Text("Periodo de tempo",
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: AppColors.color2,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(height: 15),
-                _buildTimeChartButtons(context)
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+                items: moedaDataBase.currentMoeda
+                    .map((moeda) => DropdownMenuItem<Moeda>(
+                          value: moeda,
+                          child: Text(StringUtils.capitalize(moeda.nome)),
+                        ))
+                    .toList(),
+                onChanged: (Moeda? value) {
+                  setState(() {
+                    selectedMoeda = value;
+                  });
                 },
-                child: const Text(
-                  "Voltar",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.color2,
-                      fontWeight: FontWeight.bold),
-                ),
               ),
-              TextButton(
-                onPressed: () {
-                  _generateChart();
-                },
-                child: const Text(
-                  "Gerar Gráfico",
+              const SizedBox(height: 15),
+              const Text("Periodo de tempo",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 30,
                       color: AppColors.color2,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+              _buildTimeChartButtons(context)
             ],
-          );
-        });
+          ),
+          actions: [
+            TextButton(
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              onPressed: Navigator.of(context).pop,
+              child: const Text(
+                "Cancelar",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextButton(
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              onPressed: _generateChart,
+              child: const Text(
+                "Gerar Gráfico",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _generateChart() async {
