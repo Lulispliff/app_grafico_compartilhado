@@ -4,8 +4,7 @@ import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
@@ -47,7 +46,7 @@ class GraficoScreenState extends State<GraficoScreen> {
               child: _buildPrimaryList(),
             ),
             const SizedBox(height: 16),
-            _buildNavigatorButtons(),
+            NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
       ),
@@ -303,6 +302,17 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
+  void _showCotacoesChart(List<Cotacoess> cotacoes) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CotacoesChart(
+          cotacoes: cotacoes,
+          selectedMoeda: selectedMoeda!,
+        ),
+      ),
+    );
+  }
+
   Future<void> _generateChart() async {
     if (selectedMoeda == null) {
       ChartErroDialog.selecioneUmaMoedaErro(context);
@@ -321,29 +331,44 @@ class GraficoScreenState extends State<GraficoScreen> {
     }
   }
 
-  void _showCotacoesChart(List<Cotacoess> cotacoes) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CotacoesChart(
-          cotacoes: cotacoes,
-          selectedMoeda: selectedMoeda!,
+  Widget _buildTimeChartButtons(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
+      const SizedBox(width: 10),
+      _buildTimeButton("1 S", "1 Semana", const Duration(days: 7)),
+      const SizedBox(width: 10),
+      _buildTimeButton("1 M", "1 Mês", const Duration(days: 30)),
+      const SizedBox(width: 10),
+      _buildTimeButton("6 M", "6 Meses", const Duration(days: 180)),
+      const SizedBox(width: 10),
+      _buildTimeButton("1 A", "1 Ano", const Duration(days: 365)),
+    ]);
+  }
+
+  Widget _buildTimeButton(
+      String label, String tooltipMessage, Duration duration) {
+    return Tooltip(
+      message: tooltipMessage,
+      child: TextButton(
+        onPressed: () {
+          if (selectedInterval != duration) {
+            setState(() {
+              selectedInterval = duration;
+            });
+          }
+        },
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (selectedInterval == duration) {
+                return AppColors.color1; // Cor quando selecionado
+              }
+              return AppColors.color2; // Cor padrão
+            },
+          ),
         ),
+        child: Text(label, style: const TextStyle(color: Colors.white)),
       ),
     );
-  }
-
-  void goToGrafico() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
-  }
-
-  void goToCotacao() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
-  }
-
-  void goToMoeda() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
   }
 }
