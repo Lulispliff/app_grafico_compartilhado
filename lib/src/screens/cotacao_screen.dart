@@ -247,7 +247,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            const SizedBox(width: 10),
             TextButton(
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(AppColors.color2),
