@@ -1,8 +1,11 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:app_grafico_compartilhado/src/error_dialogs/error_cotacao_dialogs.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
+import 'package:app_grafico_compartilhado/src/widgets/date_picker.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
@@ -159,9 +162,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     final moedaDataBase = context.read<MoedaDatabase>();
     final cotacaoDataBase = context.read<CotacaoDatabase>();
 
+    DateTime? selectedDate;
     Moeda? selectedMoeda;
     TextEditingController valorController = TextEditingController();
-    TextEditingController dataController = TextEditingController();
     TextEditingController horaController = TextEditingController();
 
     showDialog(
@@ -213,13 +216,14 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   controller: valorController,
                 ),
                 const SizedBox(height: 10),
-                Input(
+                DatePickerWidget(
                   label: "Data de registro",
-                  labelTextColor: Colors.grey,
-                  preffixIcon: const Icon(Icons.calendar_month),
-                  cursorColor: Colors.grey,
-                  controller: dataController,
-                  formatters: [StringUtils.maskData],
+                  data: selectedDate,
+                  onChange: (DateTime date) async {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  },
                 ),
                 const SizedBox(height: 10),
                 Input(
@@ -255,27 +259,14 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 String valorText = valorController.text.trim();
                 double valor = double.tryParse(valorText) ?? 0.0;
 
-                String dataText = dataController.text.trim();
-                DateTime? data;
-                try {
-                  data = dateFormat().parse(dataText);
-                } catch (e) {
-                  data = null;
-                }
-
                 String horaText = horaController.text.trim();
-                DateTime? hora;
-                try {
-                  hora = horaFormat().parse(horaText);
-                } catch (e) {
-                  hora = null;
-                }
-                //showDatePicker(context: context, firstDate: firstDate, lastDate: lastDate)
-                if (selectedMoeda != null && data != null && hora != null) {
-                  await cotacaoDataBase.addCotacao(
-                      selectedMoeda!.nome, data, hora, valor, selectedMoeda!);
+                DateTime hora = horaFormat().parse(horaText);
 
-                  // ignore: use_build_context_synchronously
+                if (selectedMoeda != null &&
+                    selectedDate != null &&
+                    hora != null) {
+                  await cotacaoDataBase.addCotacao(selectedMoeda!.nome,
+                      selectedDate!, hora, valor, selectedMoeda!);
                   Navigator.of(context).pop();
                 } else {
                   CotacaoErroDialog.addCotacaoErro(context);

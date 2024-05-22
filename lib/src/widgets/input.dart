@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -35,8 +36,8 @@ class Input extends StatefulWidget {
   final bool haveBorder;
   final Color? labelTextColor;
   final Color? cursorColor;
-  final Color borderColor; // Nova propriedade
-  final Color focusedBorderColor; // Nova propriedade
+  final Color borderColor;
+  final Color focusedBorderColor;
 
   const Input({
     super.key,
@@ -171,7 +172,7 @@ class _InputState extends State<Input> {
               prefixText: widget.preffixText,
               fillColor: tema?.brightness == Brightness.dark
                   ? Colors.black12
-                  : Colors.grey[100],
+                  : AppColors.color3,
               filled: widget.readonly,
               hintMaxLines: 1,
               label: widget.label == null
