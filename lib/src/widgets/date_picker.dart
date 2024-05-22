@@ -23,7 +23,7 @@ class DatePickerWidget extends StatelessWidget {
     return GestureDetector(
       onTap: enabled
           ? () async {
-              await _showPicker(context);
+              await _showDatePicker(context);
             }
           : null,
       child: Input(
@@ -34,7 +34,7 @@ class DatePickerWidget extends StatelessWidget {
           mouseCursor: SystemMouseCursors.click,
           onTap: enabled
               ? () async {
-                  await _showPicker(context);
+                  await _showDatePicker(context);
                 }
               : null,
           child: const Icon(Icons.calendar_month),
@@ -44,7 +44,7 @@ class DatePickerWidget extends StatelessWidget {
     );
   }
 
-  Future<void> _showPicker(BuildContext context) async {
+  Future<void> _showDatePicker(BuildContext context) async {
     DateTime? dateValue = await showDatePicker(
       context: context,
       initialDate: data ?? DateTime.now(),

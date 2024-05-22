@@ -2,14 +2,14 @@ import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 
-class HourPickerWidget extends StatelessWidget {
+class TimePickerWidget extends StatelessWidget {
   final String label;
   final DateTime? hora;
   final bool pickTime;
   final bool enabled;
   final Future<void> Function(DateTime) onChange;
 
-  const HourPickerWidget({
+  const TimePickerWidget({
     super.key,
     required this.label,
     this.hora,
@@ -23,7 +23,7 @@ class HourPickerWidget extends StatelessWidget {
     return GestureDetector(
       onTap: enabled
           ? () async {
-              await _showTimePikcer(context);
+              await _showTimePicker(context);
             }
           : null,
       child: Input(
@@ -34,7 +34,7 @@ class HourPickerWidget extends StatelessWidget {
           mouseCursor: SystemMouseCursors.click,
           onTap: enabled
               ? () async {
-                  await _showTimePikcer(context);
+                  await _showTimePicker(context);
                 }
               : null,
           child: const Icon(Icons.alarm_outlined),
@@ -44,13 +44,25 @@ class HourPickerWidget extends StatelessWidget {
     );
   }
 
-  Future<void> _showTimePikcer(BuildContext context) async {
-    DateTime? horarioValue = null;
+  Future<void> _showTimePicker(BuildContext context) async {
+    TimeOfDay? horarioValue = await showTimePicker(
+      context: context,
+      initialTime: hora != null
+          ? TimeOfDay(hour: hora!.hour, minute: hora!.minute)
+          : TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+    await changeHorario(horarioValue);
   }
 
-  Future<void> changeHorario(DateTime? horarioValue) async {
+  Future<void> changeHorario(TimeOfDay? horarioValue) async {
     if (horarioValue != null) {
-      await onChange(DateTime(horarioValue.hour, horarioValue.minute));
+      await onChange(
+        DateTime(
+          horarioValue.hour,
+          horarioValue.minute,
+        ),
+      );
     }
   }
 }
