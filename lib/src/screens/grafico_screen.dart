@@ -316,9 +316,9 @@ class GraficoScreenState extends State<GraficoScreen> {
 
     if (cotacoes.isEmpty) {
       ChartErroDialog.cotacaoNaoEncontradaErro(context);
+    } else {
+      _showCotacoesChart(cotacoes);
     }
-
-    _showCotacoesChart(cotacoes);
   }
 
   void _showCotacoesChart(List<Cotacoess> cotacoes) {
