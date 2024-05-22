@@ -114,6 +114,18 @@ class CotacoesChart extends StatelessWidget {
           ),
         ),
       ],
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+            return touchedSpots.map((touchedSpot) {
+              return LineTooltipItem(
+                'R\$ ${touchedSpot.y.toStringAsFixed(2)}', // Formato do texto do tooltip
+                const TextStyle(color: Colors.white),
+              );
+            }).toList();
+          },
+        ),
+      ),
     );
   }
 
