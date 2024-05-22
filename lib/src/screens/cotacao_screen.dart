@@ -3,8 +3,7 @@ import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
@@ -49,7 +48,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               child: _buildPrimaryList(),
             ),
             const SizedBox(height: 16),
-            _buildNavigatorButtons(),
+            NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
       ),
@@ -132,6 +131,27 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 },
               );
       },
+    );
+  }
+
+  Widget _buildAddCotacaoButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 50,
+          width: 50,
+          child: FloatingActionButton(
+            onPressed: () {
+              addCotacaoDialog();
+            },
+            tooltip: "Adicionar cotação",
+            backgroundColor: AppColors.color2,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add, color: AppColors.color3),
+          ),
+        ),
+      ],
     );
   }
 
@@ -273,11 +293,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     );
   }
 
-  //DELETE
-  void deleteCotacao(int id) {
-    context.read<CotacaoDatabase>().deleteCotacao(id);
-  }
-
   void deleteCotacaoDialog(int id) {
     showDialog(
         context: context,
@@ -326,68 +341,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         });
   }
 
-  Widget _buildAddCotacaoButton() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        SizedBox(
-          height: 50,
-          width: 50,
-          child: FloatingActionButton(
-            onPressed: () {
-              addCotacaoDialog();
-            },
-            tooltip: "Adicionar cotação",
-            backgroundColor: AppColors.color2,
-            shape: const CircleBorder(),
-            child: const Icon(Icons.add, color: AppColors.color3),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNavigatorButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        ElevatedButton(
-          onPressed: goToGrafico,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Gráfico",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToCotacao,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Cotação",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToMoedas,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Moedas",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-
   //READ
   void readCotacao() {
     context.read<CotacaoDatabase>().fetchCotacoes();
@@ -397,19 +350,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     context.read<MoedaDatabase>().fetchMoedas();
   }
 
-  // BOTOES DE NAVEGAÇAO
-  void goToGrafico() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
-  }
-
-  void goToCotacao() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
-  }
-
-  void goToMoedas() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
+  //DELETE
+  void deleteCotacao(int id) {
+    context.read<CotacaoDatabase>().deleteCotacao(id);
   }
 }

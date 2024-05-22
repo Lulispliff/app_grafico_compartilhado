@@ -2,9 +2,8 @@ import 'package:app_grafico_compartilhado/src/error_dialogs/error_moeda_dialogs.
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
+import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +48,11 @@ class MoedaScreenState extends State<MoedaScreen> {
               child: _buildMoedasList(),
             ),
             const SizedBox(height: 16),
-            _buildNavigatorButtons(),
+            NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
       ),
-      floatingActionButton: _buildAddMoedaDialog(),
+      floatingActionButton: _buildAddMoedaButton(),
     );
   }
 
@@ -116,7 +115,7 @@ class MoedaScreenState extends State<MoedaScreen> {
           );
   }
 
-  Widget _buildAddMoedaDialog() {
+  Widget _buildAddMoedaButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -125,7 +124,7 @@ class MoedaScreenState extends State<MoedaScreen> {
           width: 50,
           child: FloatingActionButton(
             onPressed: () {
-              addMoedaDialog();
+              _addMoedaDialog();
             },
             tooltip: "Adicionar moeda",
             backgroundColor: AppColors.color2,
@@ -137,48 +136,7 @@ class MoedaScreenState extends State<MoedaScreen> {
     );
   }
 
-  Widget _buildNavigatorButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: goToGrafico,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Gráfico",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToCotacao,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Cotação",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToMoedas,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Moedas",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-
-  //CREATE
-  void addMoedaDialog() {
+  void _addMoedaDialog() {
     showDialog(
       context: context,
       builder: (context) {
@@ -236,16 +194,6 @@ class MoedaScreenState extends State<MoedaScreen> {
     );
   }
 
-  //READ
-  void readMoeda() {
-    context.read<MoedaDatabase>().fetchMoedas();
-  }
-
-  void readCotacao() {
-    context.read<CotacaoDatabase>().fetchCotacoes();
-  }
-
-  //UPDATE
   void editMoedaDialog(Moeda moeda) {
     textController.text = StringUtils.capitalize(moeda.nome);
     showDialog(
@@ -303,11 +251,6 @@ class MoedaScreenState extends State<MoedaScreen> {
     );
   }
 
-  //DELETE
-  void deleteMoeda(int id) {
-    context.read<MoedaDatabase>().deleteMoeda(id);
-  }
-
   void deleteMoedaDialog(int id) {
     showDialog(
         context: context,
@@ -350,20 +293,17 @@ class MoedaScreenState extends State<MoedaScreen> {
         });
   }
 
-  //BOTOES DE NAVEGAÇAO
-
-  void goToGrafico() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
+  //READ
+  void readMoeda() {
+    context.read<MoedaDatabase>().fetchMoedas();
   }
 
-  void goToCotacao() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+  void readCotacao() {
+    context.read<CotacaoDatabase>().fetchCotacoes();
   }
 
-  void goToMoedas() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
+  //DELETE
+  void deleteMoeda(int id) {
+    context.read<MoedaDatabase>().deleteMoeda(id);
   }
 }
