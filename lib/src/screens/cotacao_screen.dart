@@ -115,7 +115,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
                   return ListTile(
                     title: Text(
-                      "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                      "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                       style: const TextStyle(fontSize: 17),
                     ),
                     trailing: IconButton(
