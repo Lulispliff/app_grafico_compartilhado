@@ -141,46 +141,6 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
-  Widget _buildNavigatorButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: goToGrafico,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Gráfico",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToCotacao,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Cotação",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: goToMoeda,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
-          ),
-          child: const Text(
-            "Moedas",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildTimeChartButtons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
@@ -329,46 +289,5 @@ class GraficoScreenState extends State<GraficoScreen> {
     } else {
       _showCotacoesChart(cotacoes);
     }
-  }
-
-  Widget _buildTimeChartButtons(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
-      const SizedBox(width: 10),
-      _buildTimeButton("1 S", "1 Semana", const Duration(days: 7)),
-      const SizedBox(width: 10),
-      _buildTimeButton("1 M", "1 Mês", const Duration(days: 30)),
-      const SizedBox(width: 10),
-      _buildTimeButton("6 M", "6 Meses", const Duration(days: 180)),
-      const SizedBox(width: 10),
-      _buildTimeButton("1 A", "1 Ano", const Duration(days: 365)),
-    ]);
-  }
-
-  Widget _buildTimeButton(
-      String label, String tooltipMessage, Duration duration) {
-    return Tooltip(
-      message: tooltipMessage,
-      child: TextButton(
-        onPressed: () {
-          if (selectedInterval != duration) {
-            setState(() {
-              selectedInterval = duration;
-            });
-          }
-        },
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith<Color>(
-            (Set<WidgetState> states) {
-              if (selectedInterval == duration) {
-                return AppColors.color1; // Cor quando selecionado
-              }
-              return AppColors.color2; // Cor padrão
-            },
-          ),
-        ),
-        child: Text(label, style: const TextStyle(color: Colors.white)),
-      ),
-    );
   }
 }
