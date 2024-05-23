@@ -29,7 +29,7 @@ class MoedaScreenState extends State<MoedaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.color3,
+      backgroundColor: AppColors.color4,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.color1,
@@ -133,7 +133,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
                 child:
-                    const Icon(FontAwesomeIcons.coins, color: AppColors.color3),
+                    const Icon(FontAwesomeIcons.coins, color: AppColors.color4),
               ),
             ),
           ],
@@ -147,7 +147,7 @@ class MoedaScreenState extends State<MoedaScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.color3,
+          backgroundColor: AppColors.color4,
           title: const Text("Adicionar Moeda",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -207,7 +207,7 @@ class MoedaScreenState extends State<MoedaScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.color3,
+        backgroundColor: AppColors.color4,
         title: const Text("Editar moeda",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -266,7 +266,7 @@ class MoedaScreenState extends State<MoedaScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: AppColors.color3,
+            backgroundColor: AppColors.color4,
             title: const Text("Deseja mesmo excluir essa moeda ?",
                 style: TextStyle(
                     color: AppColors.color2,

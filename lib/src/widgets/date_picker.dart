@@ -58,7 +58,7 @@ class DatePickerWidget extends StatelessWidget {
             data: ThemeData().copyWith(
                 colorScheme: const ColorScheme.light(primary: AppColors.color2),
                 textSelectionTheme: const TextSelectionThemeData(
-                  selectionColor: AppColors.color4,
+                  selectionColor: AppColors.color5,
                   cursorColor: Colors.grey,
                 ),
                 datePickerTheme: const DatePickerThemeData(
