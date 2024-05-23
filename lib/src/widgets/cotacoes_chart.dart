@@ -116,6 +116,7 @@ class CotacoesChart extends StatelessWidget {
       ],
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
+          getTooltipColor: (touchedSpot) => AppColors.color3,
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
               return LineTooltipItem(
