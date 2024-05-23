@@ -1,13 +1,16 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/isar_service.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
-import 'package:flutter/material.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await IsarService.initialize();
+  Intl.defaultLocale = 'pt_BR';
 
   runApp(
     MultiProvider(
@@ -25,9 +28,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: MoedaScreen(),
+      home: const MoedaScreen(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
+      locale: const Locale('pt', 'BR'),
     );
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:app_grafico_compartilhado/src/error_dialogs/error_cotacao_dialogs.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
