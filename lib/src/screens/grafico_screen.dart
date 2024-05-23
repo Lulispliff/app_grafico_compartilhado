@@ -32,7 +32,7 @@ class GraficoScreenState extends State<GraficoScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.color1,
         centerTitle: true,
-        title: const Text("Gráfico de cotações"),
+        title: const Text("Gráfico"),
         titleTextStyle: const TextStyle(
             color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
       ),
