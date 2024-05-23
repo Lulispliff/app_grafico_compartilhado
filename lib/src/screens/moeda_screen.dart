@@ -46,7 +46,6 @@ class MoedaScreenState extends State<MoedaScreen> {
             Expanded(
               child: _buildMoedasList(),
             ),
-            NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
       ),
@@ -117,18 +116,27 @@ class MoedaScreenState extends State<MoedaScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SizedBox(
-          height: 50,
-          width: 50,
-          child: FloatingActionButton(
-            onPressed: () {
-              _addMoedaDialog();
-            },
-            tooltip: "Adicionar moeda",
-            backgroundColor: AppColors.color2,
-            shape: const CircleBorder(),
-            child: const Icon(FontAwesomeIcons.coins, color: AppColors.color3),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              child: NavigatorButtons.buildNavigatorButtons(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  _addMoedaDialog();
+                },
+                tooltip: "Adicionar moeda",
+                backgroundColor: AppColors.color2,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(FontAwesomeIcons.coins, color: AppColors.color3),
+              ),
+            ),
+          ],
         ),
       ],
     );

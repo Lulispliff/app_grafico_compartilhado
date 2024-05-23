@@ -50,7 +50,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             Expanded(
               child: _buildPrimaryList(),
             ),
-            NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
       ),
@@ -140,18 +139,26 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SizedBox(
-          height: 50,
-          width: 50,
-          child: FloatingActionButton(
-            onPressed: () {
-              addCotacaoDialog();
-            },
-            tooltip: "Adicionar cotação",
-            backgroundColor: AppColors.color2,
-            shape: const CircleBorder(),
-            child: const Icon(Icons.add, color: AppColors.color3),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              child: NavigatorButtons.buildNavigatorButtons(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  addCotacaoDialog();
+                },
+                tooltip: "Adicionar cotação",
+                backgroundColor: AppColors.color2,
+                shape: const CircleBorder(),
+                child: const Icon(Icons.add, color: AppColors.color3),
+              ),
+            ),
+          ],
         ),
       ],
     );
