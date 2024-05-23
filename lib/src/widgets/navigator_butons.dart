@@ -52,17 +52,74 @@ class NavigatorButtons {
   }
 
   static void goToGrafico(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GraficoScreen()));
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const GraficoScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.easeInOut;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return ScaleTransition(
+            scale: animation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   static void goToCotacao(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CotacaoScreen()));
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const CotacaoScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.easeInOut;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   static void goToMoedas(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const MoedaScreen()));
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const MoedaScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.easeInOut;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 }
