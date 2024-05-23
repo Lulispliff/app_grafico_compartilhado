@@ -8,6 +8,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/date_picker.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
+import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -161,10 +162,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     final moedaDataBase = context.read<MoedaDatabase>();
     final cotacaoDataBase = context.read<CotacaoDatabase>();
 
+    DateTime? selectedHorario;
     DateTime? selectedData;
     Moeda? selectedMoeda;
     TextEditingController valorController = TextEditingController();
-    TextEditingController horaController = TextEditingController();
 
     showDialog(
       context: context,
@@ -225,14 +226,14 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Input(
+                TimePickerWidget(
                   label: "Horario de registro",
-                  labelTextColor: Colors.grey,
-                  preffixIcon: const Icon(Icons.alarm_outlined),
-                  cursorColor: Colors.grey,
-                  borderColor: Colors.grey,
-                  controller: horaController,
-                  formatters: [StringUtils.maskHorario],
+                  hora: selectedHorario,
+                  onChange: (DateTime hora) async {
+                    setState(() {
+                      selectedHorario = hora;
+                    });
+                  },
                 ),
               ],
             );
@@ -258,14 +259,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 String valorText = valorController.text.trim();
                 double valor = double.tryParse(valorText) ?? 0.0;
 
-                String horaText = horaController.text.trim();
-                DateTime hora = horaFormat().parse(horaText);
-
                 if (selectedMoeda != null &&
                     selectedData != null &&
-                    hora != null) {
+                    selectedHorario != null) {
                   await cotacaoDataBase.addCotacao(selectedMoeda!.nome,
-                      selectedData!, hora, valor, selectedMoeda!);
+                      selectedData!, selectedHorario!, valor, selectedMoeda!);
                   Navigator.of(context).pop();
                 } else {
                   CotacaoErroDialog.addCotacaoErro(context);

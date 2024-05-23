@@ -29,7 +29,7 @@ class TimePickerWidget extends StatelessWidget {
       child: Input(
         label: label,
         readonly: true,
-        hint: StringUtils.formatDateHoraeMinuto(DateTime.now()),
+        hint: StringUtils.formatHoraeMinuto(DateTime.now()),
         preffixIcon: InkWell(
           mouseCursor: SystemMouseCursors.click,
           onTap: enabled
@@ -45,11 +45,11 @@ class TimePickerWidget extends StatelessWidget {
   }
 
   Future<void> _showTimePicker(BuildContext context) async {
+    TimeOfDay initialTime = TimeOfDay.fromDateTime(hora ?? DateTime.now());
+
     TimeOfDay? horarioValue = await showTimePicker(
       context: context,
-      initialTime: hora != null
-          ? TimeOfDay(hour: hora!.hour, minute: hora!.minute)
-          : TimeOfDay.now(),
+      initialTime: initialTime,
       initialEntryMode: TimePickerEntryMode.input,
     );
     await changeHorario(horarioValue);
@@ -57,12 +57,14 @@ class TimePickerWidget extends StatelessWidget {
 
   Future<void> changeHorario(TimeOfDay? horarioValue) async {
     if (horarioValue != null) {
-      await onChange(
-        DateTime(
-          horarioValue.hour,
-          horarioValue.minute,
-        ),
+      DateTime updatedDateTime = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        horarioValue.hour,
+        horarioValue.minute,
       );
+      await onChange(updatedDateTime);
     }
   }
 }
