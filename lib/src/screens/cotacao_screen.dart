@@ -263,6 +263,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               ),
               onPressed: () async {
                 String valorText = valorController.text.trim();
+                valorText = valorText.replaceAll(',', '.');
                 double valor = double.tryParse(valorText) ?? 0.0;
 
                 if (selectedMoeda != null &&
