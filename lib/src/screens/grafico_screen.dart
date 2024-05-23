@@ -27,7 +27,7 @@ class GraficoScreenState extends State<GraficoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.color3,
+      backgroundColor: AppColors.color4,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.color1,
@@ -138,7 +138,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
                 child:
-                    const Icon(Icons.bar_chart_sharp, color: AppColors.color3),
+                    const Icon(Icons.bar_chart_sharp, color: AppColors.color4),
               ),
             ),
           ],
@@ -194,7 +194,7 @@ class GraficoScreenState extends State<GraficoScreen> {
       context: context,
       builder: (builder) {
         return AlertDialog(
-          backgroundColor: AppColors.color3,
+          backgroundColor: AppColors.color4,
           title: const Center(
             child: Text(
               "Dados do gráfico",

@@ -33,7 +33,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.color3,
+      backgroundColor: AppColors.color4,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.color1,
@@ -155,7 +155,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 tooltip: "Adicionar cotação",
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
-                child: const Icon(Icons.add, color: AppColors.color3),
+                child: const Icon(Icons.add, color: AppColors.color4),
               ),
             ),
           ],
@@ -177,7 +177,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.color3,
+          backgroundColor: AppColors.color4,
           title: const Text(
             "Cadastro de cotações",
             style: TextStyle(
@@ -293,7 +293,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         context: context,
         builder: (builder) {
           return AlertDialog(
-            backgroundColor: AppColors.color3,
+            backgroundColor: AppColors.color4,
             title: const Text("Deseja mesmo excluir essa cotação ?",
                 style: TextStyle(
                     fontSize: 25,

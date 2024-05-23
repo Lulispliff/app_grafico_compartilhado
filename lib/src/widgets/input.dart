@@ -172,7 +172,7 @@ class _InputState extends State<Input> {
               prefixText: widget.preffixText,
               fillColor: tema?.brightness == Brightness.dark
                   ? Colors.black12
-                  : AppColors.color3,
+                  : AppColors.color4,
               filled: widget.readonly,
               hintMaxLines: 1,
               label: widget.label == null

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class NavigatorButtons {
   static String? telaatual;
-  
+
   static Widget buildNavigatorButtons(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,

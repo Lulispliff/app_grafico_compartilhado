@@ -16,7 +16,7 @@ class CotacoesChart extends StatelessWidget {
     List<double> valores = cotacoes.map((cotacao) => cotacao.valor).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.color3,
+      backgroundColor: AppColors.color4,
       appBar: AppBar(
         backgroundColor: AppColors.color1,
         centerTitle: true,

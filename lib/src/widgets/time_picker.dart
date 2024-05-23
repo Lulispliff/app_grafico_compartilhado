@@ -55,10 +55,10 @@ class TimePickerWidget extends StatelessWidget {
         builder: (context, child) {
           return Theme(
             data: ThemeData().copyWith(
-                colorScheme: const ColorScheme.light(primary: AppColors.color5),
+                colorScheme: const ColorScheme.light(primary: AppColors.color3),
                 textSelectionTheme: const TextSelectionThemeData(
                   cursorColor: Colors.grey,
-                  selectionColor: AppColors.color4,
+                  selectionColor: AppColors.color5,
                 ),
                 timePickerTheme: const TimePickerThemeData(
                   dialHandColor: AppColors.color2,
