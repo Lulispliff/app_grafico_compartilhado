@@ -1,4 +1,3 @@
-import 'package:app_grafico_compartilhado/src/error_dialogs/error_moeda_dialogs.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
@@ -175,7 +174,9 @@ class MoedaScreenState extends State<MoedaScreen> {
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
-                      MoedaErroDialog.addMoedaErro(context);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "Você deve atribuir um nome para a moeda que está adicionando!")));
                     } else {
                       context
                           .read<MoedaDatabase>()
@@ -232,7 +233,9 @@ class MoedaScreenState extends State<MoedaScreen> {
                           WidgetStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
-                      MoedaErroDialog.editMoedaErro(context);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "Você deve inserir um novo nome para a moeda que está editando!")));
                     } else {
                       context
                           .read<MoedaDatabase>()
