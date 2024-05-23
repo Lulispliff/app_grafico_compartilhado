@@ -45,7 +45,6 @@ class GraficoScreenState extends State<GraficoScreen> {
             Expanded(
               child: _buildPrimaryList(),
             ),
-            const SizedBox(height: 16),
             NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),

@@ -47,7 +47,6 @@ class MoedaScreenState extends State<MoedaScreen> {
             Expanded(
               child: _buildMoedasList(),
             ),
-            const SizedBox(height: 16),
             NavigatorButtons.buildNavigatorButtons(context),
           ],
         ),
