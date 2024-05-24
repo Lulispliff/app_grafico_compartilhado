@@ -192,7 +192,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                               Icon(Icons.info, color: AppColors.color4),
                               SizedBox(width: 8),
                               Text(
-                                "Você deve atribuir um nome a moeda!",
+                                "Insira um nome a moeda!",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
