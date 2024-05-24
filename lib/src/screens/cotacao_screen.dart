@@ -96,6 +96,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
       builder: (context, snapshot) {
         final cotacoes = snapshot.data ?? [];
+        cotacoes.sort((a, b) => a.data.compareTo(b.data));
 
         return cotacoes.isEmpty
             ? const Center(
