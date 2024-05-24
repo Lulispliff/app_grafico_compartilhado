@@ -11,6 +11,7 @@ import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CotacaoScreen extends StatefulWidget {
@@ -156,7 +157,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 tooltip: "Adicionar cotação",
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
-                child: const Icon(Icons.add, color: AppColors.color4),
+                child: const Icon(FontAwesomeIcons.fileInvoiceDollar,
+                    color: AppColors.color4),
               ),
             ),
           ],
@@ -274,9 +276,27 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       selectedData!, selectedHorario!, valor, selectedMoeda!);
                   Navigator.of(context).pop();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          "Por favor, preencha todos os campos corretamente!")));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(milliseconds: 1200),
+                      backgroundColor: AppColors.color2,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.info, color: AppColors.color4),
+                          SizedBox(width: 8),
+                          Text(
+                            "Insira os dados corretamente!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: AppColors.color4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 }
               },
               child: const Text(

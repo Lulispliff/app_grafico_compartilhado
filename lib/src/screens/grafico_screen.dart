@@ -9,6 +9,7 @@ import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class GraficoScreen extends StatefulWidget {
@@ -138,8 +139,8 @@ class GraficoScreenState extends State<GraficoScreen> {
                 tooltip: "Gerar gráfico",
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
-                child:
-                    const Icon(Icons.bar_chart_sharp, color: AppColors.color4),
+                child: const Icon(FontAwesomeIcons.chartColumn,
+                    color: AppColors.color4),
               ),
             ),
           ],
@@ -295,8 +296,24 @@ class GraficoScreenState extends State<GraficoScreen> {
 
     if (cotacoes.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              "Nenhuma cotação foi encontrada no período de tempo selecionado!")));
+        duration: Duration(milliseconds: 1200),
+        backgroundColor: AppColors.color2,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.info, color: AppColors.color4),
+            SizedBox(width: 8),
+            Text(
+              "Nenhuma cotação encontrada!",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: AppColors.color4,
+              ),
+            ),
+          ],
+        ),
+      ));
     } else {
       _showCotacoesChart(cotacoes);
     }

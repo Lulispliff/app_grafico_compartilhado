@@ -182,9 +182,27 @@ class MoedaScreenState extends State<MoedaScreen> {
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              "Você deve atribuir um nome para a moeda que está adicionando!")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(milliseconds: 1200),
+                          backgroundColor: AppColors.color2,
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.info, color: AppColors.color4),
+                              SizedBox(width: 8),
+                              Text(
+                                "Você deve atribuir um nome a moeda!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: AppColors.color4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     } else {
                       context
                           .read<MoedaDatabase>()
