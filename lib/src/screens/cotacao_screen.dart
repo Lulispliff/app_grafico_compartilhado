@@ -1,5 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
 
+import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
@@ -23,12 +26,18 @@ class CotacaoScreen extends StatefulWidget {
 
 class CotacaoScreenState extends State<CotacaoScreen> {
   late List<Moeda> currentMoeda;
-
   late List<Cotacoess> cotacoesDaMoeda;
+
+  final MoedaStore store = MoedaStore(
+    repository: MoedaRepository(
+      client: HttpClient(),
+    ),
+  );
   @override
   void initState() {
     super.initState();
     readCotacao();
+    store.getMoedas();
   }
 
   @override

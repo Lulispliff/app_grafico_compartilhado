@@ -1,3 +1,6 @@
+import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
@@ -19,11 +22,18 @@ class MoedaScreen extends StatefulWidget {
 class MoedaScreenState extends State<MoedaScreen> {
   final textController = TextEditingController();
 
+  final MoedaStore store = MoedaStore(
+    repository: MoedaRepository(
+      client: HttpClient(),
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
     readMoeda();
     readCotacao();
+    store.getMoedas();
   }
 
   @override
