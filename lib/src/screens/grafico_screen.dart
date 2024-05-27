@@ -149,49 +149,21 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
-  Widget _buildTimeChartButtons(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      _buildTimeButton("1 D", "1 Dia", const Duration(days: 1)),
-      const SizedBox(width: 5),
-      _buildTimeButton("1 S", "1 Semana", const Duration(days: 7)),
-      const SizedBox(width: 5),
-      _buildTimeButton("1 M", "1 Mês", const Duration(days: 30)),
-      const SizedBox(width: 5),
-      _buildTimeButton("6 M", "6 Meses", const Duration(days: 180)),
-      const SizedBox(width: 5),
-      _buildTimeButton("1 A", "1 Ano", const Duration(days: 365)),
-    ]);
-  }
-
-  Widget _buildTimeButton(
-      String label, String tooltipMessage, Duration duration) {
-    return Tooltip(
-      message: tooltipMessage,
-      child: TextButton(
-        onPressed: () {
-          if (selectedInterval != duration) {
-            setState(() {
-              selectedInterval = duration;
-            });
-          }
-        },
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith<Color>(
-            (Set<WidgetState> states) {
-              if (selectedInterval == duration) {
-                return AppColors.color1; // Cor quando selecionado
-              }
-              return AppColors.color2; // Cor padrão
-            },
-          ),
-        ),
-        child: Text(label, style: const TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-
   void _selectInfosChartScreen() {
     final moedaDataBase = context.read<MoedaDatabase>();
+
+    List<DropdownMenuItem<Duration>> buildDropdownMenuItems(
+        List<Duration> durations) {
+      return durations.map((Duration duration) {
+        return DropdownMenuItem<Duration>(
+          value: duration,
+          child: Text(
+            _formatDuration(duration),
+          ),
+        );
+      }).toList();
+    }
+
     showDialog(
       context: context,
       builder: (builder) {
@@ -201,9 +173,10 @@ class GraficoScreenState extends State<GraficoScreen> {
             child: Text(
               "Dados do gráfico",
               style: TextStyle(
-                  fontSize: 30,
-                  color: AppColors.color2,
-                  fontWeight: FontWeight.bold),
+                fontSize: 30,
+                color: AppColors.color2,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           content: Column(
@@ -234,13 +207,34 @@ class GraficoScreenState extends State<GraficoScreen> {
                 },
               ),
               const SizedBox(height: 15),
-              const Text("Periodo de tempo",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: AppColors.color2,
-                      fontWeight: FontWeight.bold)),
-              const SizedBox(height: 15),
-              _buildTimeChartButtons(context)
+              DropdownButtonFormField<Duration>(
+                decoration: const InputDecoration(
+                  focusColor: Colors.transparent,
+                  labelText: "Selecione o período de tempo",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+                value: selectedInterval,
+                items: buildDropdownMenuItems([
+                  const Duration(days: 1),
+                  const Duration(days: 7),
+                  const Duration(days: 30),
+                  const Duration(days: 180),
+                  const Duration(days: 365),
+                ]),
+                onChanged: (Duration? value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedInterval = value;
+                    });
+                  }
+                },
+              ),
             ],
           ),
           actions: [
@@ -270,12 +264,29 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
+  String _formatDuration(Duration duration) {
+    if (duration.inDays == 1) {
+      return "1 Dia";
+    } else if (duration.inDays == 7) {
+      return "1 Semana";
+    } else if (duration.inDays == 30) {
+      return "1 Mês";
+    } else if (duration.inDays == 180) {
+      return "6 Meses";
+    } else if (duration.inDays == 365) {
+      return "1 Ano";
+    } else {
+      return "";
+    }
+  }
+
   void _showCotacoesChart(List<Cotacoess> cotacoes) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CotacoesChart(
           cotacoes: cotacoes,
           selectedMoeda: selectedMoeda!,
+          selectedInterval: selectedInterval,
         ),
       ),
     );
@@ -296,24 +307,8 @@ class GraficoScreenState extends State<GraficoScreen> {
 
     if (cotacoes.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(milliseconds: 1200),
-        backgroundColor: AppColors.color2,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.info, color: AppColors.color4),
-            SizedBox(width: 8),
-            Text(
-              "Nenhuma cotação encontrada!",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-                color: AppColors.color4,
-              ),
-            ),
-          ],
-        ),
-      ));
+          content: Text(
+              "Nenhuma cotação foi encontrada no período de tempo selecionado!")));
     } else {
       _showCotacoesChart(cotacoes);
     }

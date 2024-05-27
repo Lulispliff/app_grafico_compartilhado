@@ -45,6 +45,7 @@ class CotacaoDatabase extends ChangeNotifier {
       String nomeMoeda, Duration intervalo) async {
     DateTime now = DateTime.now();
     DateTime startDate = now.subtract(intervalo);
+
     return await IsarService.isar.cotacoess
         .filter()
         .nomeEqualTo(nomeMoeda)

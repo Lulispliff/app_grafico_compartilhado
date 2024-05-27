@@ -1,19 +1,24 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CotacoesChart extends StatelessWidget {
   final List<Cotacoess> cotacoes;
   final Moeda selectedMoeda;
+  final Duration selectedInterval;
 
   const CotacoesChart(
-      {super.key, required this.cotacoes, required this.selectedMoeda});
+      {super.key,
+      required this.cotacoes,
+      required this.selectedMoeda,
+      required this.selectedInterval});
 
   @override
   Widget build(BuildContext context) {
-    List<double> valores = cotacoes.map((cotacao) => cotacao.valor).toList();
+    List<FlSpot> spots = _generateSpots();
 
     return Scaffold(
       backgroundColor: AppColors.color4,
@@ -38,7 +43,7 @@ class CotacoesChart extends StatelessWidget {
             height: 1000, // Altura do gráfico
             width: 2000, // Largura do gráfico
             child: LineChart(
-              _buildLineChartData(valores),
+              _buildLineChartData(spots),
             ),
           ),
         ),
@@ -46,9 +51,30 @@ class CotacoesChart extends StatelessWidget {
     );
   }
 
-  LineChartData _buildLineChartData(List<double> valores) {
-    double maxY = valores.isNotEmpty
-        ? valores.reduce((max, value) => max > value ? max : value) + 3
+  List<FlSpot> _generateSpots() {
+    List<FlSpot> spots = [];
+
+    DateTime firstDate =
+        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+
+    for (var cotacao in cotacoes) {
+      double x = selectedInterval == const Duration(days: 1)
+          ? cotacao.data.difference(firstDate).inHours.toDouble()
+          : cotacao.data.difference(firstDate).inDays.toDouble();
+
+      spots.add(FlSpot(x, cotacao.valor));
+    }
+
+    spots.sort((a, b) => a.x.compareTo(b.x));
+    return spots;
+  }
+
+  LineChartData _buildLineChartData(List<FlSpot> spots) {
+    double maxY = spots.isNotEmpty
+        ? spots
+                .map((spot) => spot.y)
+                .reduce((max, value) => max > value ? max : value) +
+            3
         : 0;
 
     return LineChartData(
@@ -76,11 +102,11 @@ class CotacoesChart extends StatelessWidget {
         border: Border.all(color: Colors.grey.withOpacity(0.5)), // Cor da borda
       ),
       titlesData: FlTitlesData(
-          bottomTitles: const AxisTitles(
+          bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: false,
-              interval: 1.4,
-            ),
+                showTitles: true,
+                interval: getInterval(),
+                getTitlesWidget: bottomTitles),
           ),
           leftTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -94,12 +120,12 @@ class CotacoesChart extends StatelessWidget {
           topTitles:
               const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
-      maxX: 30,
+      maxX: getMaxX(),
       minY: 0,
       maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          isCurved: true,
+          isCurved: false,
           color: AppColors.color2, // Cor da linha do gráfico
           barWidth: 5,
           isStrokeCapRound: true,
@@ -108,10 +134,7 @@ class CotacoesChart extends StatelessWidget {
             color: AppColors.color2
                 .withOpacity(0.3), // Cor da área abaixo da linha
           ),
-          spots: List.generate(
-            valores.length,
-            (index) => FlSpot(index.toDouble(), valores[index]),
-          ),
+          spots: spots,
         ),
       ],
       lineTouchData: LineTouchData(
@@ -119,8 +142,11 @@ class CotacoesChart extends StatelessWidget {
           getTooltipColor: (touchedSpot) => AppColors.color3,
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
+              String valor =
+                  touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
+
               return LineTooltipItem(
-                'R\$ ${touchedSpot.y.toStringAsFixed(2)}', // Formato do texto do tooltip
+                'R\$ $valor',
                 const TextStyle(color: Colors.white),
               );
             }).toList();
@@ -128,6 +154,58 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget bottomTitles(double value, TitleMeta meta) {
+    const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+
+    // Titulo diferente caso "1 hora" selecionado
+    if (selectedInterval == const Duration(days: 1)) {
+      String titulosHora = '${value.toInt().toString().padLeft(2, '0')}H';
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text(titulosHora, style: style),
+      );
+    }
+    // Titulo para os demais intervalos de tempo selecionados
+    else {
+      DateTime firstDate =
+          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+      DateTime currentDate = firstDate.add(Duration(days: value.toInt()));
+
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text(StringUtils.formatDateSimple(currentDate), style: style),
+      );
+    }
+  }
+
+  double getInterval() {
+    if (selectedInterval == const Duration(days: 1)) {
+      return 1;
+    } else if (selectedInterval == const Duration(days: 7)) {
+      return 1;
+    } else if (selectedInterval == const Duration(days: 30)) {
+      return 3;
+    } else if (selectedInterval == const Duration(days: 180)) {
+      return 17;
+    } else if (selectedInterval == const Duration(days: 365)) {
+      return 27;
+    } else {
+      return 1;
+    }
+  }
+
+  double getMaxX() {
+    if (selectedInterval == const Duration(days: 1)) {
+      return 23;
+    } else {
+      DateTime firstDate =
+          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+      DateTime lastDate =
+          cotacoes.map((c) => c.data).reduce((a, b) => a.isAfter(b) ? a : b);
+      return lastDate.difference(firstDate).inDays.toDouble();
+    }
   }
 
   Widget leftTitles(double value, TitleMeta meta) {
