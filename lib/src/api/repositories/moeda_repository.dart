@@ -5,7 +5,12 @@ import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 
 abstract class IMoedaRepository {
-  Future<List<MoedaApi>> getMoedas();
+  Future<List<MoedaApi>> getMoedas({
+    required String moeda,
+    required String quantidade,
+    required String startDate,
+    required String endDate,
+  });
 }
 
 class MoedaRepository implements IMoedaRepository {
@@ -14,11 +19,16 @@ class MoedaRepository implements IMoedaRepository {
   MoedaRepository({required this.client});
 
   @override
-  Future<List<MoedaApi>> getMoedas() async {
-    final response = await client.get(
-      url:
-          'https://economia.awesomeapi.com.br/USD-BRL/50?start_date=20200301&end_date=20200330',
-    );
+  Future<List<MoedaApi>> getMoedas({
+    required String moeda,
+    required String quantidade,
+    required String startDate,
+    required String endDate,
+  }) async {
+    final url =
+        'https://economia.awesomeapi.com.br/$moeda/$quantidade?start_date=$startDate&end_date=$endDate';
+    final response = await client.get(url: url);
+
     if (response.statusCode == 200) {
       final List<MoedaApi> moedas = [];
 

@@ -20,7 +20,8 @@ class MoedaStore {
     isloading.value = true;
 
     try {
-      final result = await repository.getMoedas();
+      final result = await repository.getMoedas(
+          moeda: '', quantidade: '', startDate: '', endDate: '');
       state.value = result;
     } on NotFoundException catch (e) {
       erro.value = e.message;
