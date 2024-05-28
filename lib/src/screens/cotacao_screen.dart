@@ -332,7 +332,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     List<DropdownMenuItem<String>> moedaItems = [];
 
     // Iterar sobre a lista e adicionar itens ao Dropdown
-    moedaStaticList.forEach((moedaMap) {
+    for (var moedaMap in moedaStaticList) {
       moedaMap.forEach((key, value) {
         moedaItems.add(
           DropdownMenuItem<String>(
@@ -341,7 +341,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           ),
         );
       });
-    });
+    }
 
     showDialog(
       context: context,
@@ -369,6 +369,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
                   ),
+                  menuMaxHeight: 300,
                   items: moedaItems,
                   onChanged: (String? value) async {
                     setState(() {
