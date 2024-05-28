@@ -120,6 +120,7 @@ class CotacoesChart extends StatelessWidget {
             sideTitles: SideTitles(
                 showTitles: true,
                 interval: getInterval(),
+                reservedSize: 40,
                 getTitlesWidget: bottomTitles),
           ),
           leftTitles: AxisTitles(
@@ -156,10 +157,10 @@ class CotacoesChart extends StatelessWidget {
           getTooltipColor: (touchedSpot) => AppColors.color3,
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
-              String valor =
-                  touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
               DateTime data = spotDates[touchedSpot.x]!;
               String dataFormatada = StringUtils.formatDateSimple(data);
+              String valor =
+                  touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
 
               return LineTooltipItem(
                 'R\$ $valor $dataFormatada',
@@ -191,7 +192,7 @@ class CotacoesChart extends StatelessWidget {
 
       return SideTitleWidget(
         axisSide: meta.axisSide,
-        child: Text(StringUtils.formatDateSimple(currentDate), style: style),
+        child: Text(StringUtils.formatDiaMes(currentDate), style: style),
       );
     }
   }

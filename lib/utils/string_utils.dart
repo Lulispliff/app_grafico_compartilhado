@@ -9,6 +9,10 @@ class StringUtils {
     return formatByPattern(date, 'dd/MM/yyyy');
   }
 
+  static String formatDiaMes(DateTime? date) {
+    return formatByPattern(date, 'dd/MM');
+  }
+
   static String formatDateHoraeMinuto(DateTime? date) {
     return formatByPattern(date, 'dd/MM/yyyy HH:mm');
   }
@@ -39,12 +43,4 @@ class StringUtils {
     }
     return DateFormat(pattern).format(date);
   }
-}
-
-DateFormat dateFormat() {
-  return DateFormat("dd/MM/yyyy");
-}
-
-DateFormat horaFormat() {
-  return DateFormat("HH:mm");
 }
