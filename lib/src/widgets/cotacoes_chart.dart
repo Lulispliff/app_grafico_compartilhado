@@ -19,6 +19,7 @@ class CotacoesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> spots = _generateSpots();
+    Map<double, DateTime> spotDates = _generateSpotDates();
 
     return Scaffold(
       backgroundColor: AppColors.color4,
@@ -43,7 +44,7 @@ class CotacoesChart extends StatelessWidget {
             height: 1000, // Altura do gráfico
             width: 2000, // Largura do gráfico
             child: LineChart(
-              _buildLineChartData(spots),
+              _buildLineChartData(spots, spotDates),
             ),
           ),
         ),
@@ -53,7 +54,6 @@ class CotacoesChart extends StatelessWidget {
 
   List<FlSpot> _generateSpots() {
     List<FlSpot> spots = [];
-
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
@@ -61,7 +61,6 @@ class CotacoesChart extends StatelessWidget {
       double x = selectedInterval == const Duration(days: 1)
           ? cotacao.data.difference(firstDate).inHours.toDouble()
           : cotacao.data.difference(firstDate).inDays.toDouble();
-
       spots.add(FlSpot(x, cotacao.valor));
     }
 
@@ -69,7 +68,22 @@ class CotacoesChart extends StatelessWidget {
     return spots;
   }
 
-  LineChartData _buildLineChartData(List<FlSpot> spots) {
+  Map<double, DateTime> _generateSpotDates() {
+    Map<double, DateTime> spotDates = {};
+    DateTime firstDate =
+        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+
+    for (var cotacao in cotacoes) {
+      double x = selectedInterval == const Duration(days: 1)
+          ? cotacao.data.difference(firstDate).inHours.toDouble()
+          : cotacao.data.difference(firstDate).inDays.toDouble();
+      spotDates[x] = cotacao.data;
+    }
+    return spotDates;
+  }
+
+  LineChartData _buildLineChartData(
+      List<FlSpot> spots, Map<double, DateTime> spotDates) {
     double maxY = spots.isNotEmpty
         ? spots
                 .map((spot) => spot.y)
@@ -144,9 +158,11 @@ class CotacoesChart extends StatelessWidget {
             return touchedSpots.map((touchedSpot) {
               String valor =
                   touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
+              DateTime data = spotDates[touchedSpot.x]!;
+              String dataFormatada = StringUtils.formatDateSimple(data);
 
               return LineTooltipItem(
-                'R\$ $valor',
+                'R\$ $valor $dataFormatada',
                 const TextStyle(color: Colors.white),
               );
             }).toList();
