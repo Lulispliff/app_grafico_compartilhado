@@ -61,6 +61,10 @@ class TimePickerWidget extends StatelessWidget {
                   selectionColor: AppColors.color5,
                 ),
                 timePickerTheme: const TimePickerThemeData(
+                  backgroundColor: AppColors.color4,
+                  hourMinuteColor: AppColors.color4,
+                  dialBackgroundColor: AppColors.color4,
+                  hourMinuteTextColor: Colors.black,
                   dialHandColor: AppColors.color2,
                   cancelButtonStyle: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(AppColors.color2),

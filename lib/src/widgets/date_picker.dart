@@ -62,6 +62,7 @@ class DatePickerWidget extends StatelessWidget {
                   cursorColor: Colors.grey,
                 ),
                 datePickerTheme: const DatePickerThemeData(
+                  backgroundColor: AppColors.color4,
                   cancelButtonStyle: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(AppColors.color2),
                     foregroundColor: WidgetStatePropertyAll(Colors.white),
