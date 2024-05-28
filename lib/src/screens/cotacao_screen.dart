@@ -118,29 +118,31 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                 ),
               )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: cotacoes.length,
-                itemBuilder: (context, index) {
-                  final cotacao = cotacoes[index];
+            : SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cotacoes.length,
+                  itemBuilder: (context, index) {
+                    final cotacao = cotacoes[index];
 
-                  return ListTile(
-                    title: Text(
-                      "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                      style: const TextStyle(fontSize: 17),
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        deleteCotacaoDialog(cotacao.id);
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: AppColors.color1,
+                    return ListTile(
+                      title: Text(
+                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                        style: const TextStyle(fontSize: 17),
                       ),
-                    ),
-                  );
-                },
+                      trailing: IconButton(
+                        onPressed: () {
+                          deleteCotacaoDialog(cotacao.id);
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.color1,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
       },
     );

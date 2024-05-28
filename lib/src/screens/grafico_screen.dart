@@ -102,20 +102,22 @@ class GraficoScreenState extends State<GraficoScreen> {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: cotacoes.length,
-                itemBuilder: (context, index) {
-                  final cotacao = cotacoes[index];
+            : SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cotacoes.length,
+                  itemBuilder: (context, index) {
+                    final cotacao = cotacoes[index];
 
-                  return ListTile(
-                    title: Text(
-                      "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                      style: const TextStyle(fontSize: 17),
-                    ),
-                  );
-                },
+                    return ListTile(
+                      title: Text(
+                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                        style: const TextStyle(fontSize: 17),
+                      ),
+                    );
+                  },
+                ),
               );
       },
     );
