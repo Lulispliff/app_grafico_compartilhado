@@ -325,23 +325,20 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void addCotacaoApiDialog() {
     DateTime? initialDate;
     DateTime? finalDate;
-    Moeda? selectedMoeda;
 
     // Extrair a lista de moedas da estrutura MoedaStatic
-    List<Map<String, String>> moedaStaticList = MoedaStatic.moedaStatic;
+    Map<String, String> moedaStaticList = MoedaStatic.moedaStatic;
     List<DropdownMenuItem<String>> moedaItems = [];
 
     // Iterar sobre a lista e adicionar itens ao Dropdown
-    for (var moedaMap in moedaStaticList) {
-      moedaMap.forEach((key, value) {
-        moedaItems.add(
-          DropdownMenuItem<String>(
-            value: key,
-            child: Text(value),
-          ),
-        );
-      });
-    }
+    moedaStaticList.forEach((key, value) {
+      moedaItems.add(
+        DropdownMenuItem<String>(
+          value: key,
+          child: Text(value),
+        ),
+      );
+    });
 
     showDialog(
       context: context,
@@ -372,9 +369,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   menuMaxHeight: 300,
                   items: moedaItems,
                   onChanged: (String? value) async {
-                    setState(() {
-                      selectedMoeda = null;
-                    });
+                    setState(() {});
                   },
                 ),
                 const SizedBox(height: 10),
