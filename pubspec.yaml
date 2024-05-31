@@ -32,6 +32,8 @@ dependencies:
   flutter_localization: ^0.2.0
   flutter_localizations:
     sdk: flutter
+  dropdown_search: ^5.0.6
+  diacritic: ^0.1.5
 
 dev_dependencies:
   flutter_test:

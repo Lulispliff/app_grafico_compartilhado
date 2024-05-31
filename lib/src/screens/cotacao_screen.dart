@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
-
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
@@ -14,6 +12,7 @@ import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -164,7 +163,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               padding: const EdgeInsets.all(5.0),
               child: FloatingActionButton(
                 onPressed: () {
-                  addCotacaoApiDialog();
+                  addCotacaoApiDialog(context);
                 },
                 tooltip: "Adicionar cotação",
                 backgroundColor: AppColors.color2,
@@ -322,23 +321,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     );
   }
 
-  void addCotacaoApiDialog() {
+  void addCotacaoApiDialog(BuildContext context) {
     DateTime? initialDate;
     DateTime? finalDate;
 
     // Extrair a lista de moedas da estrutura MoedaStatic
-    Map<String, String> moedaStaticList = MoedaStatic.moedaStatic;
-    List<DropdownMenuItem<String>> moedaItems = [];
-
-    // Iterar sobre a lista e adicionar itens ao Dropdown
-    moedaStaticList.forEach((key, value) {
-      moedaItems.add(
-        DropdownMenuItem<String>(
-          value: key,
-          child: Text(value),
-        ),
-      );
-    });
+    List<String> moedaItems = MoedaStatic.moedaStatic.values.toList();
 
     showDialog(
       context: context,
@@ -356,21 +344,33 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    focusColor: Colors.transparent,
-                    labelText: "Selecione uma moeda",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                  ),
-                  menuMaxHeight: 300,
+                DropdownSearch<String>(
                   items: moedaItems,
-                  onChanged: (String? value) async {
-                    setState(() {});
-                  },
+                  popupProps: const PopupProps.menu(
+                    showSearchBox: true,
+                    searchFieldProps: TextFieldProps(
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        labelText: "Pesquisar moeda",
+                        labelStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                      ),
+                    ),
+                  ),
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Selecione uma moeda",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 DatePickerWidget(
@@ -400,8 +400,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(AppColors.color2)),
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
               child: const Text(
                 "Cancelar",
                 style: TextStyle(color: Colors.white),
@@ -411,8 +411,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(AppColors.color2)),
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
               child: const Text(
                 "Salvar",
                 style: TextStyle(color: Colors.white),
