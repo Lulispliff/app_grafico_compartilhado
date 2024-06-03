@@ -1,10 +1,10 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
-import 'package:app_grafico_compartilhado/src/isar/isar_service.dart';
-import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/isar_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 void main() async {

@@ -1,7 +1,7 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:isar/isar.dart';
 
 class IsarService {
   static late Isar isar;
