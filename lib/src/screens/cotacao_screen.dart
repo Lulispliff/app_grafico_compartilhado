@@ -330,7 +330,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     String? selectedMoeda;
 
     // Extrair a lista de moedas da estrutura MoedaStatic
-    List<String> moedaItems = MoedaStatic.moedaStatic.values.toList();
+    // List<String> moedaItems = MoedaStatic.moedaStatic.values.toList();
 
     showDialog(
       context: context,
@@ -348,34 +348,18 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                DropdownSearch<String>(
-                  items: moedaItems,
-                  popupProps: const PopupProps.menu(
-                      showSearchBox: true,
-                      searchFieldProps: TextFieldProps(
-                        cursorColor: Colors.grey,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          labelText: "Pesquisar moeda",
-                          labelStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)),
-                        ),
-                      ),
-                      constraints: BoxConstraints(maxHeight: 200)),
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: "Selecione uma moeda",
-                      labelStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                    ),
-                  ),
-                  onChanged: (String? key) {
+                DropdownButton<String>(
+                  hint: const Text('Selecione uma moeda'),
+                  items: MoedaStatic.moedaStatic.entries.map((entry) {
+                    return DropdownMenuItem<String>(
+                      value: entry.key,
+                      child: Text(entry.value),
+                    );
+                  }).toList(),
+                  onChanged: (key) {
+                    if (key == null) {
+                      return;
+                    }
                     setState(() {
                       selectedMoeda = key;
                     });
