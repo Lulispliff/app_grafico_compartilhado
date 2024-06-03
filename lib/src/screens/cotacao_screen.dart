@@ -351,20 +351,20 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 DropdownSearch<String>(
                   items: moedaItems,
                   popupProps: const PopupProps.menu(
-                    showSearchBox: true,
-                    searchFieldProps: TextFieldProps(
-                      cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        labelText: "Pesquisar moeda",
-                        labelStyle: TextStyle(color: Colors.grey),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)),
+                      showSearchBox: true,
+                      searchFieldProps: TextFieldProps(
+                        cursorColor: Colors.grey,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          labelText: "Pesquisar moeda",
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey)),
+                        ),
                       ),
-                    ),
-                  ),
+                      constraints: BoxConstraints(maxHeight: 200)),
                   dropdownDecoratorProps: const DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                       labelText: "Selecione uma moeda",
