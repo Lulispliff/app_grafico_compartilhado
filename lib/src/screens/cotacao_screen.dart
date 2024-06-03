@@ -1,22 +1,22 @@
-import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
-import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
-import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
-import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
-import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
+import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/widgets/date_picker.dart';
-import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
-import 'package:app_grafico_compartilhado/src/widgets/input.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
-import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/material.dart';
+import 'package:app_grafico_compartilhado/src/widgets/input.dart';
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 class CotacaoScreen extends StatefulWidget {
   const CotacaoScreen({super.key});

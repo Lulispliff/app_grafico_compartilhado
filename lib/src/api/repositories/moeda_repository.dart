@@ -1,8 +1,7 @@
-import 'dart:convert';
-
-import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
+import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
+import 'dart:convert';
 
 abstract class IMoedaRepository {
   Future<List<MoedaApi>> getMoedas(

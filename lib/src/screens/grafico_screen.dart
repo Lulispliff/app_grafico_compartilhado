@@ -1,17 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
-import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
-import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
-import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
-import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 class GraficoScreen extends StatefulWidget {
   const GraficoScreen({
