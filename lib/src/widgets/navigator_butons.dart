@@ -2,8 +2,8 @@ import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NavigatorButtons {
   static String? telaatual;
@@ -75,27 +75,7 @@ class NavigatorButtons {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(milliseconds: 1200),
-          backgroundColor: AppColors.color2,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.chartColumn, color: AppColors.color4),
-              SizedBox(width: 8),
-              Text(
-                "Você já está na tela do Gráfico!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: AppColors.color4,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ErrorMessages.errorGraficoNavigatorMessage(context);
     }
   }
 
@@ -120,27 +100,7 @@ class NavigatorButtons {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(milliseconds: 1200),
-          backgroundColor: AppColors.color2,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.fileInvoiceDollar, color: AppColors.color4),
-              SizedBox(width: 8),
-              Text(
-                "Você já está na tela de Cotações!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: AppColors.color4,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ErrorMessages.errorCotacaoNavigatorDialog(context);
     }
   }
 
@@ -165,27 +125,7 @@ class NavigatorButtons {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(milliseconds: 1200),
-          backgroundColor: AppColors.color2,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.coins, color: AppColors.color4),
-              SizedBox(width: 8),
-              Text(
-                "Você já está na tela de Moedas!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: AppColors.color4,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ErrorMessages.errorMoedaNavigatorDialog(context);
     }
   }
 }

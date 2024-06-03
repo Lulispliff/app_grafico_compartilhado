@@ -7,6 +7,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -192,27 +193,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(milliseconds: 1200),
-                          backgroundColor: AppColors.color2,
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.info, color: AppColors.color4),
-                              SizedBox(width: 8),
-                              Text(
-                                "Insira um nome a moeda!",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: AppColors.color4,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      ErrorMessages.moedaNomeErrorMessage(context);
                     } else {
                       context
                           .read<MoedaDatabase>()
@@ -269,9 +250,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                           WidgetStateProperty.all(AppColors.color2)),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              "Você deve inserir um novo nome para a moeda que está editando!")));
+                      ErrorMessages.moedaNovoNomeErrorMessage(context);
                     } else {
                       context
                           .read<MoedaDatabase>()

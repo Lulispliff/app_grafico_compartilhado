@@ -11,6 +11,7 @@ import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -308,27 +309,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           selectedMoeda!);
                       Navigator.of(context).pop();
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(milliseconds: 1200),
-                          backgroundColor: AppColors.color2,
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.info, color: AppColors.color4),
-                              SizedBox(width: 8),
-                              Text(
-                                "Insira os dados corretamente!",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: AppColors.color4,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      ErrorMessages.cotacaoAddErrorMessage(context);
                     }
                   },
                   child: const Text(
@@ -514,7 +495,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         });
   }
 
-  //READ
   void readCotacao() {
     context.read<CotacaoDatabase>().fetchCotacoes();
   }
@@ -523,7 +503,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     context.read<MoedaDatabase>().fetchMoedas();
   }
 
-  //DELETE
   void deleteCotacao(int id) {
     context.read<CotacaoDatabase>().deleteCotacao(id);
   }

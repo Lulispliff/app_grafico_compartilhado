@@ -7,6 +7,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -296,21 +297,15 @@ class GraficoScreenState extends State<GraficoScreen> {
 
   Future<void> _generateChart() async {
     if (selectedMoeda == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text("Você deve selecionar uma moeda para gerar o gráfico!")));
+      ErrorMessages.graficoMoedaErrorMessage(context);
     }
 
     final cotacaoDatabase = context.read<CotacaoDatabase>();
     List<Cotacoess> cotacoes = await cotacaoDatabase.fetchCotacoesByInterval(
         selectedMoeda!.nome, selectedInterval);
 
-    Navigator.of(context).pop();
-
     if (cotacoes.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              "Nenhuma cotação foi encontrada no período de tempo selecionado!")));
+      ErrorMessages.graficoCotacaoErrorMessage(context);
     } else {
       _showCotacoesChart(cotacoes);
     }
