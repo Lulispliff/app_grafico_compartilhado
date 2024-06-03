@@ -16,12 +16,21 @@ class MoedaStore {
 
   MoedaStore({required this.repository});
 
-  Future getMoedas() async {
+  Future getMoedas(
+    String? moeda,
+    String? quantidade,
+    String? startDate,
+    String? endDate,
+  ) async {
     isloading.value = true;
 
     try {
       final result = await repository.getMoedas(
-          moeda: '', quantidade: '', startDate: '', endDate: '');
+        moeda: moeda,
+        quantidade: quantidade,
+        startDate: startDate,
+        endDate: endDate,
+      );
       state.value = result;
     } on NotFoundException catch (e) {
       erro.value = e.message;

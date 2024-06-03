@@ -34,7 +34,6 @@ class MoedaScreenState extends State<MoedaScreen> {
     super.initState();
     readMoeda();
     readCotacao();
-    store.getMoedas();
   }
 
   @override

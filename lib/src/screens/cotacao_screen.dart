@@ -38,7 +38,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
-    store.getMoedas();
   }
 
   @override
@@ -328,6 +327,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void addCotacaoApiDialog(BuildContext context) {
     DateTime? initialDate;
     DateTime? finalDate;
+    String? selectedMoeda;
 
     // Extrair a lista de moedas da estrutura MoedaStatic
     List<String> moedaItems = MoedaStatic.moedaStatic.values.toList();
@@ -375,6 +375,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           borderSide: BorderSide(color: Colors.grey)),
                     ),
                   ),
+                  onChanged: (String? key) {
+                    setState(() {
+                      selectedMoeda = key;
+                    });
+                  },
                 ),
                 const SizedBox(height: 10),
                 DatePickerWidget(
@@ -396,6 +401,17 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     });
                   },
                 ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                    onPressed: () {
+                      store.getMoedas(
+                        selectedMoeda,
+                        null,
+                        initialDate?.toIso8601String(),
+                        finalDate?.toIso8601String(),
+                      );
+                    },
+                    child: const Text('buscar'))
               ],
             );
           }),

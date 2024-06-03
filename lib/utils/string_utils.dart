@@ -17,6 +17,10 @@ class StringUtils {
     return formatByPattern(date, 'dd/MM/yyyy HH:mm');
   }
 
+  static String formatDateApi(DateTime? date) {
+    return formatByPattern(date, 'yyyyMMdd');
+  }
+
   static String formatHoraeMinuto(DateTime? date) {
     return formatByPattern(date, 'HH:mm');
   }
