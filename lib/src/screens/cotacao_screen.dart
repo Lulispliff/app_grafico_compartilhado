@@ -64,10 +64,10 @@ class CotacaoScreenState extends State<CotacaoScreen>
           tabs: const [
             Tab(
                 child: Text("Cadastro cotações",
-                    style: TextStyle(color: AppColors.color2))),
+                    style: TextStyle(color: AppColors.color2, fontSize: 20))),
             Tab(
                 child: Text("Cadastro cotações - API",
-                    style: TextStyle(color: AppColors.color2))),
+                    style: TextStyle(color: AppColors.color2, fontSize: 20))),
           ],
         ),
       ),

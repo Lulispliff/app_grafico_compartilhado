@@ -52,10 +52,10 @@ class GraficoScreenState extends State<GraficoScreen>
             tabs: const [
               Tab(
                   child: Text("Gráfico cotações",
-                      style: TextStyle(color: AppColors.color2))),
+                      style: TextStyle(color: AppColors.color2, fontSize: 20))),
               Tab(
                   child: Text("Gráfico cotações - API",
-                      style: TextStyle(color: AppColors.color2))),
+                      style: TextStyle(color: AppColors.color2, fontSize: 20))),
             ],
           ),
         ),
