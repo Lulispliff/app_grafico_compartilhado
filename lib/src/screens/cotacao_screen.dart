@@ -31,11 +31,6 @@ class CotacaoScreenState extends State<CotacaoScreen>
   late List<Moeda> currentMoeda;
   late List<Cotacoess> cotacoesDaMoeda;
 
-  final MoedaStore store = MoedaStore(
-    repository: MoedaRepository(
-      client: HttpClient(),
-    ),
-  );
   @override
   void initState() {
     super.initState();
@@ -43,7 +38,12 @@ class CotacaoScreenState extends State<CotacaoScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  @override
+  final MoedaStore store = MoedaStore(
+    repository: MoedaRepository(
+      client: HttpClient(),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +63,10 @@ class CotacaoScreenState extends State<CotacaoScreen>
           controller: _tabController,
           tabs: const [
             Tab(
-                child: Text("Cotações manuais",
+                child: Text("Cadastro cotações",
                     style: TextStyle(color: AppColors.color2))),
             Tab(
-                child: Text("Cotações API",
+                child: Text("Cadastro cotações - API",
                     style: TextStyle(color: AppColors.color2))),
           ],
         ),

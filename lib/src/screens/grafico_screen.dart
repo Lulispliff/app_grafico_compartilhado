@@ -21,38 +21,76 @@ class GraficoScreen extends StatefulWidget {
   GraficoScreenState createState() => GraficoScreenState();
 }
 
-class GraficoScreenState extends State<GraficoScreen> {
+class GraficoScreenState extends State<GraficoScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   Moeda? selectedMoeda;
   Duration selectedInterval = const Duration(days: 1);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.color4,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.color1,
-        centerTitle: true,
-        title: const Text("Gráfico"),
-        titleTextStyle: const TextStyle(
-            color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: _buildPrimaryList(),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: _buildGerarGraficoButton(),
-    );
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  Widget _buildPrimaryList() {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: AppColors.color4,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.color1,
+          centerTitle: true,
+          title: const Text("Gráfico"),
+          titleTextStyle: const TextStyle(
+              color: AppColors.color2,
+              fontSize: 30,
+              fontWeight: FontWeight.bold),
+          bottom: TabBar(
+            indicatorColor: AppColors.color2,
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                  child: Text("Gráfico cotações",
+                      style: TextStyle(color: AppColors.color2))),
+              Tab(
+                  child: Text("Gráfico cotações - API",
+                      style: TextStyle(color: AppColors.color2))),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _buildPrimaryManualList(),
+                  ),
+                  _buildGerarGraficoManualButton()
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _buildPrimaryApiList(),
+                  ),
+                  _buildGerarGraficoApiButton()
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget _buildPrimaryManualList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
     List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
 
@@ -79,14 +117,14 @@ class GraficoScreenState extends State<GraficoScreen> {
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: const Icon(Icons.arrow_drop_down),
-                  children: [_buildSecondaryList(moeda)],
+                  children: [_buildSecondaryManualList(moeda)],
                 ),
               );
             },
           );
   }
 
-  Widget _buildSecondaryList(Moeda moeda) {
+  Widget _buildSecondaryManualList(Moeda moeda) {
     final cotacaoDatabase = context.watch<CotacaoDatabase>();
 
     return FutureBuilder<List<Cotacoess>>(
@@ -123,7 +161,78 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
-  Widget _buildGerarGraficoButton() {
+  Widget _buildPrimaryApiList() {
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    List<Moeda> currentMoeda = moedaDatabase.currentMoeda;
+
+    return currentMoeda.isEmpty
+        ? const Center(
+            child: Text(
+                "Você não tem cotações registradas para gerar o gráfico.",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          )
+        : ListView.builder(
+            itemCount: currentMoeda.length,
+            itemBuilder: (context, index) {
+              final moeda = currentMoeda[index];
+
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.color2, width: 1.5),
+                  ),
+                ),
+                child: ExpansionTile(
+                  title: Text(
+                    "Moeda: Senta e se goza",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  trailing: const Icon(Icons.arrow_drop_down),
+                  children: [_buildSecondaryApiList(moeda)],
+                ),
+              );
+            },
+          );
+  }
+
+  Widget _buildSecondaryApiList(Moeda moeda) {
+    final cotacaoDatabase = context.watch<CotacaoDatabase>();
+
+    return FutureBuilder<List<Cotacoess>>(
+      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
+      builder: (context, snapshot) {
+        final cotacoes = snapshot.data ?? [];
+        cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+        return cotacoes.isEmpty
+            ? const Center(
+                child: Text(
+                  "Essa moeda ainda não possui nenhuma cotação registrada",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              )
+            : SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cotacoes.length,
+                  itemBuilder: (context, index) {
+                    final cotacao = cotacoes[index];
+
+                    return ListTile(
+                      title: Text(
+                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                        style: const TextStyle(fontSize: 17),
+                      ),
+                    );
+                  },
+                ),
+              );
+      },
+    );
+  }
+
+  Widget _buildGerarGraficoManualButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -131,13 +240,13 @@ class GraficoScreenState extends State<GraficoScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
               child: NavigatorButtons.buildNavigatorButtons(context),
             ),
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: FloatingActionButton(
-                onPressed: _selectInfosChartScreen,
+                onPressed: _selectInfosGraficoManual,
                 tooltip: "Gerar gráfico",
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
@@ -151,7 +260,150 @@ class GraficoScreenState extends State<GraficoScreen> {
     );
   }
 
-  void _selectInfosChartScreen() {
+  Widget _buildGerarGraficoApiButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+              child: NavigatorButtons.buildNavigatorButtons(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FloatingActionButton(
+                onPressed: _selectInfosGraficoApi,
+                tooltip: "Gerar gráfico - API",
+                backgroundColor: AppColors.color2,
+                shape: const CircleBorder(),
+                child: const Icon(FontAwesomeIcons.chartColumn,
+                    color: AppColors.color4),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  void _selectInfosGraficoManual() {
+    final moedaDataBase = context.read<MoedaDatabase>();
+
+    List<DropdownMenuItem<Duration>> buildDropdownMenuItems(
+        List<Duration> durations) {
+      return durations.map((Duration duration) {
+        return DropdownMenuItem<Duration>(
+          value: duration,
+          child: Text(
+            _formatDuration(duration),
+          ),
+        );
+      }).toList();
+    }
+
+    showDialog(
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          backgroundColor: AppColors.color4,
+          title: const Center(
+            child: Text(
+              "Dados do gráfico",
+              style: TextStyle(
+                fontSize: 30,
+                color: AppColors.color2,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<Moeda>(
+                decoration: const InputDecoration(
+                  focusColor: Colors.transparent,
+                  labelText: "Selecione uma moeda",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+                items: moedaDataBase.currentMoeda
+                    .map((moeda) => DropdownMenuItem<Moeda>(
+                          value: moeda,
+                          child: Text(StringUtils.capitalize(moeda.nome)),
+                        ))
+                    .toList(),
+                onChanged: (Moeda? value) {
+                  setState(() {
+                    selectedMoeda = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 15),
+              DropdownButtonFormField<Duration>(
+                decoration: const InputDecoration(
+                  focusColor: Colors.transparent,
+                  labelText: "Selecione o período de tempo",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+                value: selectedInterval,
+                items: buildDropdownMenuItems([
+                  const Duration(days: 1),
+                  const Duration(days: 7),
+                  const Duration(days: 30),
+                  const Duration(days: 180),
+                  const Duration(days: 365),
+                ]),
+                onChanged: (Duration? value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedInterval = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              onPressed: Navigator.of(context).pop,
+              child: const Text(
+                "Cancelar",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            TextButton(
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              onPressed: _generateChart,
+              child: const Text(
+                "Gerar Gráfico",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _selectInfosGraficoApi() {
     final moedaDataBase = context.read<MoedaDatabase>();
 
     List<DropdownMenuItem<Duration>> buildDropdownMenuItems(
