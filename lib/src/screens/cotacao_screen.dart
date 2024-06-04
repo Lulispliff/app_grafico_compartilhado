@@ -205,7 +205,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text(
+                    title: const Text(
                       "Moeda: Cuzin radical123",
                       style: TextStyle(fontSize: 20),
                     ),

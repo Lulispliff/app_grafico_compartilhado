@@ -3,8 +3,6 @@ import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'dart:convert';
 
-import 'package:app_grafico_compartilhado/utils/string_utils.dart';
-
 abstract class IMoedaRepository {
   Future<List<MoedaApi>> getMoedas(
       {String? moeda, String? startDate, String? endDate});
@@ -21,21 +19,8 @@ class MoedaRepository implements IMoedaRepository {
     String? startDate,
     String? endDate,
   }) async {
-    String formattedStartDate = '';
-    String formattedEndDate = '';
-
-    if (startDate != null) {
-      final DateTime startDateTime = DateTime.parse(startDate);
-      formattedStartDate = StringUtils.formatDateApi(startDateTime);
-    }
-
-    if (endDate != null) {
-      final DateTime endDateTime = DateTime.parse(endDate);
-      formattedEndDate = StringUtils.formatDateApi(endDateTime);
-    }
-
     final url =
-        'https://economia.awesomeapi.com.br/$moeda/10?start_date=$formattedStartDate&end_date=$formattedEndDate';
+        'https://economia.awesomeapi.com.br/$moeda/10?start_date=$startDate&end_date=$endDate';
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {

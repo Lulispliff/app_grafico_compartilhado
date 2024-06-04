@@ -1,6 +1,7 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 
 class MoedaStore {
@@ -21,13 +22,26 @@ class MoedaStore {
     String? startDate,
     String? endDate,
   ) async {
+    String formattedStartDate = '';
+    String formattedEndDate = '';
+
+    if (startDate != null) {
+      final DateTime startDateTime = DateTime.parse(startDate);
+      formattedStartDate = StringUtils.formatDateApi(startDateTime);
+    }
+
+    if (endDate != null) {
+      final DateTime endDateTime = DateTime.parse(endDate);
+      formattedEndDate = StringUtils.formatDateApi(endDateTime);
+    }
+
     isloading.value = true;
 
     try {
       final result = await repository.getMoedas(
         moeda: moeda,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
       );
       state.value = result;
     } on NotFoundException catch (e) {
