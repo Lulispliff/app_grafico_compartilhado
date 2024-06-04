@@ -312,7 +312,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
                 onPressed: () {
                   addCotacaoApiDialog(context);
                 },
-                tooltip: "Adicionar cotação API",
+                tooltip: "Adicionar cotação - API",
                 backgroundColor: AppColors.color2,
                 shape: const CircleBorder(),
                 child: const Icon(FontAwesomeIcons.fileInvoiceDollar,
