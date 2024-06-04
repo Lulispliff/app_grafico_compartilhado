@@ -13,8 +13,8 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -329,9 +329,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     DateTime? finalDate;
     String? selectedMoeda;
 
-    // Extrair a lista de moedas da estrutura MoedaStatic
-    // List<String> moedaItems = MoedaStatic.moedaStatic.values.toList();
-
     showDialog(
       context: context,
       builder: (context) {
@@ -348,21 +345,41 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                DropdownButton<String>(
-                  hint: const Text('Selecione uma moeda'),
-                  items: MoedaStatic.moedaStatic.entries.map((entry) {
-                    return DropdownMenuItem<String>(
-                      value: entry.key,
-                      child: Text(entry.value),
-                    );
-                  }).toList(),
-                  onChanged: (key) {
-                    if (key == null) {
+                DropdownSearch<String>(
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                          labelText: "Selecione uma moeda",
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey)))),
+                  popupProps: const PopupProps.menu(
+                      showSearchBox: true,
+                      searchFieldProps: TextFieldProps(
+                          cursorColor: Colors.grey,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.search),
+                              labelText: "Pesquisar moeda",
+                              labelStyle: TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)))),
+                      constraints: BoxConstraints(maxHeight: 200)),
+                  items: MoedaStatic.moedaStatic.values.toList(),
+                  onChanged: (value) {
+                    if (value == null) {
                       return;
                     }
                     setState(() {
-                      selectedMoeda = key;
+                      selectedMoeda = MoedaStatic.moedaStatic.entries
+                          .firstWhere((entry) => entry.value == value)
+                          .key;
                     });
+                    print("Value: $value, selectedMoeda: $selectedMoeda");
                   },
                 ),
                 const SizedBox(height: 10),
@@ -387,15 +404,16 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                    onPressed: () {
-                      store.getMoedas(
-                        selectedMoeda,
-                        null,
-                        initialDate?.toIso8601String(),
-                        finalDate?.toIso8601String(),
-                      );
-                    },
-                    child: const Text('buscar'))
+                  onPressed: () {
+                    store.getMoedas(
+                      selectedMoeda,
+                      null,
+                      initialDate?.toIso8601String(),
+                      finalDate?.toIso8601String(),
+                    );
+                  },
+                  child: const Text('buscar'),
+                ),
               ],
             );
           }),
