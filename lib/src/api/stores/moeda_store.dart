@@ -18,7 +18,6 @@ class MoedaStore {
 
   Future getMoedas(
     String? moeda,
-    String? quantidade,
     String? startDate,
     String? endDate,
   ) async {
@@ -27,7 +26,6 @@ class MoedaStore {
     try {
       final result = await repository.getMoedas(
         moeda: moeda,
-        quantidade: quantidade,
         startDate: startDate,
         endDate: endDate,
       );

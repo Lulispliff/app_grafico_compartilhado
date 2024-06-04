@@ -3,9 +3,11 @@ import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'dart:convert';
 
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
+
 abstract class IMoedaRepository {
   Future<List<MoedaApi>> getMoedas(
-      {String? moeda, String? quantidade, String? startDate, String? endDate});
+      {String? moeda, String? startDate, String? endDate});
 }
 
 class MoedaRepository implements IMoedaRepository {
@@ -16,12 +18,24 @@ class MoedaRepository implements IMoedaRepository {
   @override
   Future<List<MoedaApi>> getMoedas({
     String? moeda,
-    String? quantidade,
     String? startDate,
     String? endDate,
   }) async {
+    String formattedStartDate = '';
+    String formattedEndDate = '';
+
+    if (startDate != null) {
+      final DateTime startDateTime = DateTime.parse(startDate);
+      formattedStartDate = StringUtils.formatDateApi(startDateTime);
+    }
+
+    if (endDate != null) {
+      final DateTime endDateTime = DateTime.parse(endDate);
+      formattedEndDate = StringUtils.formatDateApi(endDateTime);
+    }
+
     final url =
-        'https://economia.awesomeapi.com.br/$moeda/$quantidade?start_date=$startDate&end_date=$endDate';
+        'https://economia.awesomeapi.com.br/$moeda/10?start_date=$formattedStartDate&end_date=$formattedEndDate';
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {

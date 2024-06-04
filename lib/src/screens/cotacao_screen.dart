@@ -379,7 +379,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           .firstWhere((entry) => entry.value == value)
                           .key;
                     });
-                    print("Value: $value, selectedMoeda: $selectedMoeda");
                   },
                 ),
                 const SizedBox(height: 10),
@@ -407,9 +406,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   onPressed: () {
                     store.getMoedas(
                       selectedMoeda,
-                      null,
-                      initialDate?.toIso8601String(),
-                      finalDate?.toIso8601String(),
+                      initialDate!.toIso8601String(),
+                      finalDate!.toIso8601String(),
                     );
                   },
                   child: const Text('buscar'),
