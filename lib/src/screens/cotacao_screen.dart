@@ -13,8 +13,8 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,9 @@ class CotacaoScreen extends StatefulWidget {
   CotacaoScreenState createState() => CotacaoScreenState();
 }
 
-class CotacaoScreenState extends State<CotacaoScreen> {
+class CotacaoScreenState extends State<CotacaoScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   late List<Moeda> currentMoeda;
   late List<Cotacoess> cotacoesDaMoeda;
 
@@ -38,8 +40,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void initState() {
     super.initState();
     readCotacao();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,24 +54,55 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         centerTitle: true,
         title: const Text("Cadastro de cotações"),
         titleTextStyle: const TextStyle(
-            color: AppColors.color2, fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: _buildPrimaryList(),
-            ),
+          color: AppColors.color2,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+        bottom: TabBar(
+          indicatorColor: AppColors.color2,
+          controller: _tabController,
+          tabs: const [
+            Tab(
+                child: Text("Cotações manuais",
+                    style: TextStyle(color: AppColors.color2))),
+            Tab(
+                child: Text("Cotações API",
+                    style: TextStyle(color: AppColors.color2))),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildPrimaryManualList(),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildPrimaryApiList(),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: _buildAddCotacaoButton(),
     );
   }
 
-  Widget _buildPrimaryList() {
+  Widget _buildPrimaryManualList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
     currentMoeda = moedaDatabase.currentMoeda;
 
@@ -93,13 +128,94 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
-                    children: [_buildSecondaryList(moeda)],
+                    children: [_buildSecondaryManualList(moeda)],
                   ));
             },
           );
   }
 
-  Widget _buildSecondaryList(Moeda moeda) {
+  Widget _buildSecondaryManualList(Moeda moeda) {
+    final cotacaoDatabase = context.watch<CotacaoDatabase>();
+
+    return FutureBuilder<List<Cotacoess>>(
+      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
+      builder: (context, snapshot) {
+        final cotacoes = snapshot.data ?? [];
+        cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+        return cotacoes.isEmpty
+            ? const Center(
+                child: Text(
+                  "Essa moeda ainda não possui nenhuma cotação registrada",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            : SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cotacoes.length,
+                  itemBuilder: (context, index) {
+                    final cotacao = cotacoes[index];
+
+                    return ListTile(
+                      title: Text(
+                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                        style: const TextStyle(fontSize: 17),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {
+                          deleteCotacaoDialog(cotacao.id);
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.color1,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+      },
+    );
+  }
+
+  Widget _buildPrimaryApiList() {
+    final moedaDatabase = context.watch<MoedaDatabase>();
+    currentMoeda = moedaDatabase.currentMoeda;
+
+    return currentMoeda.isEmpty
+        ? const Center(
+            child: Text("Sua lista de cotações está vazia.",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          )
+        : ListView.builder(
+            itemCount: currentMoeda.length,
+            itemBuilder: (context, index) {
+              final moeda = currentMoeda[index];
+
+              return Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: AppColors.color2, width: 1.5),
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    title: Text(
+                      "Moeda: Cuzin radical123",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    trailing: const Icon(Icons.arrow_drop_down),
+                    children: [_buildSecondaryManualList(moeda)],
+                  ));
+            },
+          );
+  }
+
+  Widget _buildSecondaryApiList(Moeda moeda) {
     final cotacaoDatabase = context.watch<CotacaoDatabase>();
 
     return FutureBuilder<List<Cotacoess>>(
