@@ -82,6 +82,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
                 Expanded(
                   child: _buildPrimaryManualList(),
                 ),
+                _buildAddCotacaoManualButton(),
               ],
             ),
           ),
@@ -93,12 +94,12 @@ class CotacaoScreenState extends State<CotacaoScreen>
                 Expanded(
                   child: _buildPrimaryApiList(),
                 ),
+                _buildAddCotacaoApiButton(),
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: _buildAddCotacaoButton(),
     );
   }
 
@@ -206,10 +207,10 @@ class CotacaoScreenState extends State<CotacaoScreen>
                   child: ExpansionTile(
                     title: Text(
                       "Moeda: Cuzin radical123",
-                      style: const TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
-                    children: [_buildSecondaryManualList(moeda)],
+                    children: [_buildSecondaryApiList(moeda)],
                   ));
             },
           );
@@ -264,7 +265,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
     );
   }
 
-  Widget _buildAddCotacaoButton() {
+  Widget _buildAddCotacaoManualButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -290,6 +291,36 @@ class CotacaoScreenState extends State<CotacaoScreen>
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildAddCotacaoApiButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              child: NavigatorButtons.buildNavigatorButtons(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  addCotacaoApiDialog(context);
+                },
+                tooltip: "Adicionar cotação API",
+                backgroundColor: AppColors.color2,
+                shape: const CircleBorder(),
+                child: const Icon(FontAwesomeIcons.fileInvoiceDollar,
+                    color: AppColors.color4),
+              ),
+            )
+          ],
+        )
       ],
     );
   }
@@ -375,64 +406,42 @@ class CotacaoScreenState extends State<CotacaoScreen>
             );
           }),
           actions: [
-            Row(
-              children: [
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    addCotacaoApiDialog(context);
-                  },
-                  child: const Text(
-                    "API",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    "Cancelar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
-                  ),
-                  onPressed: () async {
-                    String valorText = valorController.text.trim();
-                    valorText = valorText.replaceAll(',', '.');
-                    double valor = double.tryParse(valorText) ?? 0.0;
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(AppColors.color2),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Cancelar",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 10),
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(AppColors.color2),
+              ),
+              onPressed: () async {
+                String valorText = valorController.text.trim();
+                valorText = valorText.replaceAll(',', '.');
+                double valor = double.tryParse(valorText) ?? 0.0;
 
-                    if (selectedMoeda != null &&
-                        selectedData != null &&
-                        selectedHorario != null) {
-                      await cotacaoDataBase.addCotacao(
-                          selectedMoeda!.nome,
-                          selectedData!,
-                          selectedHorario!,
-                          valor,
-                          selectedMoeda!);
-                      Navigator.of(context).pop();
-                    } else {
-                      ErrorMessages.cotacaoAddErrorMessage(context);
-                    }
-                  },
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
+                if (selectedMoeda != null &&
+                    selectedData != null &&
+                    selectedHorario != null) {
+                  await cotacaoDataBase.addCotacao(selectedMoeda!.nome,
+                      selectedData!, selectedHorario!, valor, selectedMoeda!);
+                  Navigator.of(context).pop();
+                } else {
+                  ErrorMessages.cotacaoAddErrorMessage(context);
+                }
+              },
+              child: const Text(
+                "Salvar",
+                style: TextStyle(color: Colors.white),
+              ),
             )
           ],
         );
@@ -517,62 +526,35 @@ class CotacaoScreenState extends State<CotacaoScreen>
                     });
                   },
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    store.getMoedas(
-                      selectedMoeda,
-                      initialDate!.toIso8601String(),
-                      finalDate!.toIso8601String(),
-                    );
-                  },
-                  child: const Text('buscar'),
-                ),
               ],
             );
           }),
           actions: [
-            Row(
-              children: [
-                TextButton(
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(AppColors.color2),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    addCotacaoDialog();
-                  },
-                  child: const Text("Manual",
-                      style: TextStyle(color: Colors.white)),
-                ),
-                const Spacer(),
-                TextButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(AppColors.color2)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    "Cancelar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(AppColors.color2)),
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            )
+            TextButton(
+              onPressed: () {
+                store.getMoedas(
+                  selectedMoeda,
+                  initialDate!.toIso8601String(),
+                  finalDate!.toIso8601String(),
+                );
+              },
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              child:
+                  const Text("Buscar", style: TextStyle(color: Colors.white)),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
+              child: const Text(
+                "Salvar",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         );
       },
