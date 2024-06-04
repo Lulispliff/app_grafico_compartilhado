@@ -273,7 +273,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
               child: NavigatorButtons.buildNavigatorButtons(context),
             ),
             Padding(
@@ -303,7 +303,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
               child: NavigatorButtons.buildNavigatorButtons(context),
             ),
             Padding(
