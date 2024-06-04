@@ -460,7 +460,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
         return AlertDialog(
           backgroundColor: AppColors.color4,
           title: const Text(
-            "Cadastro de cotações - API",
+            "Cadastro de cotações",
             style: TextStyle(
                 fontSize: 30,
                 color: AppColors.color2,
