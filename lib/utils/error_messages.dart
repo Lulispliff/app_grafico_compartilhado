@@ -36,6 +36,36 @@ class ErrorMessages {
     );
   }
 
+  static void cotacaoBuscaErrorMessage(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          backgroundColor: AppColors.color4,
+          title:
+              Text("Cadastro de cotações - API", textAlign: TextAlign.center),
+          titleTextStyle: TextStyle(
+              color: AppColors.color2,
+              fontSize: 30,
+              fontWeight: FontWeight.bold),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.info, color: AppColors.color2, size: 40),
+              Text(
+                "Nenhuma cotação foi encontrada na busca!",
+                style: TextStyle(
+                    color: AppColors.color1,
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   static void graficoMoedaErrorMessage(BuildContext context) {
     showDialog(
       context: context,

@@ -427,11 +427,17 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 const Spacer(),
                 TextButton(
                   onPressed: () {
-                    store.getMoedas(
-                      selectedMoeda,
-                      initialDate!.toIso8601String(),
-                      finalDate!.toIso8601String(),
-                    );
+                    if (selectedMoeda != null &&
+                        initialDate != null &&
+                        finalDate != null) {
+                      store.getMoedas(
+                        selectedMoeda,
+                        initialDate!.toIso8601String(),
+                        finalDate!.toIso8601String(),
+                      );
+                    } else {
+                      ErrorMessages.cotacaoBuscaErrorMessage(context);
+                    }
                   },
                   style: const ButtonStyle(
                       backgroundColor:
