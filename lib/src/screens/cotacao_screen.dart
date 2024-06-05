@@ -3,7 +3,6 @@ import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
-import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/widgets/date_picker.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
@@ -14,7 +13,6 @@ import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -265,19 +263,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           actions: [
             Row(
               children: [
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    addCotacaoApiDialog();
-                  },
-                  child: const Text(
-                    "API",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 const Spacer(),
                 TextButton(
                   style: ButtonStyle(
@@ -320,144 +305,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     style: TextStyle(color: Colors.white),
                   ),
                 )
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void addCotacaoApiDialog() {
-    DateTime? initialDate;
-    DateTime? finalDate;
-    String? selectedMoeda;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: AppColors.color4,
-          title: const Text(
-            "Cadastro de cotações - API",
-            style: TextStyle(
-                fontSize: 30,
-                color: AppColors.color2,
-                fontWeight: FontWeight.bold),
-          ),
-          content: StatefulBuilder(builder: (context, setState) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                DropdownSearch<String>(
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                          labelText: "Selecione uma moeda",
-                          labelStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey)))),
-                  popupProps: const PopupProps.menu(
-                      showSearchBox: true,
-                      searchFieldProps: TextFieldProps(
-                          cursorColor: Colors.grey,
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              labelText: "Pesquisar moeda",
-                              labelStyle: TextStyle(color: Colors.grey),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)))),
-                      constraints: BoxConstraints(maxHeight: 200)),
-                  items: MoedaStatic.moedaStatic.values.toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      selectedMoeda = MoedaStatic.moedaStatic.entries
-                          .firstWhere((entry) => entry.value == value)
-                          .key;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                DatePickerWidget(
-                  label: "Data inicial",
-                  data: initialDate,
-                  onChange: (DateTime date) async {
-                    setState(() {
-                      initialDate = date;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                DatePickerWidget(
-                  label: "Data final",
-                  data: finalDate,
-                  onChange: (DateTime date) async {
-                    setState(() {
-                      finalDate = date;
-                    });
-                  },
-                ),
-              ],
-            );
-          }),
-          actions: [
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    addCotacaoDialog();
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(AppColors.color2)),
-                  child: const Text(
-                    "Manual",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    if (selectedMoeda != null &&
-                        initialDate != null &&
-                        finalDate != null) {
-                      store.getMoedas(
-                        selectedMoeda,
-                        initialDate!.toIso8601String(),
-                        finalDate!.toIso8601String(),
-                      );
-                    } else {
-                      ErrorMessages.cotacaoBuscaErrorMessage(context);
-                    }
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(AppColors.color2)),
-                  child: const Text("Buscar",
-                      style: TextStyle(color: Colors.white)),
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(AppColors.color2)),
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
               ],
             )
           ],

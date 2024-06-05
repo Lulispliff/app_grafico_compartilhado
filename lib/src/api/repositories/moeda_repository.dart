@@ -29,10 +29,12 @@ class MoedaRepository implements IMoedaRepository {
       //body recebe os maps que contem os itens
       final body = jsonDecode(response.body);
 
-      (body as List).map((item) {
-        final MoedaApi moeda = MoedaApi.fromMap(item);
-        moedas.add(moeda);
-      }).toList();
+      if (body is List) {
+        for (var item in body) {
+          final MoedaApi moeda = MoedaApi.fromMap(item);
+          moedas.add(moeda);
+        }
+      }
 
       return moedas;
     } else if (response.statusCode == 404) {

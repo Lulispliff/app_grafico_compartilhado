@@ -1,28 +1,28 @@
 class MoedaApi {
-  final String code;
-  final String codein;
-  final String name;
-  final double high;
-  final double low;
-  final double varBid;
-  final double pctChange;
-  final double bid;
-  final double ask;
-  final DateTime timestamp;
-  final DateTime createDate;
+  late String? code;
+  late String? codein;
+  late String? name;
+  late double? high;
+  late double? low;
+  late double? varBid;
+  late double? pctChange;
+  late double? bid;
+  late double? ask;
+  late DateTime? timestamp;
+  late DateTime? createDate;
 
   MoedaApi({
-    required this.code,
-    required this.codein,
-    required this.name,
-    required this.high,
-    required this.low,
-    required this.varBid,
-    required this.pctChange,
-    required this.bid,
-    required this.ask,
-    required this.timestamp,
-    required this.createDate,
+    this.code,
+    this.codein,
+    this.name,
+    this.high,
+    this.low,
+    this.varBid,
+    this.pctChange,
+    this.bid,
+    this.ask,
+    this.timestamp,
+    this.createDate,
   });
 
   factory MoedaApi.fromMap(Map<String, dynamic> map) {
