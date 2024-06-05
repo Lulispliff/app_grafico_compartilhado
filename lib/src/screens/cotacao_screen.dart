@@ -263,42 +263,64 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             );
           }),
           actions: [
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(AppColors.color2),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                "Cancelar",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 10),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(AppColors.color2),
-              ),
-              onPressed: () async {
-                String valorText = valorController.text.trim();
-                valorText = valorText.replaceAll(',', '.');
-                double valor = double.tryParse(valorText) ?? 0.0;
+            Row(
+              children: [
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    addCotacaoApiDialog();
+                  },
+                  child: const Text(
+                    "API",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const Spacer(),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "Cancelar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  ),
+                  onPressed: () async {
+                    String valorText = valorController.text.trim();
+                    valorText = valorText.replaceAll(',', '.');
+                    double valor = double.tryParse(valorText) ?? 0.0;
 
-                if (selectedMoeda != null &&
-                    selectedData != null &&
-                    selectedHorario != null) {
-                  await cotacaoDataBase.addCotacao(selectedMoeda!.nome,
-                      selectedData!, selectedHorario!, valor, selectedMoeda!);
-                  Navigator.of(context).pop();
-                } else {
-                  ErrorMessages.cotacaoAddErrorMessage(context);
-                }
-              },
-              child: const Text(
-                "Salvar",
-                style: TextStyle(color: Colors.white),
-              ),
+                    if (selectedMoeda != null &&
+                        selectedData != null &&
+                        selectedHorario != null) {
+                      await cotacaoDataBase.addCotacao(
+                          selectedMoeda!.nome,
+                          selectedData!,
+                          selectedHorario!,
+                          valor,
+                          selectedMoeda!);
+                      Navigator.of(context).pop();
+                    } else {
+                      ErrorMessages.cotacaoAddErrorMessage(context);
+                    }
+                  },
+                  child: const Text(
+                    "Salvar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
             )
           ],
         );
@@ -306,7 +328,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
     );
   }
 
-  void addCotacaoApiDialog(BuildContext context) {
+  void addCotacaoApiDialog() {
     DateTime? initialDate;
     DateTime? finalDate;
     String? selectedMoeda;
@@ -317,7 +339,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         return AlertDialog(
           backgroundColor: AppColors.color4,
           title: const Text(
-            "Cadastro de cotações",
+            "Cadastro de cotações - API",
             style: TextStyle(
                 fontSize: 30,
                 color: AppColors.color2,
@@ -387,31 +409,51 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             );
           }),
           actions: [
-            TextButton(
-              onPressed: () {
-                store.getMoedas(
-                  selectedMoeda,
-                  initialDate!.toIso8601String(),
-                  finalDate!.toIso8601String(),
-                );
-              },
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
-              child:
-                  const Text("Buscar", style: TextStyle(color: Colors.white)),
-            ),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
-              child: const Text(
-                "Salvar",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    addCotacaoDialog();
+                  },
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.color2)),
+                  child: const Text(
+                    "Manual",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () {
+                    store.getMoedas(
+                      selectedMoeda,
+                      initialDate!.toIso8601String(),
+                      finalDate!.toIso8601String(),
+                    );
+                  },
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.color2)),
+                  child: const Text("Buscar",
+                      style: TextStyle(color: Colors.white)),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.color2)),
+                  child: const Text(
+                    "Salvar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },
