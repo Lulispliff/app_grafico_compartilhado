@@ -25,9 +25,7 @@ class CotacaoScreen extends StatefulWidget {
   CotacaoScreenState createState() => CotacaoScreenState();
 }
 
-class CotacaoScreenState extends State<CotacaoScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class CotacaoScreenState extends State<CotacaoScreen> {
   late List<Moeda> currentMoeda;
   late List<Cotacoess> cotacoesDaMoeda;
 
@@ -35,7 +33,6 @@ class CotacaoScreenState extends State<CotacaoScreen>
   void initState() {
     super.initState();
     readCotacao();
-    _tabController = TabController(length: 2, vsync: this);
   }
 
   final MoedaStore store = MoedaStore(
@@ -58,52 +55,23 @@ class CotacaoScreenState extends State<CotacaoScreen>
           fontSize: 30,
           fontWeight: FontWeight.bold,
         ),
-        bottom: TabBar(
-          indicatorColor: AppColors.color2,
-          controller: _tabController,
-          tabs: const [
-            Tab(
-                child: Text("Cadastro cotações",
-                    style: TextStyle(color: AppColors.color2, fontSize: 20))),
-            Tab(
-                child: Text("Cadastro cotações - API",
-                    style: TextStyle(color: AppColors.color2, fontSize: 20))),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: _buildPrimaryList(),
+            ),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: _buildPrimaryManualList(),
-                ),
-                _buildAddCotacaoManualButton(),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: _buildPrimaryApiList(),
-                ),
-                _buildAddCotacaoApiButton(),
-              ],
-            ),
-          ),
-        ],
-      ),
+      floatingActionButton: _buildAddCotacaolButton(),
     );
   }
 
-  Widget _buildPrimaryManualList() {
+  Widget _buildPrimaryList() {
     final moedaDatabase = context.watch<MoedaDatabase>();
     currentMoeda = moedaDatabase.currentMoeda;
 
@@ -129,13 +97,13 @@ class CotacaoScreenState extends State<CotacaoScreen>
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
-                    children: [_buildSecondaryManualList(moeda)],
+                    children: [_buildSecondaryList(moeda)],
                   ));
             },
           );
   }
 
-  Widget _buildSecondaryManualList(Moeda moeda) {
+  Widget _buildSecondaryList(Moeda moeda) {
     final cotacaoDatabase = context.watch<CotacaoDatabase>();
 
     return FutureBuilder<List<Cotacoess>>(
@@ -184,88 +152,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
     );
   }
 
-  Widget _buildPrimaryApiList() {
-    final moedaDatabase = context.watch<MoedaDatabase>();
-    currentMoeda = moedaDatabase.currentMoeda;
-
-    return currentMoeda.isEmpty
-        ? const Center(
-            child: Text("Sua lista de cotações está vazia.",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-          )
-        : ListView.builder(
-            itemCount: currentMoeda.length,
-            itemBuilder: (context, index) {
-              final moeda = currentMoeda[index];
-
-              return Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.color2, width: 1.5),
-                    ),
-                  ),
-                  child: ExpansionTile(
-                    title: const Text(
-                      "Moeda: Cuzin radical123",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: const Icon(Icons.arrow_drop_down),
-                    children: [_buildSecondaryApiList(moeda)],
-                  ));
-            },
-          );
-  }
-
-  Widget _buildSecondaryApiList(Moeda moeda) {
-    final cotacaoDatabase = context.watch<CotacaoDatabase>();
-
-    return FutureBuilder<List<Cotacoess>>(
-      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
-      builder: (context, snapshot) {
-        final cotacoes = snapshot.data ?? [];
-        cotacoes.sort((a, b) => a.data.compareTo(b.data));
-
-        return cotacoes.isEmpty
-            ? const Center(
-                child: Text(
-                  "Essa moeda ainda não possui nenhuma cotação registrada",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
-            : SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cotacoes.length,
-                  itemBuilder: (context, index) {
-                    final cotacao = cotacoes[index];
-
-                    return ListTile(
-                      title: Text(
-                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColors.color1,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-      },
-    );
-  }
-
-  Widget _buildAddCotacaoManualButton() {
+  Widget _buildAddCotacaolButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -273,7 +160,7 @@ class CotacaoScreenState extends State<CotacaoScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 2),
               child: NavigatorButtons.buildNavigatorButtons(context),
             ),
             Padding(
@@ -291,36 +178,6 @@ class CotacaoScreenState extends State<CotacaoScreen>
             ),
           ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildAddCotacaoApiButton() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-              child: NavigatorButtons.buildNavigatorButtons(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  addCotacaoApiDialog(context);
-                },
-                tooltip: "Adicionar cotação - API",
-                backgroundColor: AppColors.color2,
-                shape: const CircleBorder(),
-                child: const Icon(FontAwesomeIcons.fileInvoiceDollar,
-                    color: AppColors.color4),
-              ),
-            )
-          ],
-        )
       ],
     );
   }
