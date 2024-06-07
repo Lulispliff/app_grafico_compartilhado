@@ -22,13 +22,18 @@ const MoedaSchema = CollectionSchema(
       name: r'dataHora',
       type: IsarType.dateTime,
     ),
-    r'nome': PropertySchema(
+    r'key': PropertySchema(
       id: 1,
+      name: r'key',
+      type: IsarType.string,
+    ),
+    r'nome': PropertySchema(
+      id: 2,
       name: r'nome',
       type: IsarType.string,
     ),
     r'valor': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'valor',
       type: IsarType.double,
     )
@@ -53,6 +58,7 @@ int _moedaEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.key.length * 3;
   bytesCount += 3 + object.nome.length * 3;
   return bytesCount;
 }
@@ -64,8 +70,9 @@ void _moedaSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.dataHora);
-  writer.writeString(offsets[1], object.nome);
-  writer.writeDouble(offsets[2], object.valor);
+  writer.writeString(offsets[1], object.key);
+  writer.writeString(offsets[2], object.nome);
+  writer.writeDouble(offsets[3], object.valor);
 }
 
 Moeda _moedaDeserialize(
@@ -77,8 +84,9 @@ Moeda _moedaDeserialize(
   final object = Moeda();
   object.dataHora = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.nome = reader.readString(offsets[1]);
-  object.valor = reader.readDoubleOrNull(offsets[2]);
+  object.key = reader.readString(offsets[1]);
+  object.nome = reader.readString(offsets[2]);
+  object.valor = reader.readDoubleOrNull(offsets[3]);
   return object;
 }
 
@@ -94,6 +102,8 @@ P _moedaDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -289,6 +299,134 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'key',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'key',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'key',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'key',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> keyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'key',
+        value: '',
       ));
     });
   }
@@ -517,6 +655,18 @@ extension MoedaQuerySortBy on QueryBuilder<Moeda, Moeda, QSortBy> {
     });
   }
 
+  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'key', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'key', Sort.desc);
+    });
+  }
+
   QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -567,6 +717,18 @@ extension MoedaQuerySortThenBy on QueryBuilder<Moeda, Moeda, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'key', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'key', Sort.desc);
+    });
+  }
+
   QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -599,6 +761,13 @@ extension MoedaQueryWhereDistinct on QueryBuilder<Moeda, Moeda, QDistinct> {
     });
   }
 
+  QueryBuilder<Moeda, Moeda, QDistinct> distinctByKey(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'key', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Moeda, Moeda, QDistinct> distinctByNome(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -623,6 +792,12 @@ extension MoedaQueryProperty on QueryBuilder<Moeda, Moeda, QQueryProperty> {
   QueryBuilder<Moeda, DateTime, QQueryOperations> dataHoraProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dataHora');
+    });
+  }
+
+  QueryBuilder<Moeda, String, QQueryOperations> keyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'key');
     });
   }
 

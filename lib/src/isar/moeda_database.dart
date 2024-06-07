@@ -15,8 +15,10 @@ class MoedaDatabase extends ChangeNotifier {
   }
 
   // Método para adicionar uma nova moeda
-  Future<void> addMoeda(String nome) async {
-    final newMoeda = Moeda()..nome = nome;
+  Future<void> addMoeda(String nome, String key) async {
+    final newMoeda = Moeda()
+      ..nome = nome
+      ..key = key;
 
     await IsarService.isar
         .writeTxn(() => IsarService.isar.moedas.put(newMoeda));

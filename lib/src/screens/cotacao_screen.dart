@@ -329,6 +329,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void addCotacaoApiDialog() {
     final moedaDataBase = context.read<MoedaDatabase>();
     Moeda? selectedMoeda;
+    DateTime? initialDate;
+    DateTime? finaldate;
 
     showDialog(
         context: context,
@@ -361,21 +363,31 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                               child: Text(StringUtils.capitalize(moeda.nome)),
                             ))
                         .toList(),
-                    onChanged: (Moeda? value) {
+                    onChanged: (Moeda? key) {
                       setState(() {
-                        selectedMoeda = value;
+                        selectedMoeda = key;
                       });
                     },
                   ),
                   const SizedBox(height: 10),
                   DatePickerWidget(
                     label: "Data inicial",
-                    onChange: (DateTime date) async {},
+                    data: initialDate,
+                    onChange: (DateTime date) async {
+                      setState(() {
+                        initialDate = date;
+                      });
+                    },
                   ),
                   const SizedBox(height: 10),
                   DatePickerWidget(
                     label: "Data final",
-                    onChange: (DateTime date) async {},
+                    data: finaldate,
+                    onChange: (DateTime date) async {
+                      setState(() {
+                        finaldate = date;
+                      });
+                    },
                   )
                 ],
               );
@@ -418,7 +430,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           WidgetStateProperty.all(AppColors.color2),
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      store.getMoedas(
+                        selectedMoeda!.key,
+                        initialDate!.toIso8601String(),
+                        finaldate!.toIso8601String(),
+                      );
                     },
                     child: const Text(
                       "Salvar",

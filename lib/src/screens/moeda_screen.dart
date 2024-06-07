@@ -157,6 +157,7 @@ class MoedaScreenState extends State<MoedaScreen> {
   }
 
   void _addMoedaDialog() {
+    String selectedKey = '';
     showDialog(
       context: context,
       builder: (context) {
@@ -168,7 +169,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   color: AppColors.color2,
                   fontSize: 30,
                   fontWeight: FontWeight.bold)),
-          content: TypeAheadField(
+          content: TypeAheadField<MapEntry<String, String>>(
             textFieldConfiguration: TextFieldConfiguration(
                 controller: textController,
                 cursorColor: Colors.grey,
@@ -185,18 +186,19 @@ class MoedaScreenState extends State<MoedaScreen> {
               if (pattern.isEmpty) {
                 return [];
               }
-              return MoedaStatic.moedaStatic.values
-                  .where((item) =>
-                      item.toLowerCase().contains(pattern.toLowerCase()))
+              return MoedaStatic.moedaStatic.entries
+                  .where((entry) =>
+                      entry.value.toLowerCase().contains(pattern.toLowerCase()))
                   .toList();
             },
-            itemBuilder: (context, suggestion) {
+            itemBuilder: (context, MapEntry<String, String> suggestion) {
               return ListTile(
-                title: Text(suggestion),
+                title: Text(suggestion.value),
               );
             },
-            onSuggestionSelected: (suggestion) {
-              textController.text = suggestion;
+            onSuggestionSelected: (MapEntry<String, String> suggestion) {
+              textController.text = suggestion.value;
+              selectedKey = suggestion.key; // Armazena a chave selecionada
             },
           ),
           actions: [
@@ -226,7 +228,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                     } else {
                       context
                           .read<MoedaDatabase>()
-                          .addMoeda(textController.text);
+                          .addMoeda(textController.text, selectedKey);
                       Navigator.pop(context);
                       textController.clear();
                     }
