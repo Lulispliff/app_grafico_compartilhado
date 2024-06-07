@@ -190,6 +190,7 @@ class GraficoScreenState extends State<GraficoScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonFormField<Moeda>(
+                dropdownColor: AppColors.color5,
                 decoration: const InputDecoration(
                   focusColor: Colors.transparent,
                   labelText: "Selecione uma moeda",
@@ -215,6 +216,7 @@ class GraficoScreenState extends State<GraficoScreen> {
               ),
               const SizedBox(height: 15),
               DropdownButtonFormField<Duration>(
+                dropdownColor: AppColors.color5,
                 decoration: const InputDecoration(
                   focusColor: Colors.transparent,
                   labelText: "Selecione o período de tempo",

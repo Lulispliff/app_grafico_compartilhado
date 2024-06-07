@@ -170,6 +170,8 @@ class MoedaScreenState extends State<MoedaScreen> {
                   fontSize: 30,
                   fontWeight: FontWeight.bold)),
           content: TypeAheadField<MapEntry<String, String>>(
+            suggestionsBoxDecoration:
+                const SuggestionsBoxDecoration(color: AppColors.color5),
             textFieldConfiguration: TextFieldConfiguration(
                 controller: textController,
                 cursorColor: Colors.grey,

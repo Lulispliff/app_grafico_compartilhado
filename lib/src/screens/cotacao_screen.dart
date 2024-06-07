@@ -206,6 +206,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<Moeda>(
+                  dropdownColor: AppColors.color5,
                   decoration: const InputDecoration(
                     focusColor: Colors.transparent,
                     labelText: "Selecione a moeda",
@@ -349,6 +350,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField(
+                    dropdownColor: AppColors.color5,
                     decoration: const InputDecoration(
                         focusColor: Colors.transparent,
                         labelText: "Selecione a moeda",
