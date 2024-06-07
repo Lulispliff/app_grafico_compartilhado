@@ -263,6 +263,19 @@ class CotacaoScreenState extends State<CotacaoScreen> {
           actions: [
             Row(
               children: [
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    addCotacaoApiDialog();
+                  },
+                  child: const Text(
+                    "API",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
                 const Spacer(),
                 TextButton(
                   style: ButtonStyle(
@@ -311,6 +324,112 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         );
       },
     );
+  }
+
+  void addCotacaoApiDialog() {
+    final moedaDataBase = context.read<MoedaDatabase>();
+    Moeda? selectedMoeda;
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: const Text(
+              "Cadastro de cotações - API",
+              style: TextStyle(
+                  fontSize: 30,
+                  color: AppColors.color2,
+                  fontWeight: FontWeight.bold),
+            ),
+            content: StatefulBuilder(builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                        focusColor: Colors.transparent,
+                        labelText: "Selecione a moeda",
+                        labelStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
+                    items: moedaDataBase.currentMoeda
+                        .map((moeda) => DropdownMenuItem<Moeda>(
+                              value: moeda,
+                              child: Text(StringUtils.capitalize(moeda.nome)),
+                            ))
+                        .toList(),
+                    onChanged: (Moeda? value) {
+                      setState(() {
+                        selectedMoeda = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  DatePickerWidget(
+                    label: "Data inicial",
+                    onChange: (DateTime date) async {},
+                  ),
+                  const SizedBox(height: 10),
+                  DatePickerWidget(
+                    label: "Data final",
+                    onChange: (DateTime date) async {},
+                  )
+                ],
+              );
+            }),
+            actions: [
+              Row(
+                children: [
+                  TextButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(AppColors.color2),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      addCotacaoDialog();
+                    },
+                    child: const Text(
+                      "Manual",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(AppColors.color2),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  TextButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(AppColors.color2),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Salvar",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
   }
 
   void deleteCotacaoDialog(int id) {

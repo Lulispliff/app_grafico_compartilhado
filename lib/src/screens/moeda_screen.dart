@@ -1,3 +1,4 @@
+import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
@@ -6,6 +7,8 @@ import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
@@ -22,6 +25,7 @@ class MoedaScreen extends StatefulWidget {
 
 class MoedaScreenState extends State<MoedaScreen> {
   final textController = TextEditingController();
+  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
 
   final MoedaStore store = MoedaStore(
     repository: MoedaRepository(
@@ -164,11 +168,26 @@ class MoedaScreenState extends State<MoedaScreen> {
                   color: AppColors.color2,
                   fontSize: 30,
                   fontWeight: FontWeight.bold)),
-          content: Input(
-              controller: textController,
-              cursorColor: Colors.grey,
-              label: "Nome da moeda",
-              labelTextColor: Colors.grey),
+          content: TypeAheadField(
+            controller: textController,
+            suggestionsCallback: (pattern) {
+              if (pattern.isEmpty) {
+                return [];
+              }
+              return MoedaStatic.moedaStatic.values
+                  .where((item) =>
+                      item.toLowerCase().contains(pattern.toLowerCase()))
+                  .toList();
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            onSelected: (suggestion) {
+              textController.text = suggestion;
+            },
+          ),
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
