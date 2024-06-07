@@ -1,18 +1,18 @@
-import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/list/static_list.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
