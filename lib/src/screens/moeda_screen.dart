@@ -169,7 +169,18 @@ class MoedaScreenState extends State<MoedaScreen> {
                   fontSize: 30,
                   fontWeight: FontWeight.bold)),
           content: TypeAheadField(
-            controller: textController,
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: textController,
+                cursorColor: Colors.grey,
+                decoration: const InputDecoration(
+                    labelText: "Nome da moeda",
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)))),
             suggestionsCallback: (pattern) {
               if (pattern.isEmpty) {
                 return [];
@@ -184,7 +195,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 title: Text(suggestion),
               );
             },
-            onSelected: (suggestion) {
+            onSuggestionSelected: (suggestion) {
               textController.text = suggestion;
             },
           ),
