@@ -108,7 +108,16 @@ class CotacaoScreenState extends State<CotacaoScreen> {
       future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
       builder: (context, snapshot) {
         final cotacoes = snapshot.data ?? [];
-        cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+        cotacoes.sort((a, b) {
+          int comparacaoData = a.data.compareTo(b.data);
+
+          if (comparacaoData != 0) {
+            return comparacaoData;
+          } else {
+            return a.hora.compareTo(b.hora);
+          }
+        });
 
         return cotacoes.isEmpty
             ? const Center(
@@ -120,31 +129,16 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                 ),
               )
-            : SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cotacoes.length,
-                  itemBuilder: (context, index) {
-                    final cotacao = cotacoes[index];
-
-                    return ListTile(
-                      title: Text(
-                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horario de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColors.color1,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+            : SingleChildScrollView(
+                child: Column(
+                    children: cotacoes.map((cotacao) {
+                  return ListTile(
+                    title: Text(
+                      "Valor ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                  );
+                }).toList()),
               );
       },
     );

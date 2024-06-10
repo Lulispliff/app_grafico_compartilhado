@@ -1,10 +1,6 @@
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:intl/intl.dart';
 
 class StringUtils {
-  static final maskData = MaskTextInputFormatter(mask: "##/##/####");
-  static final maskHorario = MaskTextInputFormatter(mask: "##:##");
-
   static String formatDateSimple(DateTime? date) {
     return formatByPattern(date, 'dd/MM/yyyy');
   }

@@ -59,7 +59,7 @@ class CotacoesChart extends StatelessWidget {
 
     for (var cotacao in cotacoes) {
       double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.data.difference(firstDate).inHours.toDouble()
+          ? cotacao.hora.hour.toDouble()
           : cotacao.data.difference(firstDate).inDays.toDouble();
       spots.add(FlSpot(x, cotacao.valor));
     }
@@ -75,9 +75,11 @@ class CotacoesChart extends StatelessWidget {
 
     for (var cotacao in cotacoes) {
       double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.data.difference(firstDate).inHours.toDouble()
+          ? cotacao.hora.hour.toDouble()
           : cotacao.data.difference(firstDate).inDays.toDouble();
-      spotDates[x] = cotacao.data;
+      spotDates[x] = selectedInterval == const Duration(days: 1)
+          ? cotacao.hora
+          : cotacao.data;
     }
     return spotDates;
   }
@@ -158,9 +160,14 @@ class CotacoesChart extends StatelessWidget {
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
               DateTime data = spotDates[touchedSpot.x]!;
-              String dataFormatada = StringUtils.formatDateSimple(data);
+              String dataFormatada = StringUtils.formatDateHoraeMinuto(data);
               String valor =
                   touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
+
+              if (selectedInterval == const Duration(days: 1)) {
+                return LineTooltipItem('R\$ $valor $dataFormatada',
+                    const TextStyle(color: Colors.white));
+              }
 
               return LineTooltipItem(
                 'R\$ $valor $dataFormatada',

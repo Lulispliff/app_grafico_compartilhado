@@ -98,7 +98,14 @@ class GraficoScreenState extends State<GraficoScreen> {
       future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
       builder: (context, snapshot) {
         final cotacoes = snapshot.data ?? [];
-        cotacoes.sort((a, b) => a.data.compareTo(b.data));
+        cotacoes.sort((a, b) {
+          int comparacaoData = a.data.compareTo(b.data);
+          if (comparacaoData != 0) {
+            return comparacaoData;
+          } else {
+            return a.hora.compareTo(b.hora);
+          }
+        });
 
         return cotacoes.isEmpty
             ? const Center(
@@ -107,21 +114,16 @@ class GraficoScreenState extends State<GraficoScreen> {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               )
-            : SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cotacoes.length,
-                  itemBuilder: (context, index) {
-                    final cotacao = cotacoes[index];
-
+            : SingleChildScrollView(
+                child: Column(
+                  children: cotacoes.map((cotacao) {
                     return ListTile(
                       title: Text(
                         "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                         style: const TextStyle(fontSize: 17),
                       ),
                     );
-                  },
+                  }).toList(),
                 ),
               );
       },
@@ -259,7 +261,10 @@ class GraficoScreenState extends State<GraficoScreen> {
             TextButton(
               style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
-              onPressed: _generateChart,
+              onPressed: () {
+                _generateChart();
+                Navigator.of(context).pop();
+              },
               child: const Text(
                 "Gerar Gráfico",
                 style: TextStyle(
