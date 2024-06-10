@@ -160,12 +160,14 @@ class CotacoesChart extends StatelessWidget {
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
               DateTime data = spotDates[touchedSpot.x]!;
-              String dataFormatada = StringUtils.formatDateHoraeMinuto(data);
+              String dataFormatadaHoras =
+                  StringUtils.formatDateHoraeMinuto(data);
+              String dataFormatada = StringUtils.formatDateSimple(data);
               String valor =
                   touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
 
               if (selectedInterval == const Duration(days: 1)) {
-                return LineTooltipItem('R\$ $valor $dataFormatada',
+                return LineTooltipItem('R\$ $valor $dataFormatadaHoras',
                     const TextStyle(color: Colors.white));
               }
 
