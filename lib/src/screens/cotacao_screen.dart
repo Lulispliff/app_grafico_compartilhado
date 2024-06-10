@@ -91,7 +91,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   child: ExpansionTile(
                     title: Text(
-                      "Moeda: ${StringUtils.capitalize(moeda.nome)}",
+                      StringUtils.capitalize(moeda.nome),
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
@@ -136,6 +136,15 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     title: Text(
                       "Valor ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                       style: const TextStyle(fontSize: 17),
+                    ),
+                    trailing: Tooltip(
+                      message: "Excluir",
+                      child: IconButton(
+                        onPressed: () {
+                          deleteCotacaoDialog(cotacao.id);
+                        },
+                        icon: const Icon(Icons.delete, color: AppColors.color1),
+                      ),
                     ),
                   );
                 }).toList()),

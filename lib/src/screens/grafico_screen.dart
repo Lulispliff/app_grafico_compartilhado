@@ -80,7 +80,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 child: ExpansionTile(
                   title: Text(
-                    "Moeda: ${StringUtils.capitalize(moeda.nome)}",
+                    StringUtils.capitalize(moeda.nome),
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: const Icon(Icons.arrow_drop_down),

@@ -94,30 +94,36 @@ class MoedaScreenState extends State<MoedaScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    "Moeda: ${StringUtils.capitalize(moeda.nome)} - ID: ${moeda.id}",
+                    "${StringUtils.capitalize(moeda.nome)} - ID: ${moeda.id}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          editMoedaDialog(moeda);
-                        },
-                        icon: const Icon(
-                          Icons.create_sharp,
-                          color: AppColors.color1,
+                      Tooltip(
+                        message: "Editar",
+                        child: IconButton(
+                          onPressed: () {
+                            editMoedaDialog(moeda);
+                          },
+                          icon: const Icon(
+                            Icons.create_sharp,
+                            color: AppColors.color1,
+                          ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          deleteMoedaDialog(moeda.id);
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColors.color1,
+                      Tooltip(
+                        message: "Excluir",
+                        child: IconButton(
+                          onPressed: () {
+                            deleteMoedaDialog(moeda.id);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.color1,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
