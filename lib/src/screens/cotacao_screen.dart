@@ -432,6 +432,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           WidgetStateProperty.all(AppColors.color2),
                     ),
                     onPressed: () {
+                      if (selectedMoeda == null ||
+                          initialDate == null ||
+                          finaldate == null) {
+                        ErrorMessages.addCotacaoApiErrorMessage(context);
+                      }
                       store.getMoedas(
                         selectedMoeda!.key,
                         initialDate!.toIso8601String(),
