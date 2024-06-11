@@ -261,7 +261,6 @@ class MoedaScreenState extends State<MoedaScreen> {
 
   void editMoedaDialog(Moeda moeda) {
     textController.text = StringUtils.capitalize(moeda.nome);
-    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
