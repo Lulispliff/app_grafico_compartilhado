@@ -7,21 +7,35 @@ class ErrorMessages {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
+        return AlertDialog(
           backgroundColor: AppColors.color4,
-          title: Text("Cadastro de cotações", textAlign: TextAlign.center),
-          titleTextStyle: TextStyle(
+          title: Stack(
+            children: [
+              const Align(
+                alignment: Alignment.center,
+                child:
+                    Text("Cadastro de cotações", textAlign: TextAlign.center),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.close,
+                      color: Color.fromARGB(255, 204, 204, 176)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+          ),
+          titleTextStyle: const TextStyle(
               color: AppColors.color2,
               fontSize: 30,
               fontWeight: FontWeight.bold),
-          content: Row(
+          content: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(
-                Icons.info,
-                color: AppColors.color2,
-                size: 40,
-              ),
+              Icon(Icons.info, color: AppColors.color2, size: 40),
               Text(
                 "Preencha todos os campos corretamente!",
                 style: TextStyle(
@@ -40,25 +54,40 @@ class ErrorMessages {
     showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
+          return AlertDialog(
             backgroundColor: AppColors.color4,
-            title:
-                Text("Cadastro de cotações - API", textAlign: TextAlign.center),
-            titleTextStyle: TextStyle(
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text("Cadastro de cotações - API",
+                      textAlign: TextAlign.center),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Color.fromARGB(255, 204, 204, 176)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+            titleTextStyle: const TextStyle(
                 color: AppColors.color2,
                 fontSize: 30,
                 fontWeight: FontWeight.bold),
-            content: Row(
+            content: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(Icons.info, color: AppColors.color2, size: 40),
-                Text(
-                  "Preencha todos os dados corretamente!",
-                  style: TextStyle(
-                      color: AppColors.color1,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold),
-                )
+                Text("Preencha todos os campos corretamente!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold))
               ],
             ),
           );
@@ -69,25 +98,39 @@ class ErrorMessages {
     showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
+          return AlertDialog(
             backgroundColor: AppColors.color4,
-            title:
-                Text("Cadastro de cotações - API", textAlign: TextAlign.center),
-            titleTextStyle: TextStyle(
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text("Cadastro de cotações - API",
+                      textAlign: TextAlign.center),
+                ),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.close,
+                          color: Color.fromARGB(255, 204, 204, 176)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ))
+              ],
+            ),
+            titleTextStyle: const TextStyle(
                 color: AppColors.color2,
                 fontSize: 30,
                 fontWeight: FontWeight.bold),
-            content: Row(
+            content: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(Icons.info, color: AppColors.color2, size: 40),
-                Text(
-                  "Nenhum dado encontrado na busca realizada pela API!",
-                  style: TextStyle(
-                      color: AppColors.color1,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold),
-                )
+                Text("Nenhum dado encontrado na busca realizada pela API!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold)),
               ],
             ),
           );
@@ -96,117 +139,178 @@ class ErrorMessages {
 
   static void graficoMoedaErrorMessage(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: AppColors.color4,
-          title: Text("Gráfico de cotações", textAlign: TextAlign.center),
-          titleTextStyle: TextStyle(
-              color: AppColors.color2,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.info, color: AppColors.color2, size: 40),
-              Text(
-                "Você deve selecionar uma moeda para gerar o gráfico!",
-                style: TextStyle(
-                    color: AppColors.color1,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child:
+                      Text("Gráfico de cotações", textAlign: TextAlign.center),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Color.fromARGB(255, 204, 204, 176)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              ],
+            ),
+            titleTextStyle: const TextStyle(
+                color: AppColors.color2,
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+            content: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.info, color: AppColors.color2, size: 40),
+                Text("Você deve selecionar uma moeda para gerar o gráfico!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold))
+              ],
+            ),
+          );
+        });
   }
 
   static void graficoCotacaoErrorMessage(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: AppColors.color4,
-          title: Text("Gráfico de cotações", textAlign: TextAlign.center),
-          titleTextStyle: TextStyle(
-              color: AppColors.color2,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.info, color: AppColors.color2, size: 40),
-              Text(
-                "Nenhuma cotação foi encontrada no período de tempo selecionado!",
-                style: TextStyle(
-                    color: AppColors.color1,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child:
+                      Text("Gráfico de cotações", textAlign: TextAlign.center),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Color.fromARGB(255, 204, 204, 176)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              ],
+            ),
+            titleTextStyle: const TextStyle(
+                color: AppColors.color2,
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+            content: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.info, color: AppColors.color2, size: 40),
+                Text(
+                    "Nenhuma cotação foi encontrada no período de tempo selecionado!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold))
+              ],
+            ),
+          );
+        });
   }
 
   static void moedaNomeErrorMessage(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: AppColors.color4,
-          title: Text("Cadastro de moedas", textAlign: TextAlign.center),
-          titleTextStyle: TextStyle(
-              color: AppColors.color2,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.info, color: AppColors.color2, size: 40),
-              Text(
-                "Insira um nome para a moeda!",
-                style: TextStyle(
-                    color: AppColors.color1,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child:
+                      Text("Cadastro de moedas", textAlign: TextAlign.center),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Color.fromARGB(255, 204, 204, 176)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              ],
+            ),
+            titleTextStyle: const TextStyle(
+                color: AppColors.color2,
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+            content: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.info, color: AppColors.color2, size: 40),
+                Text("Insira um nome válido para a moeda!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold))
+              ],
+            ),
+          );
+        });
   }
 
   static void moedaNovoNomeErrorMessage(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          title: Text("Edição de moedas", textAlign: TextAlign.center),
-          titleTextStyle: TextStyle(
-              color: AppColors.color2,
-              fontSize: 30,
-              fontWeight: FontWeight.bold),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.info, color: AppColors.color2, size: 40),
-              Text(
-                "Você deve inserir um novo nome para a moeda que está editando!",
-                style: TextStyle(
-                    color: AppColors.color1,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: Stack(
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text("Edição de moedas", textAlign: TextAlign.center),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Color.fromARGB(255, 204, 204, 176)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              ],
+            ),
+            titleTextStyle: const TextStyle(
+                color: AppColors.color2,
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+            content: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.info, color: AppColors.color2, size: 40),
+                Text("Você deve inserir um novo nome válido!",
+                    style: TextStyle(
+                        color: AppColors.color1,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold))
+              ],
+            ),
+          );
+        });
   }
 
   static void errorGraficoNavigatorMessage(BuildContext context) {

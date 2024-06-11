@@ -171,6 +171,8 @@ class MoedaScreenState extends State<MoedaScreen> {
 
   void _addMoedaDialog() {
     String selectedKey = '';
+    textController
+        .clear(); // Limpa o controlador de texto antes de abrir o diálogo
     showDialog(
       context: context,
       builder: (context) {
