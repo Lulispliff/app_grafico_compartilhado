@@ -63,10 +63,15 @@ class GraficoScreenState extends State<GraficoScreen> {
 
     return currentMoeda.isEmpty
         ? const Center(
-            child: Text(
-                "Você não tem cotações registradas para gerar o gráfico.",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-          )
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(FontAwesomeIcons.chartColumn, color: AppColors.color1),
+              SizedBox(width: 10),
+              Text("Você não possui cotações registradas para gerar o gráfico",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            ],
+          ))
         : ListView.builder(
             itemCount: currentMoeda.length,
             itemBuilder: (context, index) {
@@ -262,6 +267,9 @@ class GraficoScreenState extends State<GraficoScreen> {
               style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(AppColors.color2)),
               onPressed: () {
+                if (selectedMoeda == null) {
+                  ErrorMessages.graficoMoedaErrorMessage(context);
+                }
                 _generateChart();
                 Navigator.of(context).pop();
               },
@@ -307,10 +315,6 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   Future<void> _generateChart() async {
-    if (selectedMoeda == null) {
-      ErrorMessages.graficoMoedaErrorMessage(context);
-    }
-
     final cotacaoDatabase = context.read<CotacaoDatabase>();
     List<Cotacoess> cotacoes = await cotacaoDatabase.fetchCotacoesByInterval(
         selectedMoeda!.nome, selectedInterval);

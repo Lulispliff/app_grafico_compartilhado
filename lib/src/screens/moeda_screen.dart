@@ -73,9 +73,16 @@ class MoedaScreenState extends State<MoedaScreen> {
 
     return currentMoeda.isEmpty
         ? const Center(
-            child: Text(
-              "Sua lista de moedas está vazia.",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(FontAwesomeIcons.coins, color: AppColors.color1),
+                SizedBox(width: 10),
+                Text(
+                  "Sua lista de moedas está vazia",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           )
         : ListView.builder(
@@ -320,7 +327,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                     fontWeight: FontWeight.bold)),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                       style: ButtonStyle(

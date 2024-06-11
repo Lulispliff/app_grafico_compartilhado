@@ -75,8 +75,17 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
     return currentMoeda.isEmpty
         ? const Center(
-            child: Text("Sua lista de cotações está vazia.",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(FontAwesomeIcons.fileInvoiceDollar,
+                    color: AppColors.color1),
+                SizedBox(width: 10),
+                Text("Sua lista de cotações está vazia",
+                    style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+              ],
+            ),
           )
         : ListView.builder(
             itemCount: currentMoeda.length,
@@ -471,7 +480,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     color: AppColors.color2)),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     style: ButtonStyle(
