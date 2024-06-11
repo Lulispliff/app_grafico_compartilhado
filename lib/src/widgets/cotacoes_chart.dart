@@ -26,7 +26,7 @@ class CotacoesChart extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.color1,
         centerTitle: true,
-        title: Text("Gráfico do ${selectedMoeda.nome}"),
+        title: Text("Gráfico - ${selectedMoeda.nome}"),
         titleTextStyle: const TextStyle(
           color: AppColors.color2,
           fontSize: 30,
