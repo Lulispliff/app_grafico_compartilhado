@@ -147,7 +147,7 @@ class CotacoesChart extends StatelessWidget {
           leftTitles: AxisTitles(
               sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 3,
             getTitlesWidget: leftTitles,
             reservedSize: 40,
           )),
