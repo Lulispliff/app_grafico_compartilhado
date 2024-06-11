@@ -54,13 +54,22 @@ class CotacoesChart extends StatelessWidget {
 
   List<FlSpot> _generateSpots() {
     List<FlSpot> spots = [];
+    Map<String, int> dayCount = {};
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
     for (var cotacao in cotacoes) {
+      String dayKey = selectedInterval == const Duration(days: 1)
+          ? cotacao.hora.hour.toString()
+          : cotacao.data.toString();
+
+      dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
+
       double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble()
-          : cotacao.data.difference(firstDate).inDays.toDouble();
+          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
+          : cotacao.data.difference(firstDate).inDays.toDouble() +
+              (dayCount[dayKey]! - 1) * 0.1;
+
       spots.add(FlSpot(x, cotacao.valor));
     }
 
@@ -70,17 +79,27 @@ class CotacoesChart extends StatelessWidget {
 
   Map<double, DateTime> _generateSpotDates() {
     Map<double, DateTime> spotDates = {};
+    Map<String, int> dayCount = {};
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
     for (var cotacao in cotacoes) {
+      String dayKey = selectedInterval == const Duration(days: 1)
+          ? cotacao.hora.hour.toString()
+          : cotacao.data.toString();
+
+      dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
+
       double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble()
-          : cotacao.data.difference(firstDate).inDays.toDouble();
+          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
+          : cotacao.data.difference(firstDate).inDays.toDouble() +
+              (dayCount[dayKey]! - 1) * 0.1;
+
       spotDates[x] = selectedInterval == const Duration(days: 1)
           ? cotacao.hora
           : cotacao.data;
     }
+
     return spotDates;
   }
 
