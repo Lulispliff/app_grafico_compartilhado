@@ -1,10 +1,10 @@
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
-import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'dart:convert';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 
 abstract class IMoedaRepository {
-  Future<List<MoedaApi>> getMoedas(
+  Future<List<Cotacoess>> getMoedas(
       {String? moeda, String? startDate, String? endDate});
 }
 
@@ -14,7 +14,7 @@ class MoedaRepository implements IMoedaRepository {
   MoedaRepository({required this.client});
 
   @override
-  Future<List<MoedaApi>> getMoedas({
+  Future<List<Cotacoess>> getMoedas({
     String? moeda,
     String? startDate,
     String? endDate,
@@ -24,16 +24,12 @@ class MoedaRepository implements IMoedaRepository {
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
-      final List<MoedaApi> moedas = [];
-
       //body recebe os maps que contem os itens
-      final body = jsonDecode(response.body);
+      final body = jsonDecode(response.body) as List;
+      final List<Cotacoess> moedas = [];
 
-      if (body is List) {
-        for (var item in body) {
-          final MoedaApi moeda = MoedaApi.fromMap(item);
-          moedas.add(moeda);
-        }
+      for (var map in body) {
+        moedas.add(Cotacoess.fromJson(map as Map<String, dynamic>));
       }
 
       return moedas;

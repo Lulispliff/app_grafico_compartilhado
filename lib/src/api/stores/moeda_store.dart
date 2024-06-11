@@ -1,6 +1,6 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
-import 'package:app_grafico_compartilhado/src/api/models/moeda_api.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class MoedaStore {
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
 
   //Variavel reativa para o state
-  final ValueNotifier<List<MoedaApi>> state = ValueNotifier<List<MoedaApi>>([]);
+  final ValueNotifier<List<Cotacoess>> state = ValueNotifier<List<Cotacoess>>([]);
 
   //Variavel reativa para o erro
   final ValueNotifier<String> erro = ValueNotifier<String>('');

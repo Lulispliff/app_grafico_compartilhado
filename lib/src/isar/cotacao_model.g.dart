@@ -86,13 +86,14 @@ Cotacoess _cotacoessDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Cotacoess();
-  object.data = reader.readDateTime(offsets[0]);
-  object.hora = reader.readDateTime(offsets[1]);
+  final object = Cotacoess(
+    data: reader.readDateTime(offsets[0]),
+    hora: reader.readDateTime(offsets[1]),
+    nome: reader.readString(offsets[3]),
+    valor: reader.readDouble(offsets[4]),
+  );
   object.id = id;
   object.isSelected = reader.readBool(offsets[2]);
-  object.nome = reader.readString(offsets[3]);
-  object.valor = reader.readDouble(offsets[4]);
   return object;
 }
 

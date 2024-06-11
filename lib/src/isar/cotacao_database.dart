@@ -18,7 +18,8 @@ class CotacaoDatabase extends ChangeNotifier {
   // Método para adicionar uma nova cotação
   Future<void> addCotacao(String nome, DateTime data, DateTime hora,
       double valor, Moeda moeda) async {
-    final newCotacao = Cotacoess()
+    final newCotacao = Cotacoess(
+        nome: nome, data: data, hora: hora, valor: valor, moeda: moeda)
       ..nome = nome
       ..data = data
       ..hora = hora
@@ -28,6 +29,13 @@ class CotacaoDatabase extends ChangeNotifier {
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));
     moeda.cotacoes.add(newCotacao);
+    await fetchCotacoes();
+  }
+
+  Future<void> save(Cotacoess cotacoes, Moeda moeda) async {
+    await IsarService.isar
+        .writeTxn(() => IsarService.isar.cotacoess.put(cotacoes));
+    moeda.cotacoes.add(cotacoes);
     await fetchCotacoes();
   }
 
