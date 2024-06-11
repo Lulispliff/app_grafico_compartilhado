@@ -24,8 +24,8 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
-  late List<Moeda> currentMoeda;
   late List<Cotacoess> cotacoesDaMoeda;
+  late List<Moeda> currentMoeda;
 
   @override
   void initState() {
@@ -193,13 +193,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   void addCotacaoDialog() {
-    final moedaDataBase = context.read<MoedaDatabase>();
     final cotacaoDataBase = context.read<CotacaoDatabase>();
+    final moedaDataBase = context.read<MoedaDatabase>();
 
+    TextEditingController valorController = TextEditingController();
     DateTime? selectedHorario;
     DateTime? selectedData;
     Moeda? selectedMoeda;
-    TextEditingController valorController = TextEditingController();
 
     showDialog(
       context: context,
@@ -341,8 +341,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   void addCotacaoApiDialog() {
     final moedaDataBase = context.read<MoedaDatabase>();
-    Moeda? selectedMoeda;
+
     DateTime? initialDate;
+    Moeda? selectedMoeda;
     DateTime? finaldate;
 
     showDialog(

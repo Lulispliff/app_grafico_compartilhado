@@ -6,7 +6,7 @@ import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 
 class NavigatorButtons {
-  static String? telaatual;
+  static String? telaAtual;
 
   static Widget buildNavigatorButtons(BuildContext context) {
     return Column(
@@ -55,8 +55,8 @@ class NavigatorButtons {
   }
 
   static void goToGrafico(BuildContext context) {
-    if (telaatual != 'graf') {
-      telaatual = 'graf';
+    if (telaAtual != 'graf') {
+      telaAtual = 'graf';
       Navigator.push(
         context,
         PageRouteBuilder(
@@ -80,8 +80,8 @@ class NavigatorButtons {
   }
 
   static void goToCotacao(BuildContext context) {
-    if (telaatual != 'cot') {
-      telaatual = 'cot';
+    if (telaAtual != 'cot') {
+      telaAtual = 'cot';
       Navigator.push(
         context,
         PageRouteBuilder(
@@ -105,8 +105,8 @@ class NavigatorButtons {
   }
 
   static void goToMoedas(BuildContext context) {
-    if (telaatual != 'moeda') {
-      telaatual = 'moeda';
+    if (telaAtual != 'moeda') {
+      telaAtual = 'moeda';
       Navigator.push(
         context,
         PageRouteBuilder(

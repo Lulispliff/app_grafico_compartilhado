@@ -4,19 +4,19 @@ import 'package:app_grafico_compartilhado/utils/colors_app.dart';
 import 'package:flutter/material.dart';
 
 class DatePickerWidget extends StatelessWidget {
-  final String label;
+  final Future<void> Function(DateTime) onChange;
   final DateTime? data;
   final bool pickTime;
+  final String label;
   final bool enabled;
-  final Future<void> Function(DateTime) onChange;
 
   const DatePickerWidget({
-    super.key,
-    required this.label,
-    this.data,
-    this.pickTime = false,
-    this.enabled = true,
     required this.onChange,
+    this.pickTime = false,
+    required this.label,
+    this.enabled = true,
+    super.key,
+    this.data,
   });
 
   @override

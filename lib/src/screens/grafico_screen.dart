@@ -22,8 +22,8 @@ class GraficoScreen extends StatefulWidget {
 }
 
 class GraficoScreenState extends State<GraficoScreen> {
-  Moeda? selectedMoeda;
   Duration selectedInterval = const Duration(days: 1);
+  Moeda? selectedMoeda;
 
   @override
   void initState() {
@@ -316,6 +316,7 @@ class GraficoScreenState extends State<GraficoScreen> {
 
   Future<void> _generateChart() async {
     final cotacaoDatabase = context.read<CotacaoDatabase>();
+
     List<Cotacoess> cotacoes = await cotacaoDatabase.fetchCotacoesByInterval(
         selectedMoeda!.nome, selectedInterval);
 
