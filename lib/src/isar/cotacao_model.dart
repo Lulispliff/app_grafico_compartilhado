@@ -22,9 +22,6 @@ class Cotacoess {
       required this.valor});
 
   factory Cotacoess.fromJson(Map<String, dynamic> map) {
-    // ignore: avoid_print
-    print('Timestamp recebido: ${map['timestamp']}');
-    
     int timeStamp = int.parse(map['timestamp']);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
 
