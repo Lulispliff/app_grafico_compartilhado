@@ -3,9 +3,14 @@ import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'dart:convert';
 
+
 abstract class IMoedaRepository {
-  Future<List<Cotacoess>> getMoedas(
-      {String? moeda, String? startDate, String? endDate});
+  Future<List<Cotacoess>> getMoedas({
+    String? startDate,
+    String? endDate,
+    String? moedaKey,
+    String? moedaNome,
+  });
 }
 
 class MoedaRepository implements IMoedaRepository {
@@ -15,12 +20,13 @@ class MoedaRepository implements IMoedaRepository {
 
   @override
   Future<List<Cotacoess>> getMoedas({
-    String? moeda,
+    String? moedaKey,
+    String? moedaNome,
     String? startDate,
     String? endDate,
   }) async {
     final url =
-        'https://economia.awesomeapi.com.br/$moeda/10?start_date=$startDate&end_date=$endDate';
+        'https://economia.awesomeapi.com.br/$moedaKey/10?start_date=$startDate&end_date=$endDate';
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {

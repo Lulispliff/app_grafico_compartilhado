@@ -1,6 +1,7 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,8 @@ class MoedaStore {
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
 
   //Variavel reativa para o state
-  final ValueNotifier<List<Cotacoess>> state = ValueNotifier<List<Cotacoess>>([]);
+  final ValueNotifier<List<Cotacoess>> state =
+      ValueNotifier<List<Cotacoess>>([]);
 
   //Variavel reativa para o erro
   final ValueNotifier<String> erro = ValueNotifier<String>('');
@@ -18,7 +20,7 @@ class MoedaStore {
   MoedaStore({required this.repository});
 
   Future getMoedas(
-    String? moeda,
+    Moeda? moeda,
     String? startDate,
     String? endDate,
   ) async {
@@ -37,9 +39,13 @@ class MoedaStore {
 
     isloading.value = true;
 
+    final String? moedaKey = moeda?.key;
+    final String? moedaNome = moeda?.nome;
+
     try {
       final result = await repository.getMoedas(
-        moeda: moeda,
+        moedaKey: moedaKey,
+        moedaNome: moedaNome,
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       );

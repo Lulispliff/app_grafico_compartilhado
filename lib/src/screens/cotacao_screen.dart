@@ -377,9 +377,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                               child: Text(StringUtils.capitalize(moeda.nome)),
                             ))
                         .toList(),
-                    onChanged: (Moeda? key) {
+                    onChanged: (Moeda? moeda) {
                       setState(() {
-                        selectedMoeda = key;
+                        selectedMoeda = moeda;
                       });
                     },
                   ),
@@ -450,7 +450,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         ErrorMessages.addCotacaoApiErrorMessage(context);
                       }
                       store.getMoedas(
-                        selectedMoeda!.key,
+                        selectedMoeda!,
                         initialDate!.toIso8601String(),
                         finaldate!.toIso8601String(),
                       );
