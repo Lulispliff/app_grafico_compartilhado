@@ -21,8 +21,21 @@ class MoedaRepository implements IMoedaRepository {
     String? moedaKey,
     String? moedaNome,
     String? startDate,
+    String? numDias,
   }) async {
-    final url = 'https://economia.awesomeapi.com.br/json/daily/$moedaKey/10';
+    
+    //Dia atual
+    final DateTime currentDate = DateTime.now();
+
+    //Calcula a diferença entre a data atual e a data selecionada
+    final DateTime startDateTime = DateTime.parse(startDate!);
+    final int differenceDays = currentDate.difference(startDateTime).inDays;
+
+    //Converte a diferença para dias
+    final String formattedNumDias = differenceDays.toString();
+
+    final url =
+        'https://economia.awesomeapi.com.br/json/daily/$moedaKey/$formattedNumDias';
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
