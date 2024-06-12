@@ -394,16 +394,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       });
                     },
                   ),
-                  const SizedBox(height: 10),
-                  DatePickerWidget(
-                    label: "Data final",
-                    data: finaldate,
-                    onChange: (DateTime date) async {
-                      setState(() {
-                        finaldate = date;
-                      });
-                    },
-                  )
                 ],
               );
             }),
@@ -445,15 +435,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           WidgetStateProperty.all(AppColors.color2),
                     ),
                     onPressed: () {
-                      if (selectedMoeda == null ||
-                          initialDate == null ||
-                          finaldate == null) {
+                      if (selectedMoeda == null || initialDate == null) {
                         ErrorMessages.addCotacaoApiErrorMessage(context);
                       }
                       store.getMoedas(
                         selectedMoeda!,
                         initialDate!.toIso8601String(),
-                        finaldate!.toIso8601String(),
                       );
                     },
                     child: const Text(

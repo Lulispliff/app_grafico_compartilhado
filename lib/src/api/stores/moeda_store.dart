@@ -22,19 +22,12 @@ class MoedaStore {
   Future getMoedas(
     Moeda? moeda,
     String? startDate,
-    String? endDate,
   ) async {
     String formattedStartDate = '';
-    String formattedEndDate = '';
 
     if (startDate != null) {
       final DateTime startDateTime = DateTime.parse(startDate);
       formattedStartDate = StringUtils.formatDateApi(startDateTime);
-    }
-
-    if (endDate != null) {
-      final DateTime endDateTime = DateTime.parse(endDate);
-      formattedEndDate = StringUtils.formatDateApi(endDateTime);
     }
 
     isloading.value = true;
@@ -47,7 +40,6 @@ class MoedaStore {
         moedaKey: moedaKey,
         moedaNome: moedaNome,
         startDate: formattedStartDate,
-        endDate: formattedEndDate,
       );
       state.value = result;
     } on NotFoundException catch (e) {
