@@ -344,7 +344,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
     DateTime? initialDate;
     Moeda? selectedMoeda;
-    DateTime? finaldate;
 
     showDialog(
         context: context,
