@@ -1,4 +1,5 @@
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
+import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 part 'cotacao_model.g.dart';
 
@@ -21,11 +22,17 @@ class Cotacoess {
       required this.valor});
 
   factory Cotacoess.fromJson(Map<String, dynamic> map) {
-    DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(map['timestamp'] * 1000);
-    DateTime data = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    DateTime hora =
-        DateTime(0, 0, 0, dateTime.hour, dateTime.minute, dateTime.second);
+    // ignore: avoid_print
+    print('Timestamp recebido: ${map['timestamp']}');
+    
+    int timeStamp = int.parse(map['timestamp']);
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    DateFormat timeFormat = DateFormat('HH:mm:ss');
+
+    DateTime data = DateTime.parse(dateFormat.format(dateTime));
+    DateTime hora = DateTime.parse(timeFormat.format(dateTime));
 
     return Cotacoess(
       nome: map['nome'],
