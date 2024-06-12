@@ -29,6 +29,15 @@ class MoedaStore {
       final DateTime startDateTime = DateTime.parse(startDate);
       formattedStartDate = StringUtils.formatDateApi(startDateTime);
     }
+    //Dia atual
+    final DateTime currentDate = DateTime.now();
+
+    //Calcula a diferença entre a data atual e a data selecionada
+    final DateTime startDateTime = DateTime.parse(startDate!);
+    final int differenceDays = currentDate.difference(startDateTime).inDays;
+
+    //Converte a diferença para dias
+    final String formattedNumDias = differenceDays.toString();
 
     isloading.value = true;
 
@@ -40,6 +49,7 @@ class MoedaStore {
         moedaKey: moedaKey,
         moedaNome: moedaNome,
         startDate: formattedStartDate,
+        numDias: formattedNumDias,
       );
       state.value = result;
     } on NotFoundException catch (e) {
