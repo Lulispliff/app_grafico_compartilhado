@@ -6,20 +6,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CotacoesChart extends StatelessWidget {
+  final Duration selectedInterval;
   final List<Cotacoess> cotacoes;
   final Moeda selectedMoeda;
-  final Duration selectedInterval;
 
-  const CotacoesChart(
-      {super.key,
-      required this.cotacoes,
-      required this.selectedMoeda,
-      required this.selectedInterval});
+  const CotacoesChart({
+    required this.selectedInterval,
+    required this.selectedMoeda,
+    required this.cotacoes,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    List<FlSpot> spots = _generateSpots();
     Map<double, DateTime> spotDates = _generateSpotDates();
+    List<FlSpot> spots = _generateSpots();
 
     return Scaffold(
       backgroundColor: AppColors.color4,
@@ -53,8 +54,9 @@ class CotacoesChart extends StatelessWidget {
   }
 
   List<FlSpot> _generateSpots() {
-    List<FlSpot> spots = [];
     Map<String, int> dayCount = {};
+    List<FlSpot> spots = [];
+
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
@@ -80,6 +82,7 @@ class CotacoesChart extends StatelessWidget {
   Map<double, DateTime> _generateSpotDates() {
     Map<double, DateTime> spotDates = {};
     Map<String, int> dayCount = {};
+
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
@@ -207,11 +210,13 @@ class CotacoesChart extends StatelessWidget {
     // Titulo diferente caso "1 hora" selecionado
     if (selectedInterval == const Duration(days: 1)) {
       String titulosHora = '${value.toInt().toString().padLeft(2, '0')}H';
+
       return SideTitleWidget(
         axisSide: meta.axisSide,
         child: Text(titulosHora, style: style),
       );
     }
+
     // Titulo para os demais intervalos de tempo selecionados
     else {
       DateTime firstDate =
@@ -249,6 +254,7 @@ class CotacoesChart extends StatelessWidget {
           cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
       DateTime lastDate =
           cotacoes.map((c) => c.data).reduce((a, b) => a.isAfter(b) ? a : b);
+
       return lastDate.difference(firstDate).inDays.toDouble();
     }
   }

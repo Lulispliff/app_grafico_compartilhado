@@ -24,8 +24,8 @@ class MoedaScreen extends StatefulWidget {
 }
 
 class MoedaScreenState extends State<MoedaScreen> {
-  final textController = TextEditingController();
   GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
+  final textController = TextEditingController();
 
   final MoedaStore store = MoedaStore(
     repository: MoedaRepository(
@@ -171,8 +171,8 @@ class MoedaScreenState extends State<MoedaScreen> {
 
   void _addMoedaDialog() {
     String selectedKey = '';
-    textController
-        .clear(); // Limpa o controlador de texto antes de abrir o diálogo
+    textController.clear();
+
     showDialog(
       context: context,
       builder: (context) {
