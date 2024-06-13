@@ -256,7 +256,7 @@ class GraficoScreenState extends State<GraficoScreen> {
           actions: [
             TextButton(
               style: const ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(AppColors.color2),
+                backgroundColor: MaterialStatePropertyAll(AppColors.color2),
               ),
               onPressed: Navigator.of(context).pop,
               child: const Text(
@@ -266,7 +266,7 @@ class GraficoScreenState extends State<GraficoScreen> {
             ),
             TextButton(
               style: const ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(AppColors.color2),
+                backgroundColor: MaterialStatePropertyAll(AppColors.color2),
               ),
               onPressed: () {
                 if (selectedMoeda == null) {
