@@ -224,7 +224,7 @@ class MoedaScreenState extends State<MoedaScreen> {
               children: [
                 TextButton(
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    backgroundColor: WidgetStatePropertyAll(AppColors.color2),
                   ),
                   child: const Text('Cancelar',
                       style: TextStyle(color: Colors.white)),
@@ -235,7 +235,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 const SizedBox(width: 10),
                 TextButton(
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    backgroundColor: WidgetStatePropertyAll(AppColors.color2),
                   ),
                   child: const Text('Salvar',
                       style: TextStyle(color: Colors.white)),
@@ -282,7 +282,7 @@ class MoedaScreenState extends State<MoedaScreen> {
             children: [
               TextButton(
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    backgroundColor: WidgetStatePropertyAll(AppColors.color2),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -294,7 +294,7 @@ class MoedaScreenState extends State<MoedaScreen> {
               const SizedBox(width: 10),
               TextButton(
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    backgroundColor: WidgetStatePropertyAll(AppColors.color2),
                   ),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
@@ -334,7 +334,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   TextButton(
                       style: const ButtonStyle(
                         backgroundColor:
-                            MaterialStatePropertyAll(AppColors.color2),
+                            WidgetStatePropertyAll(AppColors.color2),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -345,7 +345,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                   TextButton(
                       style: const ButtonStyle(
                         backgroundColor:
-                            MaterialStatePropertyAll(AppColors.color2),
+                            WidgetStatePropertyAll(AppColors.color2),
                       ),
                       onPressed: () {
                         deleteMoeda(id);
