@@ -16,8 +16,8 @@ class NavigatorButtons {
           onPressed: () {
             NavigatorButtons.goToGrafico(context);
           },
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
+          style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(AppColors.color2),
           ),
           child: const Text(
             "Gráfico",
@@ -29,8 +29,8 @@ class NavigatorButtons {
           onPressed: () {
             NavigatorButtons.goToCotacao(context);
           },
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
+          style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(AppColors.color2),
           ),
           child: const Text(
             "Cotação",
@@ -42,8 +42,8 @@ class NavigatorButtons {
           onPressed: () {
             NavigatorButtons.goToMoedas(context);
           },
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(AppColors.color2),
+          style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(AppColors.color2),
           ),
           child: const Text(
             "Moedas",
