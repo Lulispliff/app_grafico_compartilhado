@@ -38,7 +38,6 @@ class MoedaStore {
 
     //Converte a diferença para dias
     final String formattedNumDias = differenceDays.toString();
-    print("Intervalo de tempo: $formattedNumDias");
 
     isloading.value = true;
 
@@ -47,6 +46,7 @@ class MoedaStore {
 
     try {
       final result = await repository.getMoedas(
+        moedaCompleta: moeda,
         moedaKey: moedaKey,
         moedaNome: moedaNome,
         startDate: formattedStartDate,
