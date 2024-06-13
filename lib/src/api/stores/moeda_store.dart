@@ -38,6 +38,7 @@ class MoedaStore {
 
     //Converte a diferença para dias
     final String formattedNumDias = differenceDays.toString();
+    print("Intervalo de tempo: $formattedNumDias");
 
     isloading.value = true;
 
