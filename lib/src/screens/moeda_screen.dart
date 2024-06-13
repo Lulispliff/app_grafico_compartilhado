@@ -223,9 +223,9 @@ class MoedaScreenState extends State<MoedaScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2)),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                  ),
                   child: const Text('Cancelar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -234,9 +234,9 @@ class MoedaScreenState extends State<MoedaScreen> {
                 ),
                 const SizedBox(width: 10),
                 TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2)),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                  ),
                   child: const Text('Salvar',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
@@ -281,9 +281,9 @@ class MoedaScreenState extends State<MoedaScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2)),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -293,9 +293,9 @@ class MoedaScreenState extends State<MoedaScreen> {
                       ))),
               const SizedBox(width: 10),
               TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2)),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
+                  ),
                   onPressed: () {
                     if (textController.text.trim().isEmpty) {
                       ErrorMessages.moedaNovoNomeErrorMessage(context);
@@ -332,9 +332,10 @@ class MoedaScreenState extends State<MoedaScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(AppColors.color2)),
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.color2),
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -342,9 +343,10 @@ class MoedaScreenState extends State<MoedaScreen> {
                           style: TextStyle(color: Colors.white))),
                   const SizedBox(width: 10),
                   TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(AppColors.color2)),
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.color2),
+                      ),
                       onPressed: () {
                         deleteMoeda(id);
                         Navigator.of(context).pop();

@@ -277,8 +277,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
             Row(
               children: [
                 TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -291,8 +291,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const Spacer(),
                 TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -304,8 +304,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(width: 10),
                 TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.color2),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.color2),
                   ),
                   onPressed: () async {
                     String valorText = valorController.text.trim();
@@ -400,9 +400,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
               Row(
                 children: [
                   TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2),
+                          MaterialStatePropertyAll(AppColors.color2),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -415,9 +415,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   const Spacer(),
                   TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2),
+                          MaterialStatePropertyAll(AppColors.color2),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -429,9 +429,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   const SizedBox(width: 10),
                   TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all(AppColors.color2),
+                          MaterialStatePropertyAll(AppColors.color2),
                     ),
                     onPressed: () {
                       if (selectedMoeda == null || initialDate == null) {
@@ -470,9 +470,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                         backgroundColor:
-                            WidgetStateProperty.all(AppColors.color2)),
+                            MaterialStatePropertyAll(AppColors.color2)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -483,9 +483,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                   const SizedBox(width: 10),
                   TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(AppColors.color2)),
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(AppColors.color2),
+                    ),
                     onPressed: () {
                       deleteCotacao(id);
                       Navigator.of(context).pop();
