@@ -37,6 +37,7 @@ class MoedaStore {
 
     try {
       final result = await repository.getMoedas(
+        moedaCompleta: moeda,
         moedaKey: moedaKey,
         moedaNome: moedaNome,
         startDate: formattedStartDate,

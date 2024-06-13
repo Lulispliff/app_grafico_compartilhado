@@ -2,6 +2,7 @@ import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'dart:convert';
+import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 
 import 'package:app_grafico_compartilhado/src/isar/cotacao_modelAPI.dart';
 
@@ -11,6 +12,7 @@ abstract class IMoedaRepository {
     String? moedaKey,
     String? moedaNome,
     String? numDias,
+    Moeda? moedaCompleta,
   });
 }
 
@@ -25,6 +27,7 @@ class MoedaRepository implements IMoedaRepository {
     String? moedaNome,
     String? startDate,
     String? numDias,
+    Moeda? moedaCompleta,
   }) async {
     final url =
         'https://economia.awesomeapi.com.br/json/daily/$moedaKey/$numDias';
