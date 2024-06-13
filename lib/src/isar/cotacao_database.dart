@@ -16,15 +16,14 @@ class CotacaoDatabase extends ChangeNotifier {
   }
 
   // Método para adicionar uma nova cotação
-  Future<void> addCotacao(String nome, DateTime data, DateTime hora,
-      double valor, Moeda moeda) async {
-    final newCotacao = Cotacoess(
-        nome: nome, data: data, hora: hora, valor: valor, moeda: moeda)
-      ..nome = nome
-      ..data = data
-      ..hora = hora
-      ..valor = valor
-      ..moeda = moeda;
+  Future<void> addCotacao(
+      DateTime data, DateTime hora, double valor, Moeda moeda) async {
+    final newCotacao =
+        Cotacoess(data: data, hora: hora, valor: valor, moeda: moeda)
+          ..data = data
+          ..hora = hora
+          ..valor = valor
+          ..moeda = moeda;
 
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));

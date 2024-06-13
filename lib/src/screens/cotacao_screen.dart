@@ -316,11 +316,11 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         selectedData != null &&
                         selectedHorario != null) {
                       await cotacaoDataBase.addCotacao(
-                          selectedMoeda!.nome,
-                          selectedData!,
-                          selectedHorario!,
-                          valor,
-                          selectedMoeda!);
+                        selectedData!,
+                        selectedHorario!,
+                        valor,
+                        selectedMoeda!,
+                      );
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } else {

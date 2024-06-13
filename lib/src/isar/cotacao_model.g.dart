@@ -32,13 +32,8 @@ const CotacoessSchema = CollectionSchema(
       name: r'isSelected',
       type: IsarType.bool,
     ),
-    r'nome': PropertySchema(
-      id: 3,
-      name: r'nome',
-      type: IsarType.string,
-    ),
     r'valor': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'valor',
       type: IsarType.double,
     )
@@ -63,7 +58,6 @@ int _cotacoessEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.nome.length * 3;
   return bytesCount;
 }
 
@@ -76,8 +70,7 @@ void _cotacoessSerialize(
   writer.writeDateTime(offsets[0], object.data);
   writer.writeDateTime(offsets[1], object.hora);
   writer.writeBool(offsets[2], object.isSelected);
-  writer.writeString(offsets[3], object.nome);
-  writer.writeDouble(offsets[4], object.valor);
+  writer.writeDouble(offsets[3], object.valor);
 }
 
 Cotacoess _cotacoessDeserialize(
@@ -89,8 +82,7 @@ Cotacoess _cotacoessDeserialize(
   final object = Cotacoess(
     data: reader.readDateTime(offsets[0]),
     hora: reader.readDateTime(offsets[1]),
-    nome: reader.readString(offsets[3]),
-    valor: reader.readDouble(offsets[4]),
+    valor: reader.readDouble(offsets[3]),
   );
   object.id = id;
   object.isSelected = reader.readBool(offsets[2]);
@@ -111,8 +103,6 @@ P _cotacoessDeserializeProp<P>(
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
-    case 4:
       return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -379,136 +369,6 @@ extension CotacoessQueryFilter
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'nome',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'nome',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nome',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> valorEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -615,18 +475,6 @@ extension CotacoessQuerySortBy on QueryBuilder<Cotacoess, Cotacoess, QSortBy> {
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByNome() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nome', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByNomeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nome', Sort.desc);
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByValor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'valor', Sort.asc);
@@ -690,18 +538,6 @@ extension CotacoessQuerySortThenBy
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByNome() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nome', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByNomeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nome', Sort.desc);
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByValor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'valor', Sort.asc);
@@ -735,13 +571,6 @@ extension CotacoessQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByNome(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'nome', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByValor() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'valor');
@@ -772,12 +601,6 @@ extension CotacoessQueryProperty
   QueryBuilder<Cotacoess, bool, QQueryOperations> isSelectedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSelected');
-    });
-  }
-
-  QueryBuilder<Cotacoess, String, QQueryOperations> nomeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'nome');
     });
   }
 
