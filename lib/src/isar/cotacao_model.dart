@@ -24,11 +24,11 @@ class Cotacoess {
     int timeStamp = int.parse(map['timestamp']);
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
 
+    print("$timeStamp");
+
     DateTime data = DateTime(dateTime.year, dateTime.month, dateTime.day);
     DateTime hora =
         DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
-
-    print("Data: $data, Hora: $hora");
 
     return Cotacoess(
       nome: map['nome'],

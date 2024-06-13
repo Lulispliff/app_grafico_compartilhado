@@ -1,4 +1,5 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_modelAPI.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
@@ -24,6 +25,7 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
+  late List<CotacoesAPI> cotacoesDaMoedaAPI;
   late List<Cotacoess> cotacoesDaMoeda;
   late List<Moeda> currentMoeda;
 
@@ -111,22 +113,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    final cotacaoDatabase = context.watch<CotacaoDatabase>();
-
-    return FutureBuilder<List<Cotacoess>>(
-      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
-      builder: (context, snapshot) {
-        final cotacoes = snapshot.data ?? [];
-
-        cotacoes.sort((a, b) {
-          int comparacaoData = a.data.compareTo(b.data);
-
-          if (comparacaoData != 0) {
-            return comparacaoData;
-          } else {
-            return a.hora.compareTo(b.hora);
-          }
-        });
+    return ValueListenableBuilder<List<CotacoesAPI>>(
+      valueListenable: store.state,
+      builder: (context, cotacoes, child) {
+        cotacoes.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
         return cotacoes.isEmpty
             ? const Center(
@@ -143,17 +133,8 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     children: cotacoes.map((cotacao) {
                   return ListTile(
                     title: Text(
-                      "Valor ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                      "Nome: ${cotacao.name} Valor ${cotacao.bid} - Data de registro: ${cotacao.timestamp}",
                       style: const TextStyle(fontSize: 17),
-                    ),
-                    trailing: Tooltip(
-                      message: "Excluir",
-                      child: IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(Icons.delete, color: AppColors.color1),
-                      ),
                     ),
                   );
                 }).toList()),

@@ -3,8 +3,10 @@ import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'dart:convert';
 
+import 'package:app_grafico_compartilhado/src/isar/cotacao_modelAPI.dart';
+
 abstract class IMoedaRepository {
-  Future<List<Cotacoess>> getMoedas({
+  Future<List<CotacoesAPI>> getMoedas({
     String? startDate,
     String? moedaKey,
     String? moedaNome,
@@ -18,7 +20,7 @@ class MoedaRepository implements IMoedaRepository {
   MoedaRepository({required this.client});
 
   @override
-  Future<List<Cotacoess>> getMoedas({
+  Future<List<CotacoesAPI>> getMoedas({
     String? moedaKey,
     String? moedaNome,
     String? startDate,
@@ -29,15 +31,8 @@ class MoedaRepository implements IMoedaRepository {
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
-      //body recebe os maps que contem os itens
       final body = jsonDecode(response.body) as List;
-      final List<Cotacoess> moedas = [];
-
-      for (var map in body) {
-        moedas.add(Cotacoess.fromJson(map as Map<String, dynamic>));
-      }
-
-      return moedas;
+      return CotacoesAPI.fromJsonList(body);
     } else if (response.statusCode == 404) {
       throw NotFoundException('A url informada não é válida!');
     } else {
