@@ -24,7 +24,8 @@ class MoedaRepository implements IMoedaRepository {
     String? startDate,
     String? numDias,
   }) async {
-    final url = 'https://economia.awesomeapi.com.br/json/daily/$moedaKey/$numDias';
+    final url =
+        'https://economia.awesomeapi.com.br/json/daily/$moedaKey/$numDias';
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
