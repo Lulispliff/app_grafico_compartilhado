@@ -104,63 +104,13 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       style: const TextStyle(fontSize: 20),
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
-                    children: [_buildSecondaryList(moeda)],
+                
                   ));
             },
           );
   }
 
-  Widget _buildSecondaryList(Moeda moeda) {
-    final cotacaoDatabase = context.watch<CotacaoDatabase>();
 
-    return FutureBuilder<List<Cotacoess>>(
-      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
-      builder: (context, snapshot) {
-        final cotacoes = snapshot.data ?? [];
-
-        cotacoes.sort((a, b) {
-          int comparacaoData = a.data.compareTo(b.data);
-
-          if (comparacaoData != 0) {
-            return comparacaoData;
-          } else {
-            return a.hora.compareTo(b.hora);
-          }
-        });
-
-        return cotacoes.isEmpty
-            ? const Center(
-                child: Text(
-                  "Essa moeda ainda não possui nenhuma cotação registrada",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                    children: cotacoes.map((cotacao) {
-                  return ListTile(
-                    title: Text(
-                      "Valor ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                      style: const TextStyle(fontSize: 17),
-                    ),
-                    trailing: Tooltip(
-                      message: "Excluir",
-                      child: IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(Icons.delete, color: AppColors.color1),
-                      ),
-                    ),
-                  );
-                }).toList()),
-              );
-      },
-    );
-  }
 
   Widget _buildAddCotacaolButton() {
     return Column(

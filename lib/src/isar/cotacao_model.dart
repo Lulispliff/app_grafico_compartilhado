@@ -5,32 +5,12 @@ part 'cotacao_model.g.dart';
 @Collection()
 class Cotacoess {
   Id id = Isar.autoIncrement;
-
   late DateTime data;
   late DateTime hora;
   late double valor;
   late bool isSelected = false;
-  @ignore
-  late Moeda? moeda;
 
-  Cotacoess(
-      {required this.data,
-      required this.hora,
-      this.moeda,
-      required this.valor});
+  final moedaLink = IsarLink<Moeda>();
 
-  factory Cotacoess.fromJson(Map<String, dynamic> map) {
-    int timeStamp = int.parse(map['timestamp']);
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
-
-    DateTime data = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    DateTime hora =
-        DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
-
-    return Cotacoess(
-      data: data,
-      hora: hora,
-      valor: map['bid'],
-    );
-  }
+  Cotacoess({required this.data, required this.hora, required this.valor});
 }

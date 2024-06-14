@@ -9,6 +9,5 @@ class Moeda {
   late String key;
   DateTime dataHora = DateTime.now();
   double? valor;
-  @ignore
-  List<Cotacoess> cotacoes = [];
+  final cotacoes = IsarLinks<Cotacoess>();
 }

@@ -1,5 +1,4 @@
 import 'package:app_grafico_compartilhado/src/screens/cotacao_screen.dart';
-import 'package:app_grafico_compartilhado/src/screens/grafico_screen.dart';
 import 'package:app_grafico_compartilhado/src/screens/moeda_screen.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
@@ -61,7 +60,7 @@ class NavigatorButtons {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const GraficoScreen(),
+              const CotacaoScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             var begin = const Offset(1.0, 0.0);
             var end = Offset.zero;

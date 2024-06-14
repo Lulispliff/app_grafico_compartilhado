@@ -33,9 +33,9 @@ class MoedaRepository implements IMoedaRepository {
       final body = jsonDecode(response.body) as List;
       final List<Cotacoess> moedas = [];
 
-      for (var map in body) {
-        moedas.add(Cotacoess.fromJson(map as Map<String, dynamic>));
-      }
+    //  for (var map in body) {
+    //    moedas.add(Cotacoess.fromJson(map as Map<String, dynamic>));
+   //   }
 
       return moedas;
     } else if (response.statusCode == 404) {

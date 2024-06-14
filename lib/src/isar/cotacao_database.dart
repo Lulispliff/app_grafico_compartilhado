@@ -18,12 +18,14 @@ class CotacaoDatabase extends ChangeNotifier {
   // Método para adicionar uma nova cotação
   Future<void> addCotacao(
       DateTime data, DateTime hora, double valor, Moeda moeda) async {
-    final newCotacao =
-        Cotacoess(data: data, hora: hora, valor: valor, moeda: moeda)
-          ..data = data
-          ..hora = hora
-          ..valor = valor
-          ..moeda = moeda;
+    final newCotacao = Cotacoess(
+      data: data,
+      hora: hora,
+      valor: valor,
+    )
+      ..data = data
+      ..hora = hora
+      ..valor = valor;
 
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(newCotacao));
@@ -45,28 +47,6 @@ class CotacaoDatabase extends ChangeNotifier {
     currentCotacao.clear();
     currentCotacao.addAll(fetchCotacoes);
     notifyListeners();
-  }
-
-  // Método para buscar cotações por intervalo de tempo
-  Future<List<Cotacoess>> fetchCotacoesByInterval(
-      String nomeMoeda, Duration intervalo) async {
-    DateTime now = DateTime.now();
-    DateTime startDate = now.subtract(intervalo);
-
-    return await IsarService.isar.cotacoess
-        .filter()
-        .nomeEqualTo(nomeMoeda)
-        .and()
-        .dataBetween(startDate, now)
-        .findAll();
-  }
-
-  // Método para buscar cotações por moeda
-  Future<List<Cotacoess>> fetchCotacoesByMoeda(String nomeMoeda) async {
-    return await IsarService.isar.cotacoess
-        .filter()
-        .nomeEqualTo(nomeMoeda)
-        .findAll();
   }
 
   // Método para deletar uma cotação pelo ID
