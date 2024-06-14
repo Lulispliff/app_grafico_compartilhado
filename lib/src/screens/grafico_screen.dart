@@ -119,16 +119,19 @@ class GraficoScreenState extends State<GraficoScreen> {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               )
-            : SingleChildScrollView(
-                child: Column(
-                  children: cotacoes.map((cotacao) {
-                    return ListTile(
-                      title: Text(
-                        "Valor: ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                    );
-                  }).toList(),
+            : SizedBox(
+                height: 400,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: cotacoes.map((cotacao) {
+                      return ListTile(
+                        title: Text(
+                          "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               );
       },
@@ -239,6 +242,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 items: buildDropdownMenuItems([
                   const Duration(days: 1),
                   const Duration(days: 7),
+                  const Duration(days: 10),
                   const Duration(days: 30),
                   const Duration(days: 180),
                   const Duration(days: 365),
@@ -293,6 +297,8 @@ class GraficoScreenState extends State<GraficoScreen> {
       return "1 Dia";
     } else if (duration.inDays == 7) {
       return "1 Semana";
+    } else if (duration.inDays == 10) {
+      return "10 Dias";
     } else if (duration.inDays == 30) {
       return "1 Mês";
     } else if (duration.inDays == 180) {

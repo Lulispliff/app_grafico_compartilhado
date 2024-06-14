@@ -138,25 +138,29 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                   ),
                 ),
               )
-            : SingleChildScrollView(
-                child: Column(
-                    children: cotacoes.map((cotacao) {
-                  return ListTile(
-                    title: Text(
-                      "Valor ${StringUtils.formatValorBRL(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                      style: const TextStyle(fontSize: 17),
-                    ),
-                    trailing: Tooltip(
-                      message: "Excluir",
-                      child: IconButton(
-                        onPressed: () {
-                          deleteCotacaoDialog(cotacao.id);
-                        },
-                        icon: const Icon(Icons.delete, color: AppColors.color1),
+            : SizedBox(
+                height: 400,
+                child: SingleChildScrollView(
+                  child: Column(
+                      children: cotacoes.map((cotacao) {
+                    return ListTile(
+                      title: Text(
+                        "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                        style: const TextStyle(fontSize: 17),
                       ),
-                    ),
-                  );
-                }).toList()),
+                      trailing: Tooltip(
+                        message: "Excluir",
+                        child: IconButton(
+                          onPressed: () {
+                            deleteCotacaoDialog(cotacao.id);
+                          },
+                          icon:
+                              const Icon(Icons.delete, color: AppColors.color1),
+                        ),
+                      ),
+                    );
+                  }).toList()),
+                ),
               );
       },
     );
@@ -246,7 +250,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 Input(
                   label: "Valor da moeda",
                   labelTextColor: Colors.grey,
-                  preffixIcon: const Icon(Icons.attach_money_outlined),
+                  preffixIcon: const Icon(
+                    Icons.paid_sharp,
+                  ),
                   cursorColor: Colors.grey,
                   controller: valorController,
                 ),
@@ -262,7 +268,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ),
                 const SizedBox(height: 10),
                 TimePickerWidget(
-                  label: "Horario de registro",
+                  label: "Horário de registro",
                   hora: selectedHorario,
                   onChange: (DateTime hora) async {
                     setState(() {
@@ -321,7 +327,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           selectedHorario!,
                           valor,
                           selectedMoeda!);
-                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } else {
                       ErrorMessages.cotacaoAddErrorMessage(context);

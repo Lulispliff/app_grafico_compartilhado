@@ -27,6 +27,10 @@ class StringUtils {
     return brl.format(value);
   }
 
+  static String formatValor(double valor) {
+    return valor.toString().replaceAll('.', ',');
+  }
+
   static String capitalize(String text) {
     if (text.isEmpty) {
       return '';

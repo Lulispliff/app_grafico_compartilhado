@@ -57,6 +57,7 @@ class CotacoesChart extends StatelessWidget {
     Map<String, int> dayCount = {};
     List<FlSpot> spots = [];
 
+    // Encontra a primeira data para referência
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
@@ -72,11 +73,18 @@ class CotacoesChart extends StatelessWidget {
           : cotacao.data.difference(firstDate).inDays.toDouble() +
               (dayCount[dayKey]! - 1) * 0.1;
 
-      spots.add(FlSpot(x, cotacao.valor));
+      double y = cotacao.valor; // O valor a ser exibido
+
+      // Para garantir que x esteja dentro dos limites do gráfico
+      if (x > getMaxX()) {
+        x = getMaxX(); // Limita x ao valor máximo se exceder
+      }
+
+      spots.add(FlSpot(x, y)); // Adiciona o ponto à lista de pontos
     }
 
-    spots.sort((a, b) => a.x.compareTo(b.x));
-    return spots;
+    spots.sort((a, b) => a.x.compareTo(b.x)); // Ordena os pontos por x
+    return spots; // Retorna a lista de pontos gerada
   }
 
   Map<double, DateTime> _generateSpotDates() {
@@ -186,7 +194,7 @@ class CotacoesChart extends StatelessWidget {
                   StringUtils.formatDateHoraeMinuto(data);
               String dataFormatada = StringUtils.formatDateSimple(data);
               String valor =
-                  touchedSpot.y.toStringAsFixed(2).replaceAll(".", ",");
+                  touchedSpot.y.toStringAsFixed(4).replaceAll(".", ",");
 
               if (selectedInterval == const Duration(days: 1)) {
                 return LineTooltipItem('R\$ $valor $dataFormatadaHoras',
@@ -234,6 +242,8 @@ class CotacoesChart extends StatelessWidget {
     if (selectedInterval == const Duration(days: 1)) {
       return 1;
     } else if (selectedInterval == const Duration(days: 7)) {
+      return 1;
+    } else if (selectedInterval == const Duration(days: 10)) {
       return 1;
     } else if (selectedInterval == const Duration(days: 30)) {
       return 3;
