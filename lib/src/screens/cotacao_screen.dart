@@ -142,24 +142,41 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 height: 300,
                 child: SingleChildScrollView(
                   child: Column(
-                      children: cotacoes.map((cotacao) {
-                    return ListTile(
-                      title: Text(
-                        "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                      trailing: Tooltip(
-                        message: "Excluir",
-                        child: IconButton(
-                          onPressed: () {
-                            deleteCotacaoDialog(cotacao.id);
-                          },
-                          icon:
-                              const Icon(Icons.delete, color: AppColors.color1),
-                        ),
-                      ),
-                    );
-                  }).toList()),
+                    children: [
+                      ...cotacoes.map((cotacao) {
+                        return ListTile(
+                          title: Text(
+                            "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                          trailing: Tooltip(
+                            message: "Excluir",
+                            child: IconButton(
+                              onPressed: () {
+                                deleteCotacaoDialog(cotacao.id);
+                              },
+                              icon: const Icon(Icons.delete,
+                                  color: AppColors.color1, size: 25),
+                            ),
+                          ),
+                        );
+                      }),
+                      if (cotacoes.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 835),
+                          child: Tooltip(
+                            message: "Excluir tudo",
+                            child: IconButton(
+                              onPressed: () {
+                                deleteAllCotacaoDialog();
+                              },
+                              icon: const Icon(Icons.delete,
+                                  color: Colors.red, size: 25),
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               );
       },
@@ -463,7 +480,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   void deleteCotacaoDialog(int id) {
     showDialog(
         context: context,
-        builder: (builder) {
+        builder: (context) {
           return AlertDialog(
             backgroundColor: AppColors.color4,
             title: const Text("Deseja mesmo excluir essa cotação ?",
@@ -495,6 +512,54 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     ),
                     onPressed: () {
                       deleteCotacao(id);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "Confirmar",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              )
+            ],
+          );
+        });
+  }
+
+  void deleteAllCotacaoDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.color4,
+            title: const Text("Deseja mesmo excluir todas as cotações ?",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.color2)),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.color2)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  TextButton(
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(AppColors.color2),
+                    ),
+                    onPressed: () {
                       Navigator.of(context).pop();
                     },
                     child: const Text(

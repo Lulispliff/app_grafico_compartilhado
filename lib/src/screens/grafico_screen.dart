@@ -242,7 +242,6 @@ class GraficoScreenState extends State<GraficoScreen> {
                 items: buildDropdownMenuItems([
                   const Duration(days: 1),
                   const Duration(days: 7),
-                  const Duration(days: 10),
                   const Duration(days: 30),
                   const Duration(days: 180),
                   const Duration(days: 365),

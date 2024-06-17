@@ -119,18 +119,18 @@ class CotacoesChart extends StatelessWidget {
         show: true,
         drawHorizontalLine: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
+        horizontalInterval: getMaxY(spots) / 5,
+        verticalInterval: getMaxX() / 5,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: Colors.grey.withOpacity(1),
-            strokeWidth: 1,
+            color: Colors.grey.withOpacity(0.5),
+            strokeWidth: 0.5,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Colors.grey.withOpacity(1),
-            strokeWidth: 1,
+            color: Colors.grey.withOpacity(0.5),
+            strokeWidth: 0.5,
           );
         },
       ),
@@ -139,24 +139,26 @@ class CotacoesChart extends StatelessWidget {
         border: Border.all(color: Colors.grey.withOpacity(0.5)),
       ),
       titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-                showTitles: true,
-                interval: getInterval(),
-                reservedSize: 40,
-                getTitlesWidget: bottomTitles),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            interval: getInterval(),
+            reservedSize: 40,
+            getTitlesWidget: bottomTitles,
           ),
-          leftTitles: AxisTitles(
-              sideTitles: SideTitles(
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
             showTitles: true,
             interval: getMaxY(spots) / 5,
             getTitlesWidget: leftTitles,
             reservedSize: 40,
-          )),
-          rightTitles:
-              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles:
-              const AxisTitles(sideTitles: SideTitles(showTitles: false))),
+          ),
+        ),
+        rightTitles:
+            const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      ),
       minX: 0,
       maxX: getMaxX(),
       minY: 0,
@@ -165,7 +167,7 @@ class CotacoesChart extends StatelessWidget {
         LineChartBarData(
           isCurved: false,
           color: AppColors.color2,
-          barWidth: 5,
+          barWidth: 4,
           isStrokeCapRound: true,
           belowBarData: BarAreaData(
             show: true,
@@ -228,8 +230,6 @@ class CotacoesChart extends StatelessWidget {
     if (selectedInterval == const Duration(days: 1)) {
       return 1;
     } else if (selectedInterval == const Duration(days: 7)) {
-      return 1;
-    } else if (selectedInterval == const Duration(days: 10)) {
       return 1;
     } else if (selectedInterval == const Duration(days: 30)) {
       return 3;
