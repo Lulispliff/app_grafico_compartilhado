@@ -17,25 +17,15 @@ const MoedaSchema = CollectionSchema(
   name: r'Moeda',
   id: -3228832784303950747,
   properties: {
-    r'dataHora': PropertySchema(
-      id: 0,
-      name: r'dataHora',
-      type: IsarType.dateTime,
-    ),
     r'key': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'key',
       type: IsarType.string,
     ),
     r'nome': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'nome',
       type: IsarType.string,
-    ),
-    r'valor': PropertySchema(
-      id: 3,
-      name: r'valor',
-      type: IsarType.double,
     )
   },
   estimateSize: _moedaEstimateSize,
@@ -69,10 +59,8 @@ void _moedaSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.dataHora);
-  writer.writeString(offsets[1], object.key);
-  writer.writeString(offsets[2], object.nome);
-  writer.writeDouble(offsets[3], object.valor);
+  writer.writeString(offsets[0], object.key);
+  writer.writeString(offsets[1], object.nome);
 }
 
 Moeda _moedaDeserialize(
@@ -82,11 +70,9 @@ Moeda _moedaDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Moeda();
-  object.dataHora = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.key = reader.readString(offsets[1]);
-  object.nome = reader.readString(offsets[2]);
-  object.valor = reader.readDoubleOrNull(offsets[3]);
+  object.key = reader.readString(offsets[0]);
+  object.nome = reader.readString(offsets[1]);
   return object;
 }
 
@@ -98,13 +84,9 @@ P _moedaDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
-    case 2:
-      return (reader.readString(offset)) as P;
-    case 3:
-      return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -198,59 +180,6 @@ extension MoedaQueryWhere on QueryBuilder<Moeda, Moeda, QWhereClause> {
 }
 
 extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> dataHoraEqualTo(
-      DateTime value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataHora',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> dataHoraGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dataHora',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> dataHoraLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dataHora',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> dataHoraBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dataHora',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Moeda, Moeda, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -558,84 +487,6 @@ extension MoedaQueryFilter on QueryBuilder<Moeda, Moeda, QFilterCondition> {
       ));
     });
   }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'valor',
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'valor',
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'valor',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorGreaterThan(
-    double? value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'valor',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorLessThan(
-    double? value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'valor',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterFilterCondition> valorBetween(
-    double? lower,
-    double? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'valor',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
 }
 
 extension MoedaQueryObject on QueryBuilder<Moeda, Moeda, QFilterCondition> {}
@@ -643,18 +494,6 @@ extension MoedaQueryObject on QueryBuilder<Moeda, Moeda, QFilterCondition> {}
 extension MoedaQueryLinks on QueryBuilder<Moeda, Moeda, QFilterCondition> {}
 
 extension MoedaQuerySortBy on QueryBuilder<Moeda, Moeda, QSortBy> {
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByDataHora() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByDataHoraDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.desc);
-    });
-  }
-
   QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'key', Sort.asc);
@@ -678,33 +517,9 @@ extension MoedaQuerySortBy on QueryBuilder<Moeda, Moeda, QSortBy> {
       return query.addSortBy(r'nome', Sort.desc);
     });
   }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByValor() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'valor', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> sortByValorDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'valor', Sort.desc);
-    });
-  }
 }
 
 extension MoedaQuerySortThenBy on QueryBuilder<Moeda, Moeda, QSortThenBy> {
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByDataHora() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByDataHoraDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'dataHora', Sort.desc);
-    });
-  }
-
   QueryBuilder<Moeda, Moeda, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -740,27 +555,9 @@ extension MoedaQuerySortThenBy on QueryBuilder<Moeda, Moeda, QSortThenBy> {
       return query.addSortBy(r'nome', Sort.desc);
     });
   }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByValor() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'valor', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Moeda, Moeda, QAfterSortBy> thenByValorDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'valor', Sort.desc);
-    });
-  }
 }
 
 extension MoedaQueryWhereDistinct on QueryBuilder<Moeda, Moeda, QDistinct> {
-  QueryBuilder<Moeda, Moeda, QDistinct> distinctByDataHora() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'dataHora');
-    });
-  }
-
   QueryBuilder<Moeda, Moeda, QDistinct> distinctByKey(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -774,24 +571,12 @@ extension MoedaQueryWhereDistinct on QueryBuilder<Moeda, Moeda, QDistinct> {
       return query.addDistinctBy(r'nome', caseSensitive: caseSensitive);
     });
   }
-
-  QueryBuilder<Moeda, Moeda, QDistinct> distinctByValor() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'valor');
-    });
-  }
 }
 
 extension MoedaQueryProperty on QueryBuilder<Moeda, Moeda, QQueryProperty> {
   QueryBuilder<Moeda, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<Moeda, DateTime, QQueryOperations> dataHoraProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'dataHora');
     });
   }
 
@@ -804,12 +589,6 @@ extension MoedaQueryProperty on QueryBuilder<Moeda, Moeda, QQueryProperty> {
   QueryBuilder<Moeda, String, QQueryOperations> nomeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nome');
-    });
-  }
-
-  QueryBuilder<Moeda, double?, QQueryOperations> valorProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'valor');
     });
   }
 }

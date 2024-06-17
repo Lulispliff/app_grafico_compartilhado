@@ -7,8 +7,6 @@ class Moeda {
   Id id = Isar.autoIncrement;
   late String nome;
   late String key;
-  DateTime dataHora = DateTime.now();
-  double? valor;
   @ignore
   List<Cotacoess> cotacoes = [];
 }
