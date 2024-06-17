@@ -27,18 +27,13 @@ const CotacoessSchema = CollectionSchema(
       name: r'hora',
       type: IsarType.dateTime,
     ),
-    r'isSelected': PropertySchema(
-      id: 2,
-      name: r'isSelected',
-      type: IsarType.bool,
-    ),
     r'nome': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'nome',
       type: IsarType.string,
     ),
     r'valor': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'valor',
       type: IsarType.double,
     )
@@ -75,9 +70,8 @@ void _cotacoessSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.data);
   writer.writeDateTime(offsets[1], object.hora);
-  writer.writeBool(offsets[2], object.isSelected);
-  writer.writeString(offsets[3], object.nome);
-  writer.writeDouble(offsets[4], object.valor);
+  writer.writeString(offsets[2], object.nome);
+  writer.writeDouble(offsets[3], object.valor);
 }
 
 Cotacoess _cotacoessDeserialize(
@@ -89,11 +83,10 @@ Cotacoess _cotacoessDeserialize(
   final object = Cotacoess(
     data: reader.readDateTime(offsets[0]),
     hora: reader.readDateTime(offsets[1]),
-    nome: reader.readString(offsets[3]),
-    valor: reader.readDouble(offsets[4]),
+    nome: reader.readString(offsets[2]),
+    valor: reader.readDouble(offsets[3]),
   );
   object.id = id;
-  object.isSelected = reader.readBool(offsets[2]);
   return object;
 }
 
@@ -109,10 +102,8 @@ P _cotacoessDeserializeProp<P>(
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
-    case 3:
       return (reader.readString(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -369,16 +360,6 @@ extension CotacoessQueryFilter
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> isSelectedEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isSelected',
-        value: value,
-      ));
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterFilterCondition> nomeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -603,18 +584,6 @@ extension CotacoessQuerySortBy on QueryBuilder<Cotacoess, Cotacoess, QSortBy> {
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByIsSelectedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.desc);
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> sortByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -678,18 +647,6 @@ extension CotacoessQuerySortThenBy
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByIsSelectedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.desc);
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QAfterSortBy> thenByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -729,12 +686,6 @@ extension CotacoessQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isSelected');
-    });
-  }
-
   QueryBuilder<Cotacoess, Cotacoess, QDistinct> distinctByNome(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -766,12 +717,6 @@ extension CotacoessQueryProperty
   QueryBuilder<Cotacoess, DateTime, QQueryOperations> horaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hora');
-    });
-  }
-
-  QueryBuilder<Cotacoess, bool, QQueryOperations> isSelectedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isSelected');
     });
   }
 

@@ -8,7 +8,6 @@ class Cotacoess {
   late DateTime data;
   late DateTime hora;
   late double valor;
-  late bool isSelected = false;
 
   Cotacoess(
       {required this.nome,
