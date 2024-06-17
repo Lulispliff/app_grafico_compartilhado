@@ -42,8 +42,8 @@ class CotacoesChart extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
         child: Center(
           child: SizedBox(
-            height: 1000, // Altura do gráfico
-            width: 2000, // Largura do gráfico
+            height: 1000,
+            width: 2000,
             child: LineChart(
               _buildLineChartData(spots, spotDates),
             ),
@@ -57,7 +57,6 @@ class CotacoesChart extends StatelessWidget {
     Map<String, int> dayCount = {};
     List<FlSpot> spots = [];
 
-    // Encontra a primeira data para referência
     DateTime firstDate =
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
@@ -73,18 +72,17 @@ class CotacoesChart extends StatelessWidget {
           : cotacao.data.difference(firstDate).inDays.toDouble() +
               (dayCount[dayKey]! - 1) * 0.1;
 
-      double y = cotacao.valor; // O valor a ser exibido
+      double y = cotacao.valor;
 
-      // Para garantir que x esteja dentro dos limites do gráfico
       if (x > getMaxX()) {
-        x = getMaxX(); // Limita x ao valor máximo se exceder
+        x = getMaxX();
       }
 
-      spots.add(FlSpot(x, y)); // Adiciona o ponto à lista de pontos
+      spots.add(FlSpot(x, y));
     }
 
-    spots.sort((a, b) => a.x.compareTo(b.x)); // Ordena os pontos por x
-    return spots; // Retorna a lista de pontos gerada
+    spots.sort((a, b) => a.x.compareTo(b.x));
+    return spots;
   }
 
   Map<double, DateTime> _generateSpotDates() {
@@ -116,13 +114,6 @@ class CotacoesChart extends StatelessWidget {
 
   LineChartData _buildLineChartData(
       List<FlSpot> spots, Map<double, DateTime> spotDates) {
-    double maxY = spots.isNotEmpty
-        ? spots
-                .map((spot) => spot.y)
-                .reduce((max, value) => max > value ? max : value) +
-            3
-        : 0;
-
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -132,20 +123,20 @@ class CotacoesChart extends StatelessWidget {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: Colors.grey.withOpacity(1), // Cor da linha horizontal
+            color: Colors.grey.withOpacity(1),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Colors.grey.withOpacity(1), // Cor da linha vertical
+            color: Colors.grey.withOpacity(1),
             strokeWidth: 1,
           );
         },
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: Colors.grey.withOpacity(0.5)), // Cor da borda
+        border: Border.all(color: Colors.grey.withOpacity(0.5)),
       ),
       titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
@@ -158,7 +149,7 @@ class CotacoesChart extends StatelessWidget {
           leftTitles: AxisTitles(
               sideTitles: SideTitles(
             showTitles: true,
-            interval: 3,
+            interval: getMaxY(spots) / 5,
             getTitlesWidget: leftTitles,
             reservedSize: 40,
           )),
@@ -169,17 +160,16 @@ class CotacoesChart extends StatelessWidget {
       minX: 0,
       maxX: getMaxX(),
       minY: 0,
-      maxY: maxY,
+      maxY: getMaxY(spots),
       lineBarsData: [
         LineChartBarData(
           isCurved: false,
-          color: AppColors.color2, // Cor da linha do gráfico
+          color: AppColors.color2,
           barWidth: 5,
           isStrokeCapRound: true,
           belowBarData: BarAreaData(
             show: true,
-            color: AppColors.color2
-                .withOpacity(0.3), // Cor da área abaixo da linha
+            color: AppColors.color2.withOpacity(0.3),
           ),
           spots: spots,
         ),
@@ -215,7 +205,6 @@ class CotacoesChart extends StatelessWidget {
   Widget bottomTitles(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
 
-    // Titulo diferente caso "1 hora" selecionado
     if (selectedInterval == const Duration(days: 1)) {
       String titulosHora = '${value.toInt().toString().padLeft(2, '0')}H';
 
@@ -223,10 +212,7 @@ class CotacoesChart extends StatelessWidget {
         axisSide: meta.axisSide,
         child: Text(titulosHora, style: style),
       );
-    }
-
-    // Titulo para os demais intervalos de tempo selecionados
-    else {
+    } else {
       DateTime firstDate =
           cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
       DateTime currentDate = firstDate.add(Duration(days: value.toInt()));
@@ -267,6 +253,18 @@ class CotacoesChart extends StatelessWidget {
 
       return lastDate.difference(firstDate).inDays.toDouble();
     }
+  }
+
+  double getMaxY(List<FlSpot> spots) {
+    if (spots.isEmpty) {
+      return 0;
+    }
+
+    double maxY = spots
+        .map((spot) => spot.y)
+        .reduce((max, value) => max > value ? max : value);
+
+    return maxY * 1.1; // Adiciona 10% ao valor máximo para margem
   }
 
   Widget leftTitles(double value, TitleMeta meta) {

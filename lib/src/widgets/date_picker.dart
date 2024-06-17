@@ -65,11 +65,11 @@ class DatePickerWidget extends StatelessWidget {
                   backgroundColor: AppColors.color4,
                   cancelButtonStyle: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(AppColors.color2),
-                    foregroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
                   ),
                   confirmButtonStyle: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(AppColors.color2),
-                    foregroundColor: MaterialStatePropertyAll(AppColors.color2),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
                   ),
                   inputDecorationTheme: InputDecorationTheme(
                     labelStyle: TextStyle(color: Colors.grey),
