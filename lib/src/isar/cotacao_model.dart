@@ -9,25 +9,19 @@ class Cotacoess {
   late DateTime hora;
   late double valor;
 
-  Cotacoess(
-      {required this.nome,
-      required this.data,
-      required this.hora,
-      required this.valor});
+  Cotacoess({
+    required this.nome,
+    required this.data,
+    required this.hora,
+    required this.valor,
+  });
 
   factory Cotacoess.fromJson(Map<String, dynamic> map) {
-    int timeStamp = int.parse(map['timestamp']);
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
-
-    DateTime data = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    DateTime hora =
-        DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
-
     return Cotacoess(
-      nome: map['nome'],
-      data: data,
-      hora: hora,
-      valor: map['bid'],
+      nome: map['name'] as String,
+      data: DateTime.parse(map['timestamp'] as String),
+      hora: DateTime.parse(map['timestamp'] as String),
+      valor: (map['bid'] as num).toDouble(),
     );
   }
 }

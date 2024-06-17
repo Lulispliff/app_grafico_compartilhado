@@ -35,6 +35,7 @@ class CotacaoDatabase extends ChangeNotifier {
     await fetchCotacoes();
   }
 
+  //Método para salvar os dados que retornam da api
   Future<void> save(Cotacoess cotacoes, Moeda moeda) async {
     await IsarService.isar
         .writeTxn(() => IsarService.isar.cotacoess.put(cotacoes));
