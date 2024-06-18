@@ -32,7 +32,7 @@ class MoedaRepository implements IMoedaRepository {
       // "jsonDecode(response.body) as List" recebe diretamente a resposta JSON e converte para uma lista de maps
       final body = jsonDecode(response.body) as List;
 
-      // "CotacoesAPI.fromJsonList(body)" converte cada map em um objeto "CotacaoesAPI"
+      // "CotacoesAPI.fromJsonList(body)" converte cada map da lista em um objeto "CotacaoesAPI"
       return CotacoesAPI.fromJsonList(body);
       ////////
     } else if (response.statusCode == 404) {
@@ -41,4 +41,7 @@ class MoedaRepository implements IMoedaRepository {
       throw Exception('Não foi possível carregar as moedas!');
     }
   }
+
+  // Nesse código "CotacoesAPI.fromJsonList(body)" faz o mapeamento automatico dos dados recebidos
+  // para objetos "CotacoesAPI".
 }
