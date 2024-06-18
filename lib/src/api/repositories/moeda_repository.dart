@@ -43,5 +43,5 @@ class MoedaRepository implements IMoedaRepository {
   }
 
   // Nesse código "CotacoesAPI.fromJsonList(body)" faz o mapeamento automatico dos dados recebidos
-  // para objetos "CotacoesAPI".
+  // para objetos "CotacoesAPI". Ja no código "principal", esse mapeamento acontece atravéz de um loop manual.
 }
