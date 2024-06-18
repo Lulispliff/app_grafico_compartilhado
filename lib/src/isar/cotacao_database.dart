@@ -80,4 +80,22 @@ class CotacaoDatabase extends ChangeNotifier {
         .writeTxn(() => IsarService.isar.cotacoess.delete(id));
     await fetchCotacoes();
   }
+
+  // Método para excluir todas as cotações de uma moeda
+  Future<void> deleteAllCotacoesByMoeda(String nomeMoeda) async {
+    final cotacoes = await IsarService.isar.cotacoess
+        .filter()
+        .nomeEqualTo(nomeMoeda)
+        .findAll();
+
+    if (cotacoes.isNotEmpty) {
+      await IsarService.isar.writeTxn(() async {
+        for (final cotacao in cotacoes) {
+          await IsarService.isar.cotacoess.delete(cotacao.id);
+        }
+      });
+    }
+
+    await fetchCotacoes();
+  }
 }

@@ -162,19 +162,24 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         );
                       }),
                       if (cotacoes.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 835),
-                          child: Tooltip(
-                            message: "Excluir tudo",
-                            child: IconButton(
-                              onPressed: () {
-                                deleteAllCotacaoDialog();
-                              },
-                              icon: const Icon(Icons.delete,
-                                  color: Colors.red, size: 25),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 24),
+                              child: Tooltip(
+                                message: "Excluir tudo",
+                                child: IconButton(
+                                  onPressed: () {
+                                    deleteAllCotacaoDialog(moeda.nome);
+                                  },
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red, size: 25),
+                                ),
+                              ),
                             ),
-                          ),
-                        )
+                          ],
+                        ),
                     ],
                   ),
                 ),
@@ -527,7 +532,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         });
   }
 
-  void deleteAllCotacaoDialog() {
+  void deleteAllCotacaoDialog(String nomeMoeda) {
     showDialog(
         context: context,
         builder: (context) {
@@ -561,6 +566,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           MaterialStatePropertyAll(AppColors.color2),
                     ),
                     onPressed: () {
+                      deleteAllCotacoes(nomeMoeda);
                       Navigator.of(context).pop();
                     },
                     child: const Text(
@@ -585,5 +591,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   void deleteCotacao(int id) {
     context.read<CotacaoDatabase>().deleteCotacao(id);
+  }
+
+  void deleteAllCotacoes(String nomeMoeda) {
+    context.read<CotacaoDatabase>().deleteAllCotacoesByMoeda(nomeMoeda);
   }
 }
