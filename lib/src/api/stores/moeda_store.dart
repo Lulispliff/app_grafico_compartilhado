@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 class MoedaStore {
   final IMoedaRepository repository;
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
+
+  // armazena uma lista de objetos "CotacoesAPI"
   final ValueNotifier<List<CotacoesAPI>> state =
       ValueNotifier<List<CotacoesAPI>>([]);
+
   final ValueNotifier<String> erro = ValueNotifier<String>('');
 
   MoedaStore({required this.repository});
