@@ -1,5 +1,6 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
@@ -111,10 +112,10 @@ class CotacaoScreenState extends State<CotacaoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    return ValueListenableBuilder<List<CotacoesAPI>>(
-        valueListenable: store.state,
+    return ValueListenableBuilder<List<Cotacoess>>(
+        valueListenable: store.cotacoesList,
         builder: (context, cotacoes, child) {
-          cotacoes.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+          cotacoes.sort((a, b) => a.data.compareTo(b.data));
 
           return cotacoes.isEmpty
               ? const Center(
@@ -134,7 +135,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         ...cotacoes.map((cotacao) {
                           return ListTile(
                             title: Text(
-                              "Valor: R\$ ${StringUtils.formatValor(cotacao.bid)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.timestamp)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.timestamp)}",
+                              "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
                               style: const TextStyle(fontSize: 17),
                             ),
                             trailing: Tooltip(

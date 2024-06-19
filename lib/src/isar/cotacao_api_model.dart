@@ -1,3 +1,5 @@
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+
 class CotacoesAPI {
   late String name;
   late DateTime timestamp;
@@ -20,5 +22,10 @@ class CotacoesAPI {
   //Converte a lista de dados JSON obtida acima para uma lista de objetos "CotacoesAPI"
   static List<CotacoesAPI> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => CotacoesAPI.fromJson(json)).toList();
+  }
+
+  //Método para converter CotacoesAPI para Cotacacoess
+  Cotacoess toCotacoess() {
+    return Cotacoess(nome: name, data: timestamp, hora: timestamp, valor: bid);
   }
 }

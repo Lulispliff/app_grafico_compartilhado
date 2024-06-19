@@ -15,13 +15,4 @@ class Cotacoess {
     required this.hora,
     required this.valor,
   });
-
-  factory Cotacoess.fromJson(Map<String, dynamic> map) {
-    return Cotacoess(
-      nome: map['name'] as String,
-      data: DateTime.parse(map['timestamp'] as String),
-      hora: DateTime.parse(map['timestamp'] as String),
-      valor: (map['bid'] as num).toDouble(),
-    );
-  }
 }

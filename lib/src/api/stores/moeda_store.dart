@@ -1,6 +1,7 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +9,10 @@ import 'package:flutter/material.dart';
 class MoedaStore {
   final IMoedaRepository repository;
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
-
-  // armazena uma lista de objetos "CotacoesAPI"
   final ValueNotifier<List<CotacoesAPI>> state =
       ValueNotifier<List<CotacoesAPI>>([]);
-
+  final ValueNotifier<List<Cotacoess>> cotacoesList =
+      ValueNotifier<List<Cotacoess>>([]);
   final ValueNotifier<String> erro = ValueNotifier<String>('');
 
   MoedaStore({required this.repository});
@@ -45,6 +45,10 @@ class MoedaStore {
         numDias: formattedNumDias,
       );
       state.value = result;
+
+      // Converte CotacoesAPI para Cotacoess e armazena em cotacoesList
+      cotacoesList.value =
+          result.map((cotacao) => cotacao.toCotacoess()).toList();
     } on NotFoundException catch (e) {
       erro.value = e.message;
     } catch (e) {
