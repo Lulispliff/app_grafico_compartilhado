@@ -11,6 +11,11 @@ class CotacoesAPI {
     required this.bid,
   });
 
+  //Converte a lista de dados JSON obtida acima para uma lista de objetos "CotacoesAPI"
+  static List<CotacoesAPI> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CotacoesAPI.fromJson(json)).toList();
+  }
+
   // Recebe um mapa com os dados do JSON e inicializa os campos com esses dados recebidos
   CotacoesAPI.fromJson(Map<String, dynamic> json) {
     name = json.containsKey('name') ? json['name'] : 'N/A';
@@ -19,13 +24,13 @@ class CotacoesAPI {
     bid = double.parse(json['bid']);
   }
 
-  //Converte a lista de dados JSON obtida acima para uma lista de objetos "CotacoesAPI"
-  static List<CotacoesAPI> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((json) => CotacoesAPI.fromJson(json)).toList();
-  }
-
   //Método para converter CotacoesAPI para Cotacacoess
   Cotacoess toCotacoess() {
-    return Cotacoess(nome: name, data: timestamp, hora: timestamp, valor: bid);
+    return Cotacoess(
+      nome: name,
+      data: timestamp,
+      hora: timestamp,
+      valor: bid,
+    );
   }
 }

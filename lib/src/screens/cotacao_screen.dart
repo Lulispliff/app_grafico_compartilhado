@@ -462,6 +462,9 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       selectedMoeda!,
                       initialDate!.toIso8601String(),
                     );
+                    if (context.mounted) {
+                      await store.saveCotacoes(context, selectedMoeda);
+                    }
                   },
                   child: const Text(
                     "Salvar",

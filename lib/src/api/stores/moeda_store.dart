@@ -1,10 +1,13 @@
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
+
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MoedaStore {
   final IMoedaRepository repository;
@@ -69,5 +72,17 @@ class MoedaStore {
       ...manualCotacoes.value,
       ...apiCotacoes.value.map((cotacao) => cotacao.toCotacoess()).toList()
     ];
+  }
+
+  Future<void> saveCotacoes(BuildContext context, Moeda? selectedMoeda) async {
+    var lista = apiCotacoes.value;
+    if (lista.isEmpty || selectedMoeda == null) {
+      return;
+    }
+    final cotacaoDatabase = context.read<CotacaoDatabase>();
+
+    for (final c in lista) {
+      await cotacaoDatabase.save(c.toCotacoess(), selectedMoeda);
+    }
   }
 }
