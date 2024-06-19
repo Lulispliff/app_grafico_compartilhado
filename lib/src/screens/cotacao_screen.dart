@@ -113,7 +113,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
 
   Widget _buildSecondaryList(Moeda moeda) {
     return ValueListenableBuilder<List<Cotacoess>>(
-        valueListenable: store.cotacoesList,
+        valueListenable: store.combinedCotacoesList,
         builder: (context, cotacoes, child) {
           cotacoes.sort((a, b) => a.data.compareTo(b.data));
 
@@ -331,12 +331,20 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     if (selectedMoeda != null &&
                         selectedData != null &&
                         selectedHorario != null) {
+                      final cotacao = Cotacoess(
+                        nome: selectedMoeda!.nome,
+                        data: selectedData!,
+                        hora: selectedHorario!,
+                        valor: valor,
+                      );
+                      store.addManualCotacao(cotacao);
                       await cotacaoDataBase.addCotacao(
-                          selectedMoeda!.nome,
-                          selectedData!,
-                          selectedHorario!,
-                          valor,
-                          selectedMoeda!);
+                        selectedMoeda!.nome,
+                        selectedData!,
+                        selectedHorario!,
+                        valor,
+                        selectedMoeda!,
+                      );
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } else {

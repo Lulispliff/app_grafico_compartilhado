@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 class MoedaStore {
   final IMoedaRepository repository;
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
-  final ValueNotifier<List<CotacoesAPI>> state =
+  final ValueNotifier<List<CotacoesAPI>> apiCotacoes =
       ValueNotifier<List<CotacoesAPI>>([]);
-  final ValueNotifier<List<Cotacoess>> cotacoesList =
+  final ValueNotifier<List<Cotacoess>> manualCotacoes =
       ValueNotifier<List<Cotacoess>>([]);
   final ValueNotifier<String> erro = ValueNotifier<String>('');
+  final ValueNotifier<List<Cotacoess>> combinedCotacoesList =
+      ValueNotifier<List<Cotacoess>>([]);
 
   MoedaStore({required this.repository});
 
@@ -44,16 +46,28 @@ class MoedaStore {
         startDate: formattedStartDate,
         numDias: formattedNumDias,
       );
-      state.value = result;
+      apiCotacoes.value = result;
 
-      // Converte CotacoesAPI para Cotacoess e armazena em cotacoesList
-      cotacoesList.value =
+      // Converte CotacoesAPI para Cotacoess e armazena em apiCotacoes
+      final apiCotacoessList =
           result.map((cotacao) => cotacao.toCotacoess()).toList();
+      combinedCotacoesList.value = [
+        ...manualCotacoes.value,
+        ...apiCotacoessList
+      ];
     } on NotFoundException catch (e) {
       erro.value = e.message;
     } catch (e) {
       erro.value = e.toString();
     }
     isloading.value = false;
+  }
+
+  void addManualCotacao(Cotacoess cotacao) {
+    manualCotacoes.value = [...manualCotacoes.value, cotacao];
+    combinedCotacoesList.value = [
+      ...manualCotacoes.value,
+      ...apiCotacoes.value.map((cotacao) => cotacao.toCotacoess()).toList()
+    ];
   }
 }
