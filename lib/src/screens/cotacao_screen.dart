@@ -469,7 +469,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     Navigator.of(context).pop();
                   },
                   child: const Text(
-                    "Salvar",
+                    "Buscar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

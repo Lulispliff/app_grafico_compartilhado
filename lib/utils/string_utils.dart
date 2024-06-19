@@ -37,17 +37,17 @@ class StringUtils {
         .join(' ');
   }
 
-  static String formatByPattern(DateTime? date, String pattern) {
-    if (date == null) {
-      return '';
-    }
-    return DateFormat(pattern).format(date);
-  }
-
   static String editCurrencyName(String fullName) {
     if (fullName.contains('/')) {
       return fullName.split('/').last.trim();
     }
     return fullName;
+  }
+
+  static String formatByPattern(DateTime? date, String pattern) {
+    if (date == null) {
+      return '';
+    }
+    return DateFormat(pattern).format(date);
   }
 }
