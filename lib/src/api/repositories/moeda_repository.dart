@@ -41,7 +41,4 @@ class MoedaRepository implements IMoedaRepository {
       throw Exception('Não foi possível carregar as moedas!');
     }
   }
-
-  // Nesse código "CotacoesAPI.fromJsonList(body)" faz o mapeamento automatico dos dados recebidos
-  // para objetos "CotacoesAPI". Ja no código "principal", esse mapeamento acontece atravéz de um loop manual.
 }

@@ -13,9 +13,9 @@ class MoedaStore {
       ValueNotifier<List<CotacoesAPI>>([]);
   final ValueNotifier<List<Cotacoess>> manualCotacoes =
       ValueNotifier<List<Cotacoess>>([]);
-  final ValueNotifier<String> erro = ValueNotifier<String>('');
   final ValueNotifier<List<Cotacoess>> combinedCotacoesList =
       ValueNotifier<List<Cotacoess>>([]);
+  final ValueNotifier<String> erro = ValueNotifier<String>('');
 
   MoedaStore({required this.repository});
 
@@ -67,7 +67,7 @@ class MoedaStore {
     manualCotacoes.value = [...manualCotacoes.value, cotacao];
     combinedCotacoesList.value = [
       ...manualCotacoes.value,
-      ...apiCotacoes.value.map((cotacao) => cotacao.toCotacoess()).toList()
+      ...apiCotacoes.value.map((cotacao) => cotacao.toCotacoess())
     ];
   }
 }
