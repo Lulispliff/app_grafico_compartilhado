@@ -47,4 +47,11 @@ class StringUtils {
     }
     return DateFormat(pattern).format(date);
   }
+
+  static String editCurrencyName(String fullName) {
+    if (fullName.contains('/')) {
+      return fullName.split('/').last.trim();
+    }
+    return fullName;
+  }
 }

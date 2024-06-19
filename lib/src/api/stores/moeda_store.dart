@@ -11,13 +11,18 @@ import 'package:provider/provider.dart';
 
 class MoedaStore {
   final IMoedaRepository repository;
+
   final ValueNotifier<bool> isloading = ValueNotifier<bool>(false);
+
   final ValueNotifier<List<CotacoesAPI>> apiCotacoes =
       ValueNotifier<List<CotacoesAPI>>([]);
+
   final ValueNotifier<List<Cotacoess>> manualCotacoes =
       ValueNotifier<List<Cotacoess>>([]);
+
   final ValueNotifier<List<Cotacoess>> combinedCotacoesList =
       ValueNotifier<List<Cotacoess>>([]);
+
   final ValueNotifier<String> erro = ValueNotifier<String>('');
 
   MoedaStore({required this.repository});
