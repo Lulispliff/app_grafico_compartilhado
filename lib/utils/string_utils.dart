@@ -21,14 +21,10 @@ class StringUtils {
     return formatByPattern(date, 'HH:mm');
   }
 
-  static String formatValorBRL(double value) {
-    final NumberFormat brl =
-        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-    return brl.format(value);
-  }
-
   static String formatValor(double valor) {
-    return valor.toString().replaceAll('.', ',');
+    final NumberFormat brl =
+        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 4);
+    return brl.format(valor).trim();
   }
 
   static String capitalize(String text) {

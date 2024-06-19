@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
@@ -345,7 +347,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         valor,
                         selectedMoeda!,
                       );
-                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } else {
                       ErrorMessages.cotacaoAddErrorMessage(context);
@@ -465,6 +466,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     if (context.mounted) {
                       await store.saveCotacoes(context, selectedMoeda);
                     }
+                    Navigator.of(context).pop();
                   },
                   child: const Text(
                     "Salvar",
