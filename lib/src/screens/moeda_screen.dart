@@ -102,7 +102,7 @@ class MoedaScreenState extends State<MoedaScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    "${StringUtils.capitalize(moeda.nome)} - ID: ${moeda.id}",
+                    StringUtils.capitalize(moeda.nome),
                     style: const TextStyle(fontSize: 20),
                   ),
                   trailing: Row(
