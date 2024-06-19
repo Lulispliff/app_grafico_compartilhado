@@ -1,4 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
@@ -29,6 +32,12 @@ class GraficoScreenState extends State<GraficoScreen> {
   void initState() {
     super.initState();
   }
+
+  final MoedaStore store = MoedaStore(
+    repository: MoedaRepository(
+      client: HttpClient(),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -97,20 +106,10 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    final cotacaoDatabase = context.watch<CotacaoDatabase>();
-
-    return FutureBuilder<List<Cotacoess>>(
-      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
-      builder: (context, snapshot) {
-        final cotacoes = snapshot.data ?? [];
-        cotacoes.sort((a, b) {
-          int comparacaoData = a.data.compareTo(b.data);
-          if (comparacaoData != 0) {
-            return comparacaoData;
-          } else {
-            return a.hora.compareTo(b.hora);
-          }
-        });
+    return ValueListenableBuilder<List<Cotacoess>>(
+      valueListenable: store.combinedCotacoesList,
+      builder: (context, cotacoes, child) {
+        cotacoes.sort((a, b) => a.data.compareTo(b.data));
 
         return cotacoes.isEmpty
             ? const Center(
