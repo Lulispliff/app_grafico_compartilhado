@@ -2,8 +2,6 @@ import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
-
-import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +14,6 @@ class MoedaStore {
 
   final ValueNotifier<List<CotacoesAPI>> apiCotacoes =
       ValueNotifier<List<CotacoesAPI>>([]);
-
-  final ValueNotifier<List<Cotacoess>> manualCotacoes =
-      ValueNotifier<List<Cotacoess>>([]);
-
-  final ValueNotifier<List<Cotacoess>> combinedCotacoesList =
-      ValueNotifier<List<Cotacoess>>([]);
 
   final ValueNotifier<String> erro = ValueNotifier<String>('');
 
@@ -55,28 +47,12 @@ class MoedaStore {
         numDias: formattedNumDias,
       );
       apiCotacoes.value = result;
-
-      // Converte CotacoesAPI para Cotacoess e armazena em apiCotacoes
-      final apiCotacoessList =
-          result.map((cotacao) => cotacao.toCotacoess()).toList();
-      combinedCotacoesList.value = [
-        ...manualCotacoes.value,
-        ...apiCotacoessList
-      ];
     } on NotFoundException catch (e) {
       erro.value = e.message;
     } catch (e) {
       erro.value = e.toString();
     }
     isloading.value = false;
-  }
-
-  void addManualCotacao(Cotacoess cotacao) {
-    manualCotacoes.value = [...manualCotacoes.value, cotacao];
-    combinedCotacoesList.value = [
-      ...manualCotacoes.value,
-      ...apiCotacoes.value.map((cotacao) => cotacao.toCotacoess())
-    ];
   }
 
   Future<void> saveCotacoes(BuildContext context, Moeda selectedMoeda) async {

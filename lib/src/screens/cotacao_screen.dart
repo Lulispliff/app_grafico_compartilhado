@@ -341,13 +341,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     if (selectedMoeda != null &&
                         selectedData != null &&
                         selectedHorario != null) {
-                      final cotacao = Cotacoess(
-                        nome: selectedMoeda!.nome,
-                        data: selectedData!,
-                        hora: selectedHorario!,
-                        valor: valor,
-                      );
-                      store.addManualCotacao(cotacao);
                       await cotacaoDataBase.addCotacao(
                         selectedMoeda!.nome,
                         selectedData!,
