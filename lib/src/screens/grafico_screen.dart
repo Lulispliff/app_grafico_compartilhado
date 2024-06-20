@@ -25,7 +25,7 @@ class GraficoScreen extends StatefulWidget {
 }
 
 class GraficoScreenState extends State<GraficoScreen> {
-  Duration selectedInterval = const Duration(days: 1);
+  Duration selectedInterval = const Duration(days: 7);
   Moeda? selectedMoeda;
 
   @override
@@ -106,10 +106,20 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   Widget _buildSecondaryList(Moeda moeda) {
-    return ValueListenableBuilder<List<Cotacoess>>(
-      valueListenable: store.combinedCotacoesList,
-      builder: (context, cotacoes, child) {
-        cotacoes.sort((a, b) => a.data.compareTo(b.data));
+    final cotacaoDatabase = context.watch<CotacaoDatabase>();
+
+    return FutureBuilder<List<Cotacoess>>(
+      future: cotacaoDatabase.fetchCotacoesByMoeda(moeda.nome),
+      builder: (context, snapshot) {
+        final cotacoes = snapshot.data ?? [];
+        cotacoes.sort((a, b) {
+          int comparacaoData = a.data.compareTo(b.data);
+          if (comparacaoData != 0) {
+            return comparacaoData;
+          } else {
+            return a.hora.compareTo(b.hora);
+          }
+        });
 
         return cotacoes.isEmpty
             ? const Center(
@@ -119,7 +129,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
               )
             : SizedBox(
-                height: 150,
+                height: 500,
                 child: SingleChildScrollView(
                   child: Column(
                     children: cotacoes.map((cotacao) {
@@ -239,7 +249,6 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 value: selectedInterval,
                 items: buildDropdownMenuItems([
-                  const Duration(days: 1),
                   const Duration(days: 7),
                   const Duration(days: 30),
                   const Duration(days: 180),
@@ -291,9 +300,7 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   String _formatDuration(Duration duration) {
-    if (duration.inDays == 1) {
-      return "1 Dia";
-    } else if (duration.inDays == 7) {
+    if (duration.inDays == 7) {
       return "1 Semana";
     } else if (duration.inDays == 10) {
       return "10 Dias";

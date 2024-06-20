@@ -61,17 +61,11 @@ class CotacoesChart extends StatelessWidget {
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
     for (var cotacao in cotacoes) {
-      String dayKey = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toString()
-          : cotacao.data.toString();
-
+      String dayKey = cotacao.data.toString();
       dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
 
-      double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
-          : cotacao.data.difference(firstDate).inDays.toDouble() +
-              (dayCount[dayKey]! - 1) * 0.1;
-
+      double x = cotacao.data.difference(firstDate).inDays.toDouble() +
+          (dayCount[dayKey]! - 1) * 0.1;
       double y = cotacao.valor;
 
       if (x > getMaxX()) {
@@ -93,20 +87,13 @@ class CotacoesChart extends StatelessWidget {
         cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
 
     for (var cotacao in cotacoes) {
-      String dayKey = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toString()
-          : cotacao.data.toString();
-
+      String dayKey = cotacao.data.toString();
       dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
 
-      double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
-          : cotacao.data.difference(firstDate).inDays.toDouble() +
-              (dayCount[dayKey]! - 1) * 0.1;
+      double x = cotacao.data.difference(firstDate).inDays.toDouble() +
+          (dayCount[dayKey]! - 1) * 0.1;
 
-      spotDates[x] = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora
-          : cotacao.data;
+      spotDates[x] = cotacao.data;
     }
 
     return spotDates;
@@ -182,16 +169,9 @@ class CotacoesChart extends StatelessWidget {
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
               DateTime data = spotDates[touchedSpot.x]!;
-              String dataFormatadaHoras =
-                  StringUtils.formatDateHoraeMinuto(data);
               String dataFormatada = StringUtils.formatDateSimple(data);
               String valor =
                   touchedSpot.y.toStringAsFixed(4).replaceAll(".", ",");
-
-              if (selectedInterval == const Duration(days: 1)) {
-                return LineTooltipItem('R\$ $valor $dataFormatadaHoras',
-                    const TextStyle(color: Colors.white));
-              }
 
               return LineTooltipItem(
                 'R\$ $valor $dataFormatada',
@@ -207,29 +187,18 @@ class CotacoesChart extends StatelessWidget {
   Widget bottomTitles(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
 
-    if (selectedInterval == const Duration(days: 1)) {
-      String titulosHora = '${value.toInt().toString().padLeft(2, '0')}H';
+    DateTime firstDate =
+        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+    DateTime currentDate = firstDate.add(Duration(days: value.toInt()));
 
-      return SideTitleWidget(
-        axisSide: meta.axisSide,
-        child: Text(titulosHora, style: style),
-      );
-    } else {
-      DateTime firstDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-      DateTime currentDate = firstDate.add(Duration(days: value.toInt()));
-
-      return SideTitleWidget(
-        axisSide: meta.axisSide,
-        child: Text(StringUtils.formatDiaMes(currentDate), style: style),
-      );
-    }
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(StringUtils.formatDiaMes(currentDate), style: style),
+    );
   }
 
   double getInterval() {
-    if (selectedInterval == const Duration(days: 1)) {
-      return 1;
-    } else if (selectedInterval == const Duration(days: 7)) {
+    if (selectedInterval == const Duration(days: 7)) {
       return 1;
     } else if (selectedInterval == const Duration(days: 30)) {
       return 3;
@@ -243,16 +212,12 @@ class CotacoesChart extends StatelessWidget {
   }
 
   double getMaxX() {
-    if (selectedInterval == const Duration(days: 1)) {
-      return 23;
-    } else {
-      DateTime firstDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-      DateTime lastDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isAfter(b) ? a : b);
+    DateTime firstDate =
+        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
+    DateTime lastDate =
+        cotacoes.map((c) => c.data).reduce((a, b) => a.isAfter(b) ? a : b);
 
-      return lastDate.difference(firstDate).inDays.toDouble();
-    }
+    return lastDate.difference(firstDate).inDays.toDouble();
   }
 
   double getMaxY(List<FlSpot> spots) {
