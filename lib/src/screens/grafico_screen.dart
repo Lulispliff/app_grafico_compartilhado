@@ -129,7 +129,7 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
               )
             : SizedBox(
-                height: 500,
+                height: 150,
                 child: SingleChildScrollView(
                   child: Column(
                     children: cotacoes.map((cotacao) {
