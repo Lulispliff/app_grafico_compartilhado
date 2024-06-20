@@ -79,9 +79,9 @@ class MoedaStore {
     ];
   }
 
-  Future<void> saveCotacoes(BuildContext context, Moeda? selectedMoeda) async {
+  Future<void> saveCotacoes(BuildContext context, Moeda selectedMoeda) async {
     var lista = apiCotacoes.value;
-    if (lista.isEmpty || selectedMoeda == null) {
+    if (lista.isEmpty) {
       return;
     }
     final cotacaoDatabase = context.read<CotacaoDatabase>();

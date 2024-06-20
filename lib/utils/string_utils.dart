@@ -39,7 +39,7 @@ class StringUtils {
 
   static String editCurrencyName(String fullName) {
     if (fullName.contains('/')) {
-      return fullName.split('/').last.trim();
+      return fullName.split('/').first.trim();
     }
     return fullName;
   }

@@ -464,7 +464,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                       initialDate!.toIso8601String(),
                     );
                     if (context.mounted) {
-                      await store.saveCotacoes(context, selectedMoeda);
+                      await store.saveCotacoes(context, selectedMoeda!);
                     }
                     Navigator.of(context).pop();
                   },
