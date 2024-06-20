@@ -100,9 +100,25 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text(
-                      StringUtils.capitalize(moeda.nome),
-                      style: const TextStyle(fontSize: 20),
+                    iconColor: AppColors.color2,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          StringUtils.capitalize(moeda.nome),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Tooltip(
+                          message: "Excluir todas as cotações desta moeda.",
+                          child: IconButton(
+                              onPressed: () {
+                                deleteAllCotacaoDialog(moeda.nome);
+                              },
+                              icon: const Icon(
+                                Icons.delete_forever_outlined,
+                              )),
+                        )
+                      ],
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
                     children: [_buildSecondaryList(moeda)],
@@ -162,25 +178,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           ),
                         );
                       }),
-                      if (cotacoes.isNotEmpty)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 24),
-                              child: Tooltip(
-                                message: "Excluir tudo",
-                                child: IconButton(
-                                  onPressed: () {
-                                    deleteAllCotacaoDialog(moeda.nome);
-                                  },
-                                  icon: const Icon(Icons.delete,
-                                      color: Colors.red, size: 25),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                     ],
                   ),
                 ),
@@ -480,7 +477,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     Navigator.of(context).pop();
                   },
                   child: const Text(
-                    "Buscar",
+                    "Salvar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -547,7 +544,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         builder: (context) {
           return AlertDialog(
             backgroundColor: AppColors.color4,
-            title: const Text("Deseja mesmo excluir todas as cotações ?",
+            title: const Text("Deseja mesmo excluir todas as cotações?",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
