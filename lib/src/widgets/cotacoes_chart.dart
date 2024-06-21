@@ -154,7 +154,7 @@ class CotacoesChart extends StatelessWidget {
         LineChartBarData(
           isCurved: false,
           color: AppColors.color2,
-          barWidth: 4,
+          barWidth: 3,
           isStrokeCapRound: true,
           belowBarData: BarAreaData(
             show: true,

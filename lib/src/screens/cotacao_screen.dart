@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
@@ -14,6 +14,7 @@ import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/src/widgets/input.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -460,17 +461,21 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     if (selectedMoeda == null || initialDate == null) {
                       ErrorMessages.addCotacaoApiErrorMessage(context);
                     }
+
+                    loadingDialog(context);
+
                     await store.getMoedas(
                       selectedMoeda!,
                       initialDate!.toIso8601String(),
                     );
                     if (context.mounted) {
                       await store.saveCotacoes(context, selectedMoeda!);
+                      Navigator.of(context).pop();
                     }
                     Navigator.of(context).pop();
                   },
                   child: const Text(
-                    "Salvar",
+                    "Buscar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -576,6 +581,35 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ],
               )
             ],
+          );
+        });
+  }
+
+  void loadingDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: const AlertDialog(
+                backgroundColor: AppColors.color4,
+                title:
+                    Text("Buscando cotações...", textAlign: TextAlign.center),
+                titleTextStyle: TextStyle(
+                    color: AppColors.color2,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+                content: SizedBox(
+                  height: 150,
+                  width: 150,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      color: AppColors.color2,
+                    ),
+                  ),
+                )),
           );
         });
   }
