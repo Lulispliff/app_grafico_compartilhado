@@ -132,14 +132,24 @@ class GraficoScreenState extends State<GraficoScreen> {
                 height: 150,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: cotacoes.map((cotacao) {
-                      return ListTile(
-                        title: Text(
-                          "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                          style: const TextStyle(fontSize: 17),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Total de cotações: ${cotacoes.length}",
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                      ...cotacoes.map((cotacao) {
+                        return ListTile(
+                          title: Text(
+                            "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                        );
+                      })
+                    ],
                   ),
                 ),
               );
@@ -302,8 +312,6 @@ class GraficoScreenState extends State<GraficoScreen> {
   String _formatDuration(Duration duration) {
     if (duration.inDays == 7) {
       return "1 Semana";
-    } else if (duration.inDays == 10) {
-      return "10 Dias";
     } else if (duration.inDays == 30) {
       return "1 Mês";
     } else if (duration.inDays == 180) {
