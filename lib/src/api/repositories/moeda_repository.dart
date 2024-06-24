@@ -29,26 +29,12 @@ class MoedaRepository implements IMoedaRepository {
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
-<<<<<<< HEAD
-      // "jsonDecode(response.body) as List" recebe a resposta JSON e converte em uma lista de maps
-      final body = jsonDecode(response.body) as List;
-
-      final List<Cotacoess> moedas = [];
-
-      // É realizado um loop para iterar sobre cada map da lista e criar objetos "Cotacoess"
-      for (var map in body) {
-        moedas.add(Cotacoess.fromJson(map as Map<String, dynamic>));
-      }
-
-      return moedas;
-=======
       // "jsonDecode(response.body) as List" recebe diretamente a resposta JSON e converte para uma lista de maps
       final body = jsonDecode(response.body) as List;
 
       // "CotacoesAPI.fromJsonList(body)" converte cada map da lista em um objeto "CotacaoesAPI"
       return CotacoesAPI.fromJsonList(body);
       ////////
->>>>>>> testesAPI
     } else if (response.statusCode == 404) {
       throw NotFoundException('A url informada não é válida!');
     } else {
