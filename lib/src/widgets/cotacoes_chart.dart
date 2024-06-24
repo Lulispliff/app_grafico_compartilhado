@@ -1,7 +1,7 @@
 import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
-import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:app_grafico_compartilhado/utils/colors_app.dart';
+import 'package:app_grafico_compartilhado/utils/string_utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +19,9 @@ class CotacoesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<double, DateTime> spotDates = _generateSpotDates();
-    List<FlSpot> spots = _generateSpots();
+    double maxMoedaValor = _calculateMaxMoedaValor();
+    double minMoedaValor = _calculateMinMoedaValor();
+    double pctVariacao = _calculateVariationPercentage();
 
     return Scaffold(
       backgroundColor: AppColors.color4,
@@ -39,237 +40,251 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 50, 50, 100),
-        child: Center(
-          child: SizedBox(
-            height: 1000,
-            width: 2000,
-            child: LineChart(
-              _buildLineChartData(spots, spotDates),
+        padding: const EdgeInsets.fromLTRB(90, 120, 90, 120),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: LineChart(_createLineChartData()),
             ),
-          ),
+            legendaGrafico(maxMoedaValor, minMoedaValor, pctVariacao),
+          ],
         ),
       ),
     );
   }
 
-  List<FlSpot> _generateSpots() {
-    Map<String, int> dayCount = {};
-    List<FlSpot> spots = [];
+  LineChartData _createLineChartData() {
+    List<FlSpot> spots = _generateSpots();
 
-    DateTime firstDate =
-        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-
-    for (var cotacao in cotacoes) {
-      String dayKey = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toString()
-          : cotacao.data.toString();
-
-      dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
-
-      double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
-          : cotacao.data.difference(firstDate).inDays.toDouble() +
-              (dayCount[dayKey]! - 1) * 0.1;
-
-      double y = cotacao.valor;
-
-      if (x > getMaxX()) {
-        x = getMaxX();
-      }
-
-      spots.add(FlSpot(x, y));
-    }
-
-    spots.sort((a, b) => a.x.compareTo(b.x));
-    return spots;
-  }
-
-  Map<double, DateTime> _generateSpotDates() {
-    Map<double, DateTime> spotDates = {};
-    Map<String, int> dayCount = {};
-
-    DateTime firstDate =
-        cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-
-    for (var cotacao in cotacoes) {
-      String dayKey = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toString()
-          : cotacao.data.toString();
-
-      dayCount[dayKey] = (dayCount[dayKey] ?? 0) + 1;
-
-      double x = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora.hour.toDouble() + (dayCount[dayKey]! - 1) * 0.1
-          : cotacao.data.difference(firstDate).inDays.toDouble() +
-              (dayCount[dayKey]! - 1) * 0.1;
-
-      spotDates[x] = selectedInterval == const Duration(days: 1)
-          ? cotacao.hora
-          : cotacao.data;
-    }
-
-    return spotDates;
-  }
-
-  LineChartData _buildLineChartData(
-      List<FlSpot> spots, Map<double, DateTime> spotDates) {
     return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        drawVerticalLine: true,
-        horizontalInterval: getMaxY(spots) / 5,
-        verticalInterval: getMaxX() / 5,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Colors.grey.withOpacity(0.5),
-            strokeWidth: 0.5,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Colors.grey.withOpacity(0.5),
-            strokeWidth: 0.5,
-          );
-        },
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-      ),
+      gridData: const FlGridData(show: true),
+      borderData: FlBorderData(show: true),
       titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: getInterval(),
-            reservedSize: 40,
-            getTitlesWidget: bottomTitles,
+          show: true,
+          bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 80,
+                  interval: _calculateInterval(),
+                  getTitlesWidget: (value, meta) {
+                    return bottomTitles(value.toInt());
+                  })),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 80,
+              getTitlesWidget: (value, meta) {
+                return leftTitles(value);
+              },
+            ),
           ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: getMaxY(spots) / 5,
-            getTitlesWidget: leftTitles,
-            reservedSize: 40,
-          ),
-        ),
-        rightTitles:
-            const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      ),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
-      maxX: getMaxX(),
-      minY: 0,
-      maxY: getMaxY(spots),
-      lineBarsData: [
-        LineChartBarData(
-          isCurved: false,
-          color: AppColors.color2,
-          barWidth: 4,
-          isStrokeCapRound: true,
-          belowBarData: BarAreaData(
-            show: true,
-            color: AppColors.color2.withOpacity(0.3),
-          ),
-          spots: spots,
-        ),
-      ],
+      maxX: spots.length.toDouble() - 1,
+      minY: _findMinValue(),
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
           getTooltipColor: (touchedSpot) => AppColors.color3,
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((touchedSpot) {
-              DateTime data = spotDates[touchedSpot.x]!;
-              String dataFormatadaHoras =
-                  StringUtils.formatDateHoraeMinuto(data);
-              String dataFormatada = StringUtils.formatDateSimple(data);
-              String valor =
-                  touchedSpot.y.toStringAsFixed(4).replaceAll(".", ",");
-
-              if (selectedInterval == const Duration(days: 1)) {
-                return LineTooltipItem('R\$ $valor $dataFormatadaHoras',
-                    const TextStyle(color: Colors.white));
-              }
+              const textStyle = TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              );
 
               return LineTooltipItem(
-                'R\$ $valor $dataFormatada',
-                const TextStyle(color: Colors.white),
+                'Valor: R\$ ${touchedSpot.y.toStringAsFixed(4).replaceAll(".", ",")}\n',
+                textStyle,
+                children: [
+                  TextSpan(
+                    text:
+                        'Data: ${_formatTooltipDate(touchedSpot.spotIndex)} Horário: ${_formatTooltipHour(touchedSpot.spotIndex)}',
+                    style: textStyle.copyWith(fontSize: 14),
+                  ),
+                ],
               );
             }).toList();
           },
         ),
       ),
+      lineBarsData: [
+        LineChartBarData(
+          spots: spots,
+          isCurved: false,
+          barWidth: 3,
+          isStrokeCapRound: true,
+          color: AppColors.color2,
+          dotData: const FlDotData(show: true),
+          belowBarData: BarAreaData(
+            show: true,
+            color: AppColors.color2.withOpacity(0.3),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget bottomTitles(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+  Widget legendaGrafico(
+      double maxMoedaValor, double minMoedaValor, double pctVariacao) {
+    IconData icon;
+    Color iconColor;
 
-    if (selectedInterval == const Duration(days: 1)) {
-      String titulosHora = '${value.toInt().toString().padLeft(2, '0')}H';
-
-      return SideTitleWidget(
-        axisSide: meta.axisSide,
-        child: Text(titulosHora, style: style),
-      );
+    if (pctVariacao >= 0) {
+      icon = Icons.trending_up_sharp;
+      iconColor = Colors.green;
     } else {
-      DateTime firstDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-      DateTime currentDate = firstDate.add(Duration(days: value.toInt()));
-
-      return SideTitleWidget(
-        axisSide: meta.axisSide,
-        child: Text(StringUtils.formatDiaMes(currentDate), style: style),
-      );
+      icon = Icons.trending_down_sharp;
+      iconColor = Colors.red;
     }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Valor máximo atingido pela moeda: ${StringUtils.formatValor(maxMoedaValor)}",
+          style: const TextStyle(
+              color: AppColors.color1,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "Valor mínimo atingido pela moeda: ${StringUtils.formatValor(minMoedaValor)}",
+          style: const TextStyle(
+              color: AppColors.color1,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Variação percentual: ",
+              style: TextStyle(
+                  color: AppColors.color1,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            Icon(icon, color: iconColor),
+            Text(
+              " ${pctVariacao.toStringAsFixed(2)}%",
+              style: const TextStyle(
+                  color: AppColors.color1,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
-  double getInterval() {
-    if (selectedInterval == const Duration(days: 1)) {
-      return 1;
-    } else if (selectedInterval == const Duration(days: 7)) {
-      return 1;
-    } else if (selectedInterval == const Duration(days: 30)) {
-      return 3;
-    } else if (selectedInterval == const Duration(days: 180)) {
-      return 17;
-    } else if (selectedInterval == const Duration(days: 365)) {
-      return 27;
+  Widget bottomTitles(int index) {
+    final date = cotacoes[index].data;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Text(
+        StringUtils.formatMesAno(date),
+        style: const TextStyle(
+          color: AppColors.color1,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget leftTitles(double value) {
+    String formattedValue;
+    if (value >= 1000) {
+      formattedValue = 'R\$ ${(value / 1000).toStringAsFixed(0)} K';
     } else {
+      formattedValue = 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
+    }
+
+    return Text(
+      formattedValue,
+      style: const TextStyle(
+        color: AppColors.color1,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+  }
+
+  List<FlSpot> _generateSpots() {
+    // Ordenar cotações pela data antes de gerar os pontos
+    cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+    List<FlSpot> spots = [];
+    for (int i = 0; i < cotacoes.length; i++) {
+      spots.add(FlSpot(i.toDouble(), cotacoes[i].valor));
+    }
+    return spots;
+  }
+
+  double _findMinValue() {
+    double minValue = double.infinity;
+    for (var cotacao in cotacoes) {
+      if (cotacao.valor < minValue) {
+        minValue = cotacao.valor;
+      }
+    }
+    return minValue;
+  }
+
+  double _calculateMaxMoedaValor() {
+    if (cotacoes.isEmpty) return 0;
+    return cotacoes.map((c) => c.valor).reduce((a, b) => a > b ? a : b);
+  }
+
+  double _calculateMinMoedaValor() {
+    if (cotacoes.isEmpty) return 0;
+    return cotacoes.map((c) => c.valor).reduce((a, b) => a < b ? a : b);
+  }
+
+  double _calculateVariationPercentage() {
+    if (cotacoes.isEmpty) return 0.0;
+
+    // Ordenar cotações pela data para garantir a sequência correta
+    cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+    // Pegar o primeiro e o último valor da lista ordenada
+    double firstValue = cotacoes.first.valor;
+    double lastValue = cotacoes.last.valor;
+
+    // Calcular variação percentual
+    double variation = ((lastValue - firstValue) / firstValue) * 100;
+
+    return variation;
+  }
+
+  double _calculateInterval() {
+    int totalSpots = cotacoes.length;
+
+    if (totalSpots <= 10) {
       return 1;
-    }
-  }
-
-  double getMaxX() {
-    if (selectedInterval == const Duration(days: 1)) {
-      return 23;
+    } else if (totalSpots <= 20) {
+      return 2;
+    } else if (totalSpots <= 50) {
+      return 5;
     } else {
-      DateTime firstDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isBefore(b) ? a : b);
-      DateTime lastDate =
-          cotacoes.map((c) => c.data).reduce((a, b) => a.isAfter(b) ? a : b);
-
-      return lastDate.difference(firstDate).inDays.toDouble();
+      return (totalSpots / 10).ceilToDouble();
     }
   }
 
-  double getMaxY(List<FlSpot> spots) {
-    if (spots.isEmpty) {
-      return 0;
-    }
-
-    double maxY = spots
-        .map((spot) => spot.y)
-        .reduce((max, value) => max > value ? max : value);
-
-    return maxY * 1.1; // Adiciona 10% ao valor máximo para margem
+  String _formatTooltipDate(int index) {
+    final date = cotacoes[index].data;
+    return StringUtils.formatDateSimple(date);
   }
 
-  Widget leftTitles(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
-    return Text("R\$ ${value.toStringAsFixed(2).replaceAll(".", ",")}",
-        style: style);
+  String _formatTooltipHour(int index) {
+    final hour = cotacoes[index].hora;
+    return StringUtils.formatHoraeMinuto(hour);
   }
 }

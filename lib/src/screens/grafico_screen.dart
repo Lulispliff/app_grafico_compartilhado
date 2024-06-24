@@ -1,4 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
+import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/widgets/cotacoes_chart.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
@@ -22,13 +25,19 @@ class GraficoScreen extends StatefulWidget {
 }
 
 class GraficoScreenState extends State<GraficoScreen> {
-  Duration selectedInterval = const Duration(days: 1);
+  Duration selectedInterval = const Duration(days: 7);
   Moeda? selectedMoeda;
 
   @override
   void initState() {
     super.initState();
   }
+
+  final MoedaStore store = MoedaStore(
+    repository: MoedaRepository(
+      client: HttpClient(),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +249,6 @@ class GraficoScreenState extends State<GraficoScreen> {
                 ),
                 value: selectedInterval,
                 items: buildDropdownMenuItems([
-                  const Duration(days: 1),
                   const Duration(days: 7),
                   const Duration(days: 30),
                   const Duration(days: 180),
@@ -292,12 +300,8 @@ class GraficoScreenState extends State<GraficoScreen> {
   }
 
   String _formatDuration(Duration duration) {
-    if (duration.inDays == 1) {
-      return "1 Dia";
-    } else if (duration.inDays == 7) {
+    if (duration.inDays == 7) {
       return "1 Semana";
-    } else if (duration.inDays == 10) {
-      return "10 Dias";
     } else if (duration.inDays == 30) {
       return "1 Mês";
     } else if (duration.inDays == 180) {

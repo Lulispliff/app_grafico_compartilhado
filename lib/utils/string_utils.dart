@@ -9,6 +9,10 @@ class StringUtils {
     return formatByPattern(date, 'dd/MM');
   }
 
+  static String formatMesAno(DateTime? date) {
+    return formatByPattern(date, 'MM/yyyy');
+  }
+
   static String formatDateHoraeMinuto(DateTime? date) {
     return formatByPattern(date, 'dd/MM/yyyy HH:mm');
   }
@@ -21,14 +25,10 @@ class StringUtils {
     return formatByPattern(date, 'HH:mm');
   }
 
-  static String formatValorBRL(double value) {
-    final NumberFormat brl =
-        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-    return brl.format(value);
-  }
-
   static String formatValor(double valor) {
-    return valor.toString().replaceAll('.', ',');
+    final NumberFormat brl =
+        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 4);
+    return brl.format(valor).trim();
   }
 
   static String capitalize(String text) {
@@ -39,6 +39,13 @@ class StringUtils {
         .split(' ')
         .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
         .join(' ');
+  }
+
+  static String editCurrencyName(String fullName) {
+    if (fullName.contains('/')) {
+      return fullName.split('/').first.trim();
+    }
+    return fullName;
   }
 
   static String formatByPattern(DateTime? date, String pattern) {

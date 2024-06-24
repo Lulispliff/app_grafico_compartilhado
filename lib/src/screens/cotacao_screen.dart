@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'package:app_grafico_compartilhado/src/api/repositories/moeda_repository.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/src/widgets/navigator_butons.dart';
 import 'package:app_grafico_compartilhado/src/api/stores/moeda_store.dart';
 import 'package:app_grafico_compartilhado/src/isar/cotacao_database.dart';
@@ -6,7 +9,6 @@ import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/widgets/date_picker.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_database.dart';
 import 'package:app_grafico_compartilhado/src/widgets/time_picker.dart';
-import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
 import 'package:app_grafico_compartilhado/utils/error_messages.dart';
 import 'package:app_grafico_compartilhado/src/isar/moeda_model.dart';
 import 'package:app_grafico_compartilhado/utils/string_utils.dart';
@@ -24,7 +26,6 @@ class CotacaoScreen extends StatefulWidget {
 }
 
 class CotacaoScreenState extends State<CotacaoScreen> {
-  late List<Cotacoess> cotacoesDaMoeda;
   late List<Moeda> currentMoeda;
 
   @override
@@ -99,9 +100,25 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     ),
                   ),
                   child: ExpansionTile(
-                    title: Text(
-                      StringUtils.capitalize(moeda.nome),
-                      style: const TextStyle(fontSize: 20),
+                    iconColor: AppColors.color2,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          StringUtils.capitalize(moeda.nome),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Tooltip(
+                          message: "Excluir todas as cotações desta moeda.",
+                          child: IconButton(
+                              onPressed: () {
+                                deleteAllCotacaoDialog(moeda.nome);
+                              },
+                              icon: const Icon(
+                                Icons.delete_forever_outlined,
+                              )),
+                        )
+                      ],
                     ),
                     trailing: const Icon(Icons.arrow_drop_down),
                     children: [_buildSecondaryList(moeda)],
@@ -161,25 +178,6 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                           ),
                         );
                       }),
-                      if (cotacoes.isNotEmpty)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 24),
-                              child: Tooltip(
-                                message: "Excluir tudo",
-                                child: IconButton(
-                                  onPressed: () {
-                                    deleteAllCotacaoDialog(moeda.nome);
-                                  },
-                                  icon: const Icon(Icons.delete,
-                                      color: Colors.red, size: 25),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                     ],
                   ),
                 ),
@@ -344,12 +342,12 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                         selectedData != null &&
                         selectedHorario != null) {
                       await cotacaoDataBase.addCotacao(
-                          selectedMoeda!.nome,
-                          selectedData!,
-                          selectedHorario!,
-                          valor,
-                          selectedMoeda!);
-                      // ignore: use_build_context_synchronously
+                        selectedMoeda!.nome,
+                        selectedData!,
+                        selectedHorario!,
+                        valor,
+                        selectedMoeda!,
+                      );
                       Navigator.of(context).pop();
                     } else {
                       ErrorMessages.cotacaoAddErrorMessage(context);
@@ -462,16 +460,21 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                     if (selectedMoeda == null || initialDate == null) {
                       ErrorMessages.addCotacaoApiErrorMessage(context);
                     }
+
+                    loadingDialog(context);
+
                     await store.getMoedas(
                       selectedMoeda!,
                       initialDate!.toIso8601String(),
                     );
                     if (context.mounted) {
                       await store.saveCotacoes(context, selectedMoeda!);
+                      Navigator.of(context).pop();
                     }
+                    Navigator.of(context).pop();
                   },
                   child: const Text(
-                    "Salvar",
+                    "Buscar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -538,7 +541,7 @@ class CotacaoScreenState extends State<CotacaoScreen> {
         builder: (context) {
           return AlertDialog(
             backgroundColor: AppColors.color4,
-            title: const Text("Deseja mesmo excluir todas as cotações ?",
+            title: const Text("Deseja mesmo excluir todas as cotações?",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -577,6 +580,35 @@ class CotacaoScreenState extends State<CotacaoScreen> {
                 ],
               )
             ],
+          );
+        });
+  }
+
+  void loadingDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: const AlertDialog(
+                backgroundColor: AppColors.color4,
+                title:
+                    Text("Buscando cotações...", textAlign: TextAlign.center),
+                titleTextStyle: TextStyle(
+                    color: AppColors.color2,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+                content: SizedBox(
+                  height: 150,
+                  width: 150,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      color: AppColors.color2,
+                    ),
+                  ),
+                )),
           );
         });
   }

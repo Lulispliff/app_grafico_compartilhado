@@ -1,10 +1,10 @@
 import 'package:app_grafico_compartilhado/src/api/http/http_client.dart';
 import 'package:app_grafico_compartilhado/src/api/http/exceptions.dart';
-import 'package:app_grafico_compartilhado/src/isar/cotacao_model.dart';
+import 'package:app_grafico_compartilhado/src/isar/cotacao_api_model.dart';
 import 'dart:convert';
 
 abstract class IMoedaRepository {
-  Future<List<Cotacoess>> getMoedas({
+  Future<List<CotacoesAPI>> getMoedas({
     String? startDate,
     String? moedaKey,
     String? moedaNome,
@@ -18,7 +18,7 @@ class MoedaRepository implements IMoedaRepository {
   MoedaRepository({required this.client});
 
   @override
-  Future<List<Cotacoess>> getMoedas({
+  Future<List<CotacoesAPI>> getMoedas({
     String? moedaKey,
     String? moedaNome,
     String? startDate,
@@ -29,6 +29,7 @@ class MoedaRepository implements IMoedaRepository {
     final response = await client.get(url: url);
 
     if (response.statusCode == 200) {
+<<<<<<< HEAD
       // "jsonDecode(response.body) as List" recebe a resposta JSON e converte em uma lista de maps
       final body = jsonDecode(response.body) as List;
 
@@ -40,6 +41,14 @@ class MoedaRepository implements IMoedaRepository {
       }
 
       return moedas;
+=======
+      // "jsonDecode(response.body) as List" recebe diretamente a resposta JSON e converte para uma lista de maps
+      final body = jsonDecode(response.body) as List;
+
+      // "CotacoesAPI.fromJsonList(body)" converte cada map da lista em um objeto "CotacaoesAPI"
+      return CotacoesAPI.fromJsonList(body);
+      ////////
+>>>>>>> testesAPI
     } else if (response.statusCode == 404) {
       throw NotFoundException('A url informada não é válida!');
     } else {
