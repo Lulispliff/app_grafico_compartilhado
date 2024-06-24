@@ -19,6 +19,10 @@ class CotacoesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double maxMoedaValor = _calculateMaxMoedaValor();
+    double minMoedaValor = _calculateMinMoedaValor();
+    double pctVariacao = _calculateVariationPercentage();
+
     return Scaffold(
       backgroundColor: AppColors.color4,
       appBar: AppBar(
@@ -36,15 +40,15 @@ class CotacoesChart extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(50, 120, 50, 120),
-        child: Center(
-          child: SizedBox(
-            height: 1000, // Altura do gráfico
-            width: 2000, // Largura do gráfico
-            child: LineChart(
-              _createLineChartData(),
+        padding: const EdgeInsets.fromLTRB(90, 120, 90, 120),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: LineChart(_createLineChartData()),
             ),
-          ),
+            legendaGrafico(maxMoedaValor, minMoedaValor, pctVariacao),
+          ],
         ),
       ),
     );
@@ -56,10 +60,29 @@ class CotacoesChart extends StatelessWidget {
     return LineChartData(
       gridData: const FlGridData(show: true),
       borderData: FlBorderData(show: true),
-      titlesData: const FlTitlesData(
+      titlesData: FlTitlesData(
           show: true,
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false))),
+          bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 80,
+                  interval: _calculateInterval(),
+                  getTitlesWidget: (value, meta) {
+                    return bottomTitles(value.toInt());
+                  })),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 80,
+              getTitlesWidget: (value, meta) {
+                return leftTitles(value);
+              },
+            ),
+          ),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false))),
       minX: 0,
       maxX: spots.length.toDouble() - 1,
       minY: _findMinValue(),
@@ -106,6 +129,94 @@ class CotacoesChart extends StatelessWidget {
     );
   }
 
+  Widget legendaGrafico(
+      double maxMoedaValor, double minMoedaValor, double pctVariacao) {
+    IconData icon;
+    Color iconColor;
+
+    if (pctVariacao >= 0) {
+      icon = Icons.trending_up_sharp;
+      iconColor = Colors.green;
+    } else {
+      icon = Icons.trending_down_sharp;
+      iconColor = Colors.red;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Valor máximo atingido pela moeda: ${StringUtils.formatValor(maxMoedaValor)}",
+          style: const TextStyle(
+              color: AppColors.color1,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "Valor mínimo atingido pela moeda: ${StringUtils.formatValor(minMoedaValor)}",
+          style: const TextStyle(
+              color: AppColors.color1,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Variação percentual: ",
+              style: TextStyle(
+                  color: AppColors.color1,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            Icon(icon, color: iconColor),
+            Text(
+              " ${pctVariacao.toStringAsFixed(2)}%",
+              style: const TextStyle(
+                  color: AppColors.color1,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget bottomTitles(int index) {
+    final date = cotacoes[index].data;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Text(
+        StringUtils.formatMesAno(date),
+        style: const TextStyle(
+          color: AppColors.color1,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget leftTitles(double value) {
+    String formattedValue;
+    if (value >= 1000) {
+      formattedValue = 'R\$ ${(value / 1000).toStringAsFixed(0)} K';
+    } else {
+      formattedValue = 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
+    }
+
+    return Text(
+      formattedValue,
+      style: const TextStyle(
+        color: AppColors.color1,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+  }
+
   List<FlSpot> _generateSpots() {
     // Ordenar cotações pela data antes de gerar os pontos
     cotacoes.sort((a, b) => a.data.compareTo(b.data));
@@ -125,6 +236,46 @@ class CotacoesChart extends StatelessWidget {
       }
     }
     return minValue;
+  }
+
+  double _calculateMaxMoedaValor() {
+    if (cotacoes.isEmpty) return 0;
+    return cotacoes.map((c) => c.valor).reduce((a, b) => a > b ? a : b);
+  }
+
+  double _calculateMinMoedaValor() {
+    if (cotacoes.isEmpty) return 0;
+    return cotacoes.map((c) => c.valor).reduce((a, b) => a < b ? a : b);
+  }
+
+  double _calculateVariationPercentage() {
+    if (cotacoes.isEmpty) return 0.0;
+
+    // Ordenar cotações pela data para garantir a sequência correta
+    cotacoes.sort((a, b) => a.data.compareTo(b.data));
+
+    // Pegar o primeiro e o último valor da lista ordenada
+    double firstValue = cotacoes.first.valor;
+    double lastValue = cotacoes.last.valor;
+
+    // Calcular variação percentual
+    double variation = ((lastValue - firstValue) / firstValue) * 100;
+
+    return variation;
+  }
+
+  double _calculateInterval() {
+    int totalSpots = cotacoes.length;
+
+    if (totalSpots <= 10) {
+      return 1;
+    } else if (totalSpots <= 20) {
+      return 2;
+    } else if (totalSpots <= 50) {
+      return 5;
+    } else {
+      return (totalSpots / 10).ceilToDouble();
+    }
   }
 
   String _formatTooltipDate(int index) {

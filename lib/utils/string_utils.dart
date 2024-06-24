@@ -9,6 +9,10 @@ class StringUtils {
     return formatByPattern(date, 'dd/MM');
   }
 
+  static String formatMesAno(DateTime? date) {
+    return formatByPattern(date, 'MM/yyyy');
+  }
+
   static String formatDateHoraeMinuto(DateTime? date) {
     return formatByPattern(date, 'dd/MM/yyyy HH:mm');
   }

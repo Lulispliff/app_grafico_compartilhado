@@ -132,24 +132,14 @@ class GraficoScreenState extends State<GraficoScreen> {
                 height: 150,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Total de cotações: ${cotacoes.length}",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                    children: cotacoes.map((cotacao) {
+                      return ListTile(
+                        title: Text(
+                          "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
+                          style: const TextStyle(fontSize: 17),
                         ),
-                      ),
-                      ...cotacoes.map((cotacao) {
-                        return ListTile(
-                          title: Text(
-                            "Valor: R\$ ${StringUtils.formatValor(cotacao.valor)} - Data de registro: ${StringUtils.formatDateSimple(cotacao.data)} - Horário de registro: ${StringUtils.formatHoraeMinuto(cotacao.hora)}",
-                            style: const TextStyle(fontSize: 17),
-                          ),
-                        );
-                      })
-                    ],
+                      );
+                    }).toList(),
                   ),
                 ),
               );
